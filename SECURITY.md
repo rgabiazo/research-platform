@@ -9,11 +9,13 @@ reviewed as the project matures.
 
 ## Report a vulnerability privately
 
-Do not open a public issue for a suspected, undisclosed vulnerability. Once the
-future `rgabiazo/research-platform` repository is public, use its
-[private vulnerability reporting form](https://github.com/rgabiazo/research-platform/security/advisories/new).
-The link is the planned reporting location and does not imply that the public
-repository or reporting form is currently available.
+Do not open a public issue for a suspected, undisclosed vulnerability. Use
+the private vulnerability reporting form:
+
+https://github.com/rgabiazo/research-platform/security/advisories/new
+
+Private vulnerability reporting is enabled for this repository, and the
+maintainer monitors GitHub security-alert notifications.
 
 A useful report includes:
 
