@@ -356,7 +356,7 @@ def test_citation_email_is_confined_to_citation_metadata() -> None:
         assert email_bytes not in path.read_bytes(), path
 
 
-def test_security_policy_is_private_actionable_and_future_tense() -> None:
+def test_security_policy_is_private_actionable_and_activation_aware() -> None:
     text = (REPO_ROOT / "SECURITY.md").read_text(encoding="utf-8")
     normalized = " ".join(text.lower().split())
 
@@ -373,9 +373,14 @@ def test_security_policy_is_private_actionable_and_future_tense() -> None:
     assert "support" in normalized
     assert "installation" in normalized
     assert "scientific" in normalized
-    assert re.search(r"future .*repository is public", normalized) or (
+    future_reporting = re.search(r"future .*repository is public", normalized) or (
         "once the repository is public" in normalized
     )
+    active_reporting = (
+        "private vulnerability reporting is enabled for this repository" in normalized
+        and "maintainer monitors github security-alert notifications" in normalized
+    )
+    assert future_reporting or active_reporting
     assert CITATION_EMAIL not in text
     assert not re.search(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", text)
 
