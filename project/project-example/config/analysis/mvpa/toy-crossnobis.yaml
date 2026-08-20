@@ -1,0 +1,67 @@
+mvpa_set:
+  name: toy-crossnobis
+  description: Deterministic local crossnobis example using invented ROI-final vectors.
+  unit_selection:
+    mode: exact_units
+    key_columns:
+      - subject_id
+      - task_id
+      - run_id
+  conditions:
+    -
+      id: condition_a
+      description: First invented toy condition.
+    -
+      id: condition_b
+      description: Second invented toy condition.
+  condition_pairs:
+    -
+      id: condition_a_minus_condition_b
+      condition_a: condition_a
+      condition_b: condition_b
+  pattern_sources:
+    -
+      name: toy-prepared-patterns
+      backend: materialized_pattern_table
+      root_ref: mvpa_example
+      path: patterns/toy_crossnobis_patterns.tsv
+      schema_version: research_platform.neuro.mvpa.materialized_pattern_table.v1
+  roi_sources:
+    -
+      name: toy-rois
+      source: materialized_features
+      roi_labels:
+        - SeedA
+        - SeedB
+      feature_space_id: toy-mvpa-feature-spaces-v1
+      roi_definition_id: toy-mvpa-roi-definitions-v1
+  event_thresholds:
+    min_events_per_condition_per_run: 1
+    min_runs_per_condition: 2
+  mean_centering:
+    enabled: false
+    scope: none
+  distance:
+    metrics:
+      - crossnobis
+    engine: native_reference
+    grouping_columns:
+      - subject_id
+      - task_id
+      - pattern_source_name
+      - roi_source_name
+      - roi_label
+    cross_validation:
+      unit: run
+    noise_normalization:
+      method: diagonal
+      variance_source: materialized_variances
+      nonpositive_policy: strict
+      min_retained_features: 5
+  outputs:
+    runtime_root:
+      root_ref: artifact_root
+      path: .research-platform/mvpa/toy-crossnobis
+  runtime:
+    existing_output: fail
+  missing_input_policy: fail

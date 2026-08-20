@@ -1,0 +1,32 @@
+extraction_set:
+  name: toy-values
+  roi_set: toy-spheres
+  subject: sub-toy01
+  session: ses-01
+  task: exampletask
+  space: ToyGrid
+  resolution: "2"
+  outputs:
+    root_ref: artifacts_root
+    path: project-example/toy-roi/extraction
+    format: tsv
+  runtime:
+    existing_output: fail
+  targets:
+    -
+      name: ToyValues
+      backend: generic_nifti
+      desc: ToyValues
+      metrics:
+        - mean
+        - median
+        - voxel_count
+      inputs:
+        root_ref: roi_example
+        path: images/toy_values.nii
+      roi_labels:
+        - SeedA
+        - SeedB
+  provenance:
+    schema_version: "1"
+    example: deterministic-toy-roi

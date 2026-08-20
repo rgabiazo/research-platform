@@ -1,0 +1,41 @@
+{
+  "recognition": {
+    "analysis_include_labels": ["hit", "correct_rejection"],
+    "probe_type_map": {
+      "OLD": "target",
+      "NEW": "lure"
+    },
+    "acc_label_map": {
+      "target": {
+        "OLD": "hit",
+        "NEW": "miss",
+        "NONE": "no_response"
+      },
+      "lure": {
+        "OLD": "false_alarm",
+        "NEW": "correct_rejection",
+        "NONE": "no_response"
+      }
+    }
+  },
+  "conditions": {
+    "pair": {
+      "encoding": {
+        "response_column": "encode_response",
+        "error_rule": {
+          "kind": "equals_literal",
+          "left": "enc_later_outcome",
+          "value": "miss"
+        }
+      },
+      "recognition": {
+        "response_column": "recog_response",
+        "error_rule": {
+          "kind": "equals_literal",
+          "left": "acc_label",
+          "value": "miss"
+        }
+      }
+    }
+  }
+}

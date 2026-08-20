@@ -1,0 +1,54 @@
+analysis:
+  slice: bids
+  pipeline: analysis-bids
+  local_profile: local
+  slurm_profile: slurm
+  defaults:
+    tool: feat
+    stage: first_level
+    model_ref: task_glm
+  tools:
+    feat:
+      adapter: research_platform.neuro.fsl.feat.adapter:FeatAnalysisAdapter
+      runtime_profile: fsl
+  inputs:
+    bold:
+      derivative_name: deepprep-bold
+      patterns:
+        - "{derivative_root}/{subject_dir}/{session_dir}/func/{bids_base}_space-MNI152NLin6Asym_res-2_desc-preproc_bold.nii.gz"
+        - "{derivative_root}/{subject_dir}/func/{bids_base}_space-MNI152NLin6Asym_res-2_desc-preproc_bold.nii.gz"
+    confounds:
+      required: false
+      patterns:
+        - "{derivative_root}/{subject_dir}/{session_dir}/func/{bids_base}_desc-confounds_timeseries.tsv"
+        - "{derivative_root}/{subject_dir}/func/{bids_base}_desc-confounds_timeseries.tsv"
+    evs:
+      root_ref: evs
+      patterns:
+        - "{input_root}/{subject_dir}/{session_dir}/func/{bids_base}_desc-{ev_name}_events.txt"
+        - "{input_root}/{subject_dir}/func/{bids_base}_desc-{ev_name}_events.txt"
+  stages:
+    first_level:
+      tool: feat
+      default_batch: fmripost_aroma_subject_sessions
+      model_ref: task_glm
+      validation:
+        require_confounds: false
+        allow_missing_evs: false
+        empty_ev_policy: as_zero
+      overwrite:
+        design: false
+        results: false
+      settings:
+        tr: null
+        hpf: 100.0
+        smooth_mm: 5.0
+        delete_vols: 0
+        norm: 0
+        prewhiten: 1
+        slice_timing: 0
+        bet: 0
+        mc: 0
+  external_input_roots:
+    evs:
+      local_root: "${RP_PILOT_BIDS_EVENTS_ROOT:-datasets/ds-bids-example/derivatives/events}"

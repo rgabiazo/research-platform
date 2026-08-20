@@ -1,0 +1,10 @@
+analysis:
+  external_input_roots:
+    mvpa_example:
+      label: toy-mvpa-inputs
+      local_root: datasets/ds-mvpa-example
+      sync_enabled: false
+    roi_example:
+      label: toy-roi-inputs
+      local_root: datasets/ds-roi-example
+      sync_enabled: false

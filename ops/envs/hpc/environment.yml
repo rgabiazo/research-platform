@@ -1,0 +1,6 @@
+
+name: research-platform-hpc
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11

@@ -1,0 +1,4 @@
+dataset:
+  primary: ds-tabular-example
+  canonical_dataset: derivatives_example
+  canonical_features_root: derivatives/features/project-pilot-tabular

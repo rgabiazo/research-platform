@@ -1,0 +1,387 @@
+{
+  "version": 2,
+  "conditions": {
+    "shape": {
+      "condition_title": "Shape",
+      "encoding_response_column": "response_shape_match",
+      "encoding_instruction_trial_type": "instruction_shape_encoding",
+      "encoding_trial_type": "encoding_shape",
+      "encoding_image_prefix": "toy_run{run}_{condition_title}_encoding",
+      "encoding_onset_column": "toy_run{run}_encoding_onset",
+      "encoding_response_time_column": "toy_run{run}_encoding_response_time",
+      "encoding_probe_type": "n/a",
+      "encoding_error_value": "miss",
+      "recognition_response_column": "response_seen_new",
+      "recognition_instruction_trial_type": "instruction_shape_recognition",
+      "recognition_trial_type": "recognition_shape",
+      "recognition_image_prefix": "toy_run{run}_{condition_title}_recognition",
+      "recognition_onset_column": "toy_run{run}_recognition_onset",
+      "recognition_response_time_column": "toy_run{run}_recognition_response_time",
+      "recognition_probe_type": "lure"
+    },
+    "color": {
+      "condition_title": "Color",
+      "encoding_response_column": "response_color_tone",
+      "encoding_instruction_trial_type": "instruction_color_encoding",
+      "encoding_trial_type": "encoding_color",
+      "encoding_image_prefix": "toy_run{run}_{condition_title}_encoding",
+      "encoding_onset_column": "toy_run{run}_encoding_onset",
+      "encoding_response_time_column": "toy_run{run}_encoding_response_time",
+      "encoding_probe_type": "n/a",
+      "encoding_error_value": "miss",
+      "recognition_response_column": "response_seen_new",
+      "recognition_instruction_trial_type": "instruction_color_recognition",
+      "recognition_trial_type": "recognition_color",
+      "recognition_image_prefix": "toy_run{run}_{condition_title}_recognition",
+      "recognition_onset_column": "toy_run{run}_recognition_onset",
+      "recognition_response_time_column": "toy_run{run}_recognition_response_time",
+      "recognition_probe_type": "lure"
+    },
+    "word": {
+      "condition_title": "Word",
+      "encoding_response_column": "response_word_kind",
+      "encoding_instruction_trial_type": "instruction_word_encoding",
+      "encoding_trial_type": "encoding_word",
+      "encoding_image_prefix": "toy_run{run}_{condition_title}_encoding",
+      "encoding_onset_column": "toy_run{run}_encoding_onset",
+      "encoding_response_time_column": "toy_run{run}_encoding_response_time",
+      "encoding_probe_type": "n/a",
+      "encoding_error_value": "miss",
+      "recognition_response_column": "response_seen_new",
+      "recognition_instruction_trial_type": "instruction_word_recognition",
+      "recognition_trial_type": "recognition_word",
+      "recognition_image_prefix": "toy_run{run}_{condition_title}_recognition",
+      "recognition_onset_column": "toy_run{run}_recognition_onset",
+      "recognition_response_time_column": "toy_run{run}_recognition_response_time",
+      "recognition_probe_type": "lure"
+    }
+  },
+  "row_set_templates": [
+    {
+      "name": "run_{run}_{condition}_encoding",
+      "run": "{run}",
+      "condition": "{condition}",
+      "phase": "encoding",
+      "selectors": [
+        { "operator": "equals", "column": "run", "value": "{run}" },
+        { "operator": "starts_with", "column": "stimulus_file", "value": "{encoding_image_prefix}/" },
+        { "operator": "present", "column": "{encoding_onset_column}" }
+      ],
+      "instruction_transforms": [
+        {
+          "target_column": "onset",
+          "operator": "subtract_value",
+          "args": {
+            "left": {
+              "source": "first_group_value",
+              "value": { "source": "source_field", "column": "{encoding_onset_column}" }
+            },
+            "right": { "source": "literal", "value": "10.0" }
+          }
+        },
+        { "target_column": "duration", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "10.0" }] } },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{encoding_instruction_trial_type}" }] } },
+        { "target_column": "stim_file", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "response_time", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "response", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "phase", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "encoding" }] } },
+        { "target_column": "condition", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{condition}" }] } },
+        { "target_column": "stim_id", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "acc_label", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "probe_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{encoding_probe_type}" }] } },
+        { "target_column": "enc_is_tested", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "0" }] } },
+        { "target_column": "enc_later_outcome", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "not_tested" }] } },
+        { "target_column": "is_instruction", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } },
+        { "target_column": "is_error", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "0" }] } },
+        { "target_column": "block_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } },
+        { "target_column": "trial_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } },
+        { "target_column": "analysis_include", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "0" }] } }
+      ],
+      "trial_transforms": [
+        { "target_column": "onset", "operator": "concat", "args": { "values": [{ "source": "source_field", "column": "{encoding_onset_column}" }] } },
+        { "target_column": "duration", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "3.0" }] } },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{encoding_trial_type}" }] } },
+        {
+          "target_column": "stimulus_identity",
+          "operator": "strip_prefix",
+          "args": {
+            "value": { "source": "source_field", "column": "stimulus_file" },
+            "prefix": { "source": "context_value", "name": "image_prefix" }
+          }
+        },
+        { "target_column": "stim_id", "operator": "basename", "args": { "value": { "source": "derived_value", "name": "stimulus_identity" } } },
+        {
+          "target_column": "stim_file",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "equals_value",
+              "left": { "source": "context_value", "name": "preserve_source_stim_file" },
+              "right": { "source": "literal", "value": "1" }
+            },
+            "when_true": { "source": "source_field", "column": "stimulus_file" },
+            "when_false": { "source": "derived_value", "name": "stim_id" }
+          }
+        },
+        {
+          "target_column": "response_time",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "{encoding_response_time_column}" } },
+            "when_true": { "source": "source_field", "column": "{encoding_response_time_column}" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        {
+          "target_column": "response",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "{encoding_response_column}" } },
+            "when_true": { "source": "source_field", "column": "{encoding_response_column}" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        { "target_column": "phase", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "encoding" }] } },
+        { "target_column": "condition", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{condition}" }] } },
+        { "target_column": "is_instruction", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "block_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } },
+        { "target_column": "trial_n", "operator": "sequence_number", "args": { "start": 2 } },
+        {
+          "target_column": "enc_later_outcome",
+          "operator": "lookup_value",
+          "args": {
+            "lookup": "recognition_targets",
+            "key": [
+              { "source": "literal", "value": "{condition}" },
+              { "source": "derived_value", "name": "stimulus_identity" }
+            ],
+            "default": { "source": "literal", "value": "not_tested" }
+          }
+        },
+        { "target_column": "acc_label", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "probe_type", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        {
+          "target_column": "enc_is_tested",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "not_equals_value",
+              "left": { "source": "derived_value", "name": "enc_later_outcome" },
+              "right": { "source": "literal", "value": "not_tested" }
+            },
+            "when_true": { "source": "literal", "value": "1" },
+            "when_false": { "source": "literal", "value": "0" }
+          }
+        },
+        { "target_column": "analysis_include", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "0" }] } },
+        {
+          "target_column": "is_error",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "equals_value",
+              "left": { "source": "derived_value", "name": "enc_later_outcome" },
+              "right": { "source": "literal", "value": "{encoding_error_value}" }
+            },
+            "when_true": { "source": "literal", "value": "1" },
+            "when_false": { "source": "literal", "value": "0" }
+          }
+        }
+      ],
+      "context": {
+        "image_prefix": "{encoding_image_prefix}",
+        "preserve_source_stim_file": "0"
+      },
+      "onset_sort_column": "{encoding_onset_column}"
+    },
+    {
+      "name": "run_{run}_{condition}_recognition",
+      "run": "{run}",
+      "condition": "{condition}",
+      "phase": "recognition",
+      "selectors": [
+        { "operator": "equals", "column": "run", "value": "{run}" },
+        { "operator": "starts_with", "column": "stimulus_file", "value": "{recognition_image_prefix}/" },
+        { "operator": "present", "column": "{recognition_onset_column}" }
+      ],
+      "instruction_transforms": [
+        {
+          "target_column": "onset",
+          "operator": "subtract_value",
+          "args": {
+            "left": {
+              "source": "first_group_value",
+              "value": { "source": "source_field", "column": "{recognition_onset_column}" }
+            },
+            "right": { "source": "literal", "value": "10.0" }
+          }
+        },
+        { "target_column": "duration", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "10.0" }] } },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{recognition_instruction_trial_type}" }] } },
+        { "target_column": "stim_file", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "response_time", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "response", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "phase", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "recognition" }] } },
+        { "target_column": "condition", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{condition}" }] } },
+        { "target_column": "stim_id", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "acc_label", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "probe_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{recognition_probe_type}" }] } },
+        { "target_column": "enc_is_tested", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "enc_later_outcome", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "is_instruction", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } },
+        { "target_column": "is_error", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "0" }] } },
+        { "target_column": "block_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "2" }] } },
+        { "target_column": "trial_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } },
+        { "target_column": "analysis_include", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "0" }] } }
+      ],
+      "trial_transforms": [
+        { "target_column": "onset", "operator": "concat", "args": { "values": [{ "source": "source_field", "column": "{recognition_onset_column}" }] } },
+        { "target_column": "duration", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "3.0" }] } },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{recognition_trial_type}" }] } },
+        {
+          "target_column": "stimulus_identity",
+          "operator": "strip_prefix",
+          "args": {
+            "value": { "source": "source_field", "column": "stimulus_file" },
+            "prefix": { "source": "context_value", "name": "image_prefix" }
+          }
+        },
+        { "target_column": "stim_id", "operator": "basename", "args": { "value": { "source": "derived_value", "name": "stimulus_identity" } } },
+        {
+          "target_column": "stim_file",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "equals_value",
+              "left": { "source": "context_value", "name": "preserve_source_stim_file" },
+              "right": { "source": "literal", "value": "1" }
+            },
+            "when_true": { "source": "source_field", "column": "stimulus_file" },
+            "when_false": { "source": "derived_value", "name": "stim_id" }
+          }
+        },
+        {
+          "target_column": "response_time",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "{recognition_response_time_column}" } },
+            "when_true": { "source": "source_field", "column": "{recognition_response_time_column}" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        {
+          "target_column": "response",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "{recognition_response_column}" } },
+            "when_true": { "source": "source_field", "column": "{recognition_response_column}" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        { "target_column": "phase", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "recognition" }] } },
+        { "target_column": "condition", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{condition}" }] } },
+        { "target_column": "is_instruction", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "block_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "2" }] } },
+        { "target_column": "trial_n", "operator": "sequence_number", "args": { "start": 2 } },
+        {
+          "target_column": "probe_type",
+          "operator": "map_value",
+          "args": {
+            "value": { "source": "source_field", "column": "image_old_new" },
+            "mapping": {
+              "studied": "target",
+              "novel": "lure"
+            },
+            "default": { "source": "missing" }
+          }
+        },
+        {
+          "target_column": "acc_lookup_key",
+          "operator": "concat",
+          "args": {
+            "values": [
+              { "source": "derived_value", "name": "probe_type" },
+              { "source": "literal", "value": "::" },
+              { "source": "derived_value", "name": "response" }
+            ]
+          }
+        },
+        {
+          "target_column": "acc_label",
+          "operator": "map_value",
+          "args": {
+            "value": { "source": "derived_value", "name": "acc_lookup_key" },
+            "mapping": {
+              "target::seen": "hit",
+              "target::new": "miss",
+              "lure::seen": "false_alarm",
+              "lure::new": "correct_rejection"
+            },
+            "default": { "source": "missing" }
+          }
+        },
+        { "target_column": "enc_is_tested", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "enc_later_outcome", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        {
+          "target_column": "is_error",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "in_set",
+              "value": { "source": "derived_value", "name": "acc_label" },
+              "values": ["miss", "false_alarm"]
+            },
+            "when_true": { "source": "literal", "value": "1" },
+            "when_false": { "source": "literal", "value": "0" }
+          }
+        },
+        {
+          "target_column": "analysis_include",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "in_set",
+              "value": { "source": "derived_value", "name": "acc_label" },
+              "values": ["correct_rejection", "hit"]
+            },
+            "when_true": { "source": "literal", "value": "1" },
+            "when_false": { "source": "literal", "value": "0" }
+          }
+        }
+      ],
+      "context": {
+        "image_prefix": "{recognition_image_prefix}",
+        "preserve_source_stim_file": "0"
+      },
+      "onset_sort_column": "{recognition_onset_column}"
+    }
+  ],
+  "lookup_templates": [
+    {
+      "name": "recognition_targets",
+      "source_phase": "recognition",
+      "key_columns": ["condition", "stimulus_identity"],
+      "value_column": "acc_label",
+      "when_column_equals": {
+        "phase": "recognition",
+        "probe_type": "target"
+      }
+    }
+  ],
+  "validations": [
+    {
+      "operator": "distinct_key_values",
+      "args": {
+        "partition_columns": ["condition", "stim_id"],
+        "value_column": "stimulus_identity",
+        "message_prefix": "Distinct stimuli would collapse to the same emitted stim_id within one run"
+      }
+    },
+    {
+      "operator": "lookup_unique_keys",
+      "args": {
+        "lookup_name": "recognition_targets"
+      }
+    }
+  ]
+}

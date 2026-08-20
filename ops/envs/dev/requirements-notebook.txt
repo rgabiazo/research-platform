@@ -1,0 +1,11 @@
+# Full-profile extras for notebooks, workflows, visualization, and advanced analyses.
+jupyterlab>=4
+ipykernel>=6
+snakemake
+snakemake-executor-plugin-slurm
+matplotlib
+seaborn
+openpyxl
+shap
+umap-learn
+distfit

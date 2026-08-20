@@ -1,0 +1,45 @@
+{
+  "name": "toy-memory",
+  "version": 2,
+  "source": {
+    "encoding": "utf-8-sig",
+    "subject_column": "toy_id",
+    "subject_regex": "^(toy\\d+)$",
+    "subject_width": 0,
+    "session_column": "visit",
+    "session_regex": "^visit(\\d+)$",
+    "session_width": 2,
+    "run_column": "run",
+    "stim_column": "stimulus_file"
+  },
+  "entities": {
+    "task": "toymemory",
+    "dir": "AP",
+    "datatype": "func",
+    "suffix": "events"
+  },
+  "output": {
+    "missing_value": "n/a",
+    "columns": [
+      "onset",
+      "duration",
+      "trial_type",
+      "stim_file",
+      "response_time",
+      "response",
+      "phase",
+      "condition",
+      "stim_id",
+      "acc_label",
+      "probe_type",
+      "enc_is_tested",
+      "enc_later_outcome",
+      "is_instruction",
+      "is_error",
+      "block_n",
+      "trial_n",
+      "analysis_include"
+    ]
+  },
+  "runs": [1, 2, 3]
+}

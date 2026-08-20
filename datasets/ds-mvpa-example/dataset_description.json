@@ -1,0 +1,13 @@
+{
+  "Name": "Deterministic Toy Materialized MVPA Patterns",
+  "Description": "Algorithmically invented ROI-final prepared vectors for local materialized-pattern crossnobis verification.",
+  "DatasetType": "synthetic-fixture",
+  "SyntheticData": true,
+  "SchemaVersion": "research_platform.neuro.mvpa.materialized_pattern_table.v1",
+  "GeneratedBy": [
+    {
+      "Name": "generate_toy_mvpa_fixtures.py",
+      "Description": "Deterministic standard-library-only fixture generator"
+    }
+  ]
+}

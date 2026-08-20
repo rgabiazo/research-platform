@@ -1,0 +1,45 @@
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-hpc"
+version = "0.1.0a1"
+description = "Provider-neutral configuration, planning, and remote lifecycle mechanics."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Raphael Gabiazon" }]
+license = { file = "LICENSE" }
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = []
+
+[project.scripts]
+research-hpc = "research_platform.hpc.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/rgabiazo/research-platform"
+Documentation = "https://github.com/rgabiazo/research-platform/blob/main/docs/README.md"
+Repository = "https://github.com/rgabiazo/research-platform"
+Issues = "https://github.com/rgabiazo/research-platform/issues"
+Changelog = "https://github.com/rgabiazo/research-platform/blob/main/CHANGELOG.md"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["research_platform*"]
+namespaces = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

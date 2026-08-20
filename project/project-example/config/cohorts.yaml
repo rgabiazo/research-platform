@@ -1,0 +1,17 @@
+cohorts:
+  toy-crossnobis:
+    batch: toy_mvpa_units
+    include:
+      cohort_id:
+        - toy-crossnobis
+      eligible:
+        - "true"
+    exclude: []
+  toy-roi:
+    batch: toy_roi_units
+    include:
+      cohort_id:
+        - toy-roi
+      eligible:
+        - "true"
+    exclude: []

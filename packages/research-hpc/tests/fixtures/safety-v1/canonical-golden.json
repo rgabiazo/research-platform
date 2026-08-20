@@ -1,0 +1,64 @@
+{
+  "fixture_schema": "research_platform.hpc.canonical_json_golden.v1",
+  "canonical_json_version": "research_platform.hpc.canonical_json.v1",
+  "canonical_unicode_version": "3.2.0",
+  "cases": [
+    {
+      "name": "null",
+      "value": null,
+      "canonical_hex": "6e756c6c"
+    },
+    {
+      "name": "false",
+      "value": false,
+      "canonical_hex": "66616c7365"
+    },
+    {
+      "name": "true",
+      "value": true,
+      "canonical_hex": "74727565"
+    },
+    {
+      "name": "signed_64_minimum",
+      "value": -9223372036854775808,
+      "canonical_hex": "2d39323233333732303336383534373735383038"
+    },
+    {
+      "name": "signed_64_maximum",
+      "value": 9223372036854775807,
+      "canonical_hex": "39323233333732303336383534373735383037"
+    },
+    {
+      "name": "nested_and_nfc_unicode",
+      "value": {
+        "z": [
+          3,
+          {
+            "b": false,
+            "a": "café"
+          }
+        ],
+        "a": {
+          "null": null,
+          "n": -1
+        }
+      },
+      "canonical_hex": "7b2261223a7b226e223a2d312c226e756c6c223a6e756c6c7d2c227a223a5b332c7b2261223a22636166c3a9222c2262223a66616c73657d5d7d"
+    },
+    {
+      "name": "utf8_key_order",
+      "value": {
+        "é": 1,
+        "a": 2,
+        "Z": 3
+      },
+      "canonical_hex": "7b225a223a332c2261223a322c22c3a9223a317d"
+    }
+  ],
+  "domain_digest": {
+    "algorithm": "research_platform.hpc.sha256_tree.v1",
+    "domain_hex": "72657365617263682d706c6174666f726d3a6870633a726567756c61722d66696c652d747265653a763100",
+    "body_hex": "7b226b696e64223a2273796e746865746963222c2276616c7565223a5b312c747275652c6e756c6c5d7d",
+    "sha256": "ab45103f54c249f6531afed871414f9dc447079add20c0ece29b01f40568cf68"
+  }
+}

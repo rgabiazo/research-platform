@@ -1,0 +1,237 @@
+{
+  "version": 2,
+  "conditions": {
+    "go": {
+      "condition_prefix": "go",
+      "emit_instruction": "1",
+      "instruction_trial_type": "instruction_go",
+      "instruction_offset": "2.0",
+      "instruction_duration": "2.0",
+      "trial_type": "go_trial"
+    },
+    "hold": {
+      "condition_prefix": "hold",
+      "emit_instruction": "0",
+      "instruction_trial_type": "instruction_hold",
+      "instruction_offset": "2.0",
+      "instruction_duration": "2.0",
+      "trial_type": "hold_trial"
+    }
+  },
+  "row_set_templates": [
+    {
+      "only_conditions": ["go"],
+      "name": "run_{run}_{condition}",
+      "run": "{run}",
+      "condition": "{condition}",
+      "phase": "task",
+      "selectors": [
+        { "operator": "equals", "column": "run", "value": "{run}" },
+        { "operator": "starts_with", "column": "stim_path", "value": "{condition_prefix}/" },
+        { "operator": "present", "column": "onset_s" }
+      ],
+      "instruction_transforms": [
+        {
+          "target_column": "onset",
+          "operator": "subtract_value",
+          "args": {
+            "left": {
+              "source": "first_group_value",
+              "value": { "source": "source_field", "column": "onset_s" }
+            },
+            "right": { "source": "literal", "value": "{instruction_offset}" }
+          }
+        },
+        { "target_column": "duration", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{instruction_duration}" }] } },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{instruction_trial_type}" }] } },
+        { "target_column": "stim_file", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "response_time", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "response", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "condition", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{condition}" }] } },
+        { "target_column": "stim_id", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "acc_label", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        { "target_column": "is_instruction", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } },
+        { "target_column": "is_error", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "0" }] } },
+        { "target_column": "trial_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } }
+      ],
+      "trial_transforms": [
+        { "target_column": "onset", "operator": "concat", "args": { "values": [{ "source": "source_field", "column": "onset_s" }] } },
+        {
+          "target_column": "duration",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "duration_s" } },
+            "when_true": { "source": "source_field", "column": "duration_s" },
+            "when_false": { "source": "literal", "value": "1.0" }
+          }
+        },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{trial_type}" }] } },
+        {
+          "target_column": "stimulus_identity",
+          "operator": "strip_prefix",
+          "args": {
+            "value": { "source": "source_field", "column": "stim_path" },
+            "prefix": { "source": "context_value", "name": "condition_prefix" }
+          }
+        },
+        { "target_column": "stim_id", "operator": "basename", "args": { "value": { "source": "derived_value", "name": "stimulus_identity" } } },
+        { "target_column": "stim_file", "operator": "concat", "args": { "values": [{ "source": "derived_value", "name": "stim_id" }] } },
+        {
+          "target_column": "response_time",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "rt_s" } },
+            "when_true": { "source": "source_field", "column": "rt_s" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        {
+          "target_column": "response",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "response_key" } },
+            "when_true": { "source": "source_field", "column": "response_key" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        { "target_column": "condition", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{condition}" }] } },
+        {
+          "target_column": "acc_label",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "equals_value",
+              "left": { "source": "derived_value", "name": "response" },
+              "right": { "source": "source_field", "column": "expected_key" }
+            },
+            "when_true": { "source": "literal", "value": "correct" },
+            "when_false": { "source": "literal", "value": "incorrect" }
+          }
+        },
+        { "target_column": "is_instruction", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        {
+          "target_column": "is_error",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "not_equals_value",
+              "left": { "source": "derived_value", "name": "response" },
+              "right": { "source": "source_field", "column": "expected_key" }
+            },
+            "when_true": { "source": "literal", "value": "1" },
+            "when_false": { "source": "literal", "value": "0" }
+          }
+        },
+        {
+          "target_column": "trial_n",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "equals_value",
+              "left": { "source": "context_value", "name": "emit_instruction" },
+              "right": { "source": "literal", "value": "1" }
+            },
+            "when_true": { "source": "literal", "value": "2" },
+            "when_false": { "source": "literal", "value": "1" }
+          }
+        }
+      ],
+      "context": {
+        "condition_prefix": "{condition_prefix}",
+        "selection_label": "{condition_prefix}",
+        "emit_instruction": "{emit_instruction}"
+      },
+      "onset_sort_column": "onset_s"
+    },
+    {
+      "only_conditions": ["hold"],
+      "name": "run_{run}_{condition}",
+      "run": "{run}",
+      "condition": "{condition}",
+      "phase": "task",
+      "selectors": [
+        { "operator": "equals", "column": "run", "value": "{run}" },
+        { "operator": "starts_with", "column": "stim_path", "value": "{condition_prefix}/" },
+        { "operator": "present", "column": "onset_s" }
+      ],
+      "instruction_transforms": [],
+      "trial_transforms": [
+        { "target_column": "onset", "operator": "concat", "args": { "values": [{ "source": "source_field", "column": "onset_s" }] } },
+        {
+          "target_column": "duration",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "duration_s" } },
+            "when_true": { "source": "source_field", "column": "duration_s" },
+            "when_false": { "source": "literal", "value": "1.0" }
+          }
+        },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{trial_type}" }] } },
+        {
+          "target_column": "stimulus_identity",
+          "operator": "strip_prefix",
+          "args": {
+            "value": { "source": "source_field", "column": "stim_path" },
+            "prefix": { "source": "context_value", "name": "condition_prefix" }
+          }
+        },
+        { "target_column": "stim_id", "operator": "basename", "args": { "value": { "source": "derived_value", "name": "stimulus_identity" } } },
+        { "target_column": "stim_file", "operator": "concat", "args": { "values": [{ "source": "derived_value", "name": "stim_id" }] } },
+        {
+          "target_column": "response_time",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "rt_s" } },
+            "when_true": { "source": "source_field", "column": "rt_s" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        {
+          "target_column": "response",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "response_key" } },
+            "when_true": { "source": "source_field", "column": "response_key" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        { "target_column": "condition", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "{condition}" }] } },
+        {
+          "target_column": "acc_label",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "equals_value",
+              "left": { "source": "derived_value", "name": "response" },
+              "right": { "source": "source_field", "column": "expected_key" }
+            },
+            "when_true": { "source": "literal", "value": "correct" },
+            "when_false": { "source": "literal", "value": "incorrect" }
+          }
+        },
+        { "target_column": "is_instruction", "operator": "concat", "args": { "values": [{ "source": "missing" }] } },
+        {
+          "target_column": "is_error",
+          "operator": "if_else",
+          "args": {
+            "condition": {
+              "operator": "not_equals_value",
+              "left": { "source": "derived_value", "name": "response" },
+              "right": { "source": "source_field", "column": "expected_key" }
+            },
+            "when_true": { "source": "literal", "value": "1" },
+            "when_false": { "source": "literal", "value": "0" }
+          }
+        },
+        { "target_column": "trial_n", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "1" }] } }
+      ],
+      "context": {
+        "condition_prefix": "{condition_prefix}",
+        "selection_label": "{condition_prefix}",
+        "emit_instruction": "{emit_instruction}"
+      },
+      "onset_sort_column": "onset_s"
+    }
+  ],
+  "validations": []
+}

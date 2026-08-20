@@ -1,0 +1,16 @@
+{
+  "writes_sidecar": false,
+  "columns": {
+    "onset": {
+      "LongName": "Event onset",
+      "Units": "s"
+    },
+    "duration": {
+      "LongName": "Event duration",
+      "Units": "s"
+    },
+    "trial_type": {
+      "LongName": "Simple cue plus event type"
+    }
+  }
+}

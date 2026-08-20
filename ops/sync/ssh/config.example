@@ -1,0 +1,6 @@
+# Provider-neutral starter. Copy this file beneath secrets/ and replace every
+# angle-bracket placeholder before running `rp hpc validate`.
+profiles:
+  target-name:
+    host: <replace-with-real-ssh-host>
+    user: <replace-with-real-ssh-user>

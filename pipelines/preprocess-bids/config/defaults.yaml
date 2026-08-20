@@ -1,0 +1,24 @@
+
+run:
+  profile: local
+  dry_run: true
+workflow:
+  engine: snakemake
+  default_target: bids_preprocess
+  rule_name: bids_preprocess
+  execution_rule_name: bids_preprocess_unit
+tool:
+  image_repository: nipreps/fmripost-aroma
+  image_tag: 0.0.12
+  local_backend: docker
+  slurm_backend: apptainer
+  templateflow_home: ""
+outputs:
+  canonical_root: ""
+  artifact_root: ""
+planner:
+  outputs:
+    runtime_plan_filename: preprocess-bids-plan.json
+    command_script_filename: run-preprocess-bids.sh
+    completion_marker_filename: preprocess-bids-complete.txt
+    output_data_dirname: preprocess_bids

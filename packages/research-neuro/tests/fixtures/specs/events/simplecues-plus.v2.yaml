@@ -1,0 +1,35 @@
+{
+  "name": "simplecues-plus",
+  "version": 2,
+  "source": {
+    "encoding": "utf-8",
+    "subject_column": "participant",
+    "subject_regex": "^(\\d+)$",
+    "subject_width": 3,
+    "run_column": "run",
+    "stim_column": "stim_path"
+  },
+  "entities": {
+    "task": "simplecuesplus",
+    "datatype": "func",
+    "suffix": "events"
+  },
+  "output": {
+    "missing_value": "n/a",
+    "columns": [
+      "onset",
+      "duration",
+      "trial_type",
+      "stim_file",
+      "response_time",
+      "response",
+      "condition",
+      "stim_id",
+      "acc_label",
+      "is_instruction",
+      "is_error",
+      "trial_n"
+    ]
+  },
+  "runs": [1, 2]
+}

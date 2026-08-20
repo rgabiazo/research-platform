@@ -1,0 +1,17 @@
+{
+  "writes_sidecar": true,
+  "columns": {
+    "onset": {
+      "LongName": "Event onset",
+      "Units": "s"
+    },
+    "duration": {
+      "LongName": "Event duration",
+      "Units": "s"
+    },
+    "stim_file": {
+      "LongName": "Stimulus file",
+      "Description": "Dataset-relative stimulus path when copy mode is enabled."
+    }
+  }
+}

@@ -1,0 +1,14 @@
+run:
+  profile: local
+  dry_run: true
+workflow:
+  engine: snakemake
+  default_target: bids_analysis
+  rule_name: bids_analysis
+  execution_rule_name: bids_analysis_unit
+planner:
+  outputs:
+    runtime_plan_filename: fsl-feat-plan.json
+    command_script_filename: run-fsl-feat.sh
+    completion_marker_filename: fsl-feat-complete.txt
+    output_data_dirname: fsl_feat

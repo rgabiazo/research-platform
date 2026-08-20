@@ -1,0 +1,2 @@
+subject_id	session_id	task_id	cohort_id	eligible	qc_status	timepoint_id	visit_index
+sub-toy01	ses-01	exampletask	toy-roi	true	pass	visit-01	1

@@ -1,0 +1,8 @@
+name: project-pilot-bids
+version: 0.1.0
+datasets:
+  - ds-bids-example
+pipelines:
+  - preprocess-bids
+compute_profile: local
+notes: Minimal pilot overlay for the smallest safe BIDS/HPC execution slice.

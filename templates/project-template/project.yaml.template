@@ -1,0 +1,7 @@
+
+name: project-name
+version: 0.1.0
+datasets: []
+pipelines: []
+compute_profile: local
+notes: Describe the project overlay here.

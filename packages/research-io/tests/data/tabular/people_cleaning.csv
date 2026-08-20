@@ -1,0 +1,6 @@
+id,age,score,group
+1,10,999999,blue
+2,,20,blue
+3,30,,blue
+4,40,40,red
+5,50,30,

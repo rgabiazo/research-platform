@@ -1,0 +1,10 @@
+{
+  "Name": "Synthetic BIDS Example",
+  "BIDSVersion": "1.10.0",
+  "DatasetType": "raw",
+  "GeneratedBy": [
+    {
+      "Name": "research-platform synthetic fixture"
+    }
+  ]
+}

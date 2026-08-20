@@ -1,0 +1,5 @@
+participant,run,stim_path,onset_s,duration_s,rt_s,response_key,expected_key
+007,1,go/run1_arrow_left.png,10.0,1.0,0.45,left,left
+007,1,hold/run1_circle.png,20.0,1.2,0.51,space,right
+007,2,go/run2_arrow_right.png,11.0,1.0,0.49,left,right
+007,2,hold/run2_square.png,21.0,1.1,0.52,left,left

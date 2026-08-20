@@ -1,0 +1,4 @@
+onset	duration	trial_type	stim_file	response_time	response	condition	stim_id	acc_label	is_instruction	is_error	trial_n
+8.0	2.0	instruction_go	n/a	n/a	n/a	go	n/a	n/a	1	0	1
+10.0	1.0	go_trial	run1_arrow_left.png	0.45	left	go	run1_arrow_left.png	correct	n/a	0	2
+20.0	1.2	hold_trial	run1_circle.png	0.51	space	hold	run1_circle.png	incorrect	n/a	1	1

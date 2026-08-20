@@ -1,0 +1,8 @@
+
+name: preprocess-bids
+version: 0.1.0
+purpose: Run generic BIDS-oriented preprocessing steps and emit reusable derivatives.
+owners: []
+inputs: []
+canonical_outputs: []
+ephemeral_outputs: []

@@ -1,0 +1,12 @@
+
+.git/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.DS_Store
+.venv/
+*.pyc
+artifacts/
+scratch/
+secrets/

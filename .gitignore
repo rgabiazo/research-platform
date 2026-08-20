@@ -1,0 +1,110 @@
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+.venv-*/
+venv/
+env/
+.codex-pydeps/
+
+# Editors
+.DS_Store
+.idea/
+.vscode/
+
+# Local coding-agent state and private instruction overrides
+/.codex/
+/.agents/
+/.cursor/
+/.claude/
+AGENTS.local.md
+
+# Local logs and editor residue
+*.log
+*.swp
+*.swo
+*~
+
+# Notebook caches
+**/.ipynb_checkpoints/
+
+# Local environment and secrets
+.env
+.env.*
+*.env
+!.env.example
+!*.env.example
+secrets/**
+!secrets/
+!secrets/**/
+!secrets/**/.gitkeep
+!secrets/**/*.example
+!secrets/**/README.md
+
+# Public project-overlay allowlist; all other overlays stay local/private
+project/*
+!project/project-template/
+!project/project-template/**
+!project/project-example/
+!project/project-example/**
+!project/project-pilot-bids/
+!project/project-pilot-bids/**
+!project/project-pilot-tabular/
+!project/project-pilot-tabular/**
+
+# Raw dataset payloads
+datasets/**/sourcedata/**
+datasets/**/rawdata/**
+datasets/**/raw/**
+
+# Imaging payloads; only generator-owned public ROI fixtures are tracked
+*.nii
+*.nii.gz
+*.img
+*.hdr
+!datasets/ds-roi-example/images/toy_reference.nii
+!datasets/ds-roi-example/images/toy_values.nii
+
+# Large generated derivative outputs
+datasets/**/derivatives/**
+!datasets/**/derivatives/
+!datasets/**/derivatives/**/
+!datasets/**/derivatives/**/README.md
+!datasets/ds-derivatives-example/derivatives/features/project-pilot-tabular/sources/toy_core.tsv
+!datasets/ds-derivatives-example/derivatives/features/project-pilot-tabular/sources/toy_measurements.tsv
+!datasets/ds-derivatives-example/derivatives/features/project-pilot-tabular/toy_features.tsv
+
+# Private datasets override public metadata exceptions above
+datasets/*private*/**
+datasets/*-private/**
+
+# Ephemeral outputs
+artifacts/**
+!artifacts/
+!artifacts/README.md
+!artifacts/**/
+!artifacts/**/.gitkeep
+.research-platform/
+**/.research-platform/
+
+# Local HPC sync/stage folders
+**/hpc/stage/
+**/hpc/pulled/
+**/hpc/sync/
+**/.snakemake/
+
+# Scratch is disposable; preserve only the public scaffold
+scratch/**
+!scratch/README.md
+!scratch/cache/
+!scratch/cache/.gitkeep
+!scratch/tmp/
+!scratch/tmp/.gitkeep
+!scratch/work/
+!scratch/work/.gitkeep

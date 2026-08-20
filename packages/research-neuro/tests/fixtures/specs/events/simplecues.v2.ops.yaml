@@ -1,0 +1,82 @@
+{
+  "version": 2,
+  "conditions": {
+    "cue": {
+      "image_prefix": "cue",
+      "selection_label": "cue"
+    }
+  },
+  "row_set_templates": [
+    {
+      "name": "run_{run}_{condition}",
+      "run": "{run}",
+      "condition": "{condition}",
+      "phase": "task",
+      "selectors": [
+        { "operator": "equals", "column": "run", "value": "{run}" },
+        { "operator": "starts_with", "column": "stim_path", "value": "{image_prefix}/" },
+        { "operator": "present", "column": "onset_s" }
+      ],
+      "instruction_transforms": [],
+      "trial_transforms": [
+        { "target_column": "onset", "operator": "concat", "args": { "values": [{ "source": "source_field", "column": "onset_s" }] } },
+        {
+          "target_column": "duration",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "duration_s" } },
+            "when_true": { "source": "source_field", "column": "duration_s" },
+            "when_false": { "source": "literal", "value": "0.5" }
+          }
+        },
+        { "target_column": "trial_type", "operator": "concat", "args": { "values": [{ "source": "literal", "value": "cue" }] } },
+        {
+          "target_column": "stimulus_identity",
+          "operator": "strip_prefix",
+          "args": {
+            "value": { "source": "source_field", "column": "stim_path" },
+            "prefix": { "source": "context_value", "name": "image_prefix" }
+          }
+        },
+        { "target_column": "stim_id", "operator": "basename", "args": { "value": { "source": "derived_value", "name": "stimulus_identity" } } },
+        { "target_column": "stim_file", "operator": "concat", "args": { "values": [{ "source": "derived_value", "name": "stim_id" }] } },
+        {
+          "target_column": "response_time",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "rt_s" } },
+            "when_true": { "source": "source_field", "column": "rt_s" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        {
+          "target_column": "response",
+          "operator": "if_else",
+          "args": {
+            "condition": { "operator": "present", "value": { "source": "source_field", "column": "key_resp" } },
+            "when_true": { "source": "source_field", "column": "key_resp" },
+            "when_false": { "source": "missing" }
+          }
+        },
+        {
+          "target_column": "cue_label",
+          "operator": "map_value",
+          "args": {
+            "value": { "source": "source_field", "column": "cue_type" },
+            "mapping": {
+              "A": "left",
+              "B": "right"
+            },
+            "default": { "source": "missing" }
+          }
+        }
+      ],
+      "context": {
+        "image_prefix": "{image_prefix}",
+        "selection_label": "{selection_label}"
+      },
+      "onset_sort_column": "onset_s"
+    }
+  ],
+  "validations": []
+}

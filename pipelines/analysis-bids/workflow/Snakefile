@@ -1,0 +1,96 @@
+from pathlib import Path
+import sys
+
+configfile: "config/defaults.yaml"
+
+WORKSPACE_ROOT = Path(workflow.basedir).resolve().parents[2]
+CORE_SRC = WORKSPACE_ROOT / "packages" / "research-core" / "src"
+if str(CORE_SRC) not in sys.path:
+    sys.path.insert(0, str(CORE_SRC))
+
+from research_platform.core.runtime_plan import load_runtime_plan, runtime_plan_units
+
+RUN_OUTPUT_ROOT = (WORKSPACE_ROOT / config.get("run_output_root", "results")).resolve()
+MANIFEST = (WORKSPACE_ROOT / config.get("run_manifest", "")).resolve()
+RUNNER = (WORKSPACE_ROOT / "pipelines" / "analysis-bids" / "scripts" / "run_bids_analysis.py").resolve()
+TOOL = config.get("tool", "analysis")
+PLAN_PATH = str(RUN_OUTPUT_ROOT / config["planner"]["outputs"]["runtime_plan_filename"])
+COMMAND_SCRIPT = str(RUN_OUTPUT_ROOT / config["planner"]["outputs"]["command_script_filename"])
+MARKER = str(RUN_OUTPUT_ROOT / config["planner"]["outputs"]["completion_marker_filename"])
+UNIT_MARKER_PATTERN = str(RUN_OUTPUT_ROOT / "runtime-plan-markers" / TOOL / "{unit_id}.txt")
+CONTAINER_PREP_MARKER = str(RUN_OUTPUT_ROOT / "runtime-plan-markers" / TOOL / "_container-ready.txt")
+CONTAINER_PREP_MEM_MB = 32768
+CONTAINER_PREP_CPUS_PER_TASK = 2
+CONTAINER_PREP_RUNTIME = "60m"
+
+
+def _runtime_plan_path(_wildcards):
+    return checkpoints.bids_analysis_plan.get().output.plan
+
+
+def _runtime_units(_wildcards):
+    plan = load_runtime_plan(_runtime_plan_path(_wildcards))
+    return runtime_plan_units(plan)
+
+
+def _runtime_unit_markers(wildcards):
+    return [unit["marker_path"] for unit in _runtime_units(wildcards)]
+
+
+rule all:
+    input:
+        MARKER
+
+
+checkpoint bids_analysis_plan:
+    output:
+        plan=PLAN_PATH,
+        command_script=COMMAND_SCRIPT
+    params:
+        manifest=MANIFEST,
+        runner=RUNNER
+    shell:
+        "python3 {params.runner} --run-manifest {params.manifest} --plan-only --plan-path {output.plan}"
+
+
+rule bids_analysis_container_prep:
+    input:
+        plan=_runtime_plan_path
+    output:
+        CONTAINER_PREP_MARKER
+    resources:
+        mem_mb=CONTAINER_PREP_MEM_MB,
+        cpus_per_task=CONTAINER_PREP_CPUS_PER_TASK,
+        runtime=CONTAINER_PREP_RUNTIME
+    params:
+        manifest=MANIFEST,
+        runner=RUNNER
+    shell:
+        "python3 {params.runner} --run-manifest {params.manifest} --plan-path {input.plan} --prepare-container-only --marker {output}"
+
+
+rule bids_analysis_unit:
+    input:
+        plan=_runtime_plan_path,
+        container_prep=CONTAINER_PREP_MARKER
+    output:
+        UNIT_MARKER_PATTERN
+    params:
+        manifest=MANIFEST,
+        runner=RUNNER,
+        unit_id="{unit_id}"
+    shell:
+        "python3 {params.runner} --run-manifest {params.manifest} --plan-path {input.plan} --unit-id {params.unit_id} --marker {output}"
+
+
+rule bids_analysis:
+    output:
+        MARKER
+    params:
+        manifest=MANIFEST,
+        runner=RUNNER
+    input:
+        plan=_runtime_plan_path,
+        unit_markers=_runtime_unit_markers
+    shell:
+        "python3 {params.runner} --run-manifest {params.manifest} --plan-path {input.plan} --aggregate-only --marker {output}"

@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "research-io"
+version = "0.1.0a1"
+description = "Backend-neutral tabular reading, writing, inspection, merge, and cleaning."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Raphael Gabiazon" }]
+license = { file = "LICENSE" }
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = ["polars==1.37.1"]
+
+[project.optional-dependencies]
+pandas = ["pandas>=2.0", "pyarrow>=12"]
+
+[project.scripts]
+research-io = "research_platform.io.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/rgabiazo/research-platform"
+Documentation = "https://github.com/rgabiazo/research-platform/blob/main/docs/README.md"
+Repository = "https://github.com/rgabiazo/research-platform"
+Issues = "https://github.com/rgabiazo/research-platform/issues"
+Changelog = "https://github.com/rgabiazo/research-platform/blob/main/CHANGELOG.md"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["research_platform*"]
+namespaces = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,570 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONNOUSERSITE: "1"
+  PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  linux-minimal:
+    name: Linux minimal smoke (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Initialize runner-local paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "${RUNNER_TEMP}"
+          case "${RUNNER_TEMP}" in
+            /*) ;;
+            *) echo "RUNNER_TEMP must be an absolute path" >&2; exit 1 ;;
+          esac
+          suffix="${{ matrix.python-version }}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          {
+            printf 'CI_WORKSPACE=%s\n' "${RUNNER_TEMP%/}/research-platform-minimal-source-${suffix}"
+            printf 'RP_DEV_VENV=%s\n' "${RUNNER_TEMP%/}/research-platform-minimal-venv-${suffix}"
+            printf 'CI_SOURCE_BASELINE=%s\n' "${RUNNER_TEMP%/}/research-platform-minimal-baseline-${suffix}.json"
+          } >> "${GITHUB_ENV}"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Record the runner and interpreter
+        shell: bash
+        run: |
+          set -euo pipefail
+          uname -srmo
+          python - <<'PY'
+          import platform
+          import sys
+
+          print(f"platform={platform.platform()}")
+          print(f"architecture={platform.machine()}")
+          print(f"python={platform.python_version()}")
+          print(f"executable={sys.executable}")
+          PY
+
+      - name: Copy the complete source checkout outside the checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "${CI_WORKSPACE}"
+          cp -R "${GITHUB_WORKSPACE}" "${CI_WORKSPACE}"
+
+      - name: Install the minimal source-checkout profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          RP_DEV_VENV="${RP_DEV_VENV}" \
+            PYTHON_BIN="$(command -v python)" \
+            bash ops/envs/dev/bootstrap.sh --profile minimal
+
+      - name: Disable package-index access
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' 'PIP_NO_INDEX=1' >> "${GITHUB_ENV}"
+
+      - name: Capture the tested source-copy baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python ops/ci/source-tree-integrity.py capture \
+            --root "${CI_WORKSPACE}" \
+            --output "${CI_SOURCE_BASELINE}"
+
+      - name: Verify virtual-environment isolation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          "${RP_DEV_VENV}/bin/python" - <<'PY'
+          import os
+          from pathlib import Path
+          import site
+          import sys
+
+          expected = Path(os.environ["RP_DEV_VENV"]).resolve()
+          runner_temp = Path(os.environ["RUNNER_TEMP"]).resolve()
+          prefix = Path(sys.prefix).resolve()
+          if prefix != expected or sys.prefix == sys.base_prefix:
+              raise SystemExit(f"not the expected isolated environment: {prefix}")
+          if not prefix.is_relative_to(runner_temp):
+              raise SystemExit(f"environment is outside RUNNER_TEMP: {prefix}")
+          if site.ENABLE_USER_SITE is not False:
+              raise SystemExit("user-site packages are enabled")
+          print(f"virtual_environment={prefix}")
+          PY
+          test ! -e "${GITHUB_WORKSPACE}/.venv"
+          test ! -e "${CI_WORKSPACE}/.venv"
+
+      - name: Run minimal installation checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          "${RP_DEV_VENV}/bin/python" -m pip check
+          bash ops/envs/dev/smoke-check.sh --venv "${RP_DEV_VENV}"
+          version_output="$("${RP_DEV_VENV}/bin/rp" --version)"
+          test "${version_output}" = "research-platform 0.1.0a1"
+          printf '%s\n' "${version_output}"
+
+      - name: Prove the tested source copy stayed unchanged
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${CI_SOURCE_BASELINE:-}" || ! -f "${CI_SOURCE_BASELINE}" ]]; then
+            echo "Source-integrity baseline was not created; an earlier setup or installation step failed." >&2
+            exit 1
+          fi
+          python ops/ci/source-tree-integrity.py verify \
+            --root "${CI_WORKSPACE}" \
+            --baseline "${CI_SOURCE_BASELINE}"
+
+      - name: Prove the checkout stayed clean
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${GITHUB_WORKSPACE}"
+          bash ops/ci/check-clean-checkout.sh
+
+  linux-package-tests:
+    name: Linux package tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Initialize runner-local paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "${RUNNER_TEMP}"
+          case "${RUNNER_TEMP}" in
+            /*) ;;
+            *) echo "RUNNER_TEMP must be an absolute path" >&2; exit 1 ;;
+          esac
+          suffix="${{ matrix.python-version }}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          {
+            printf 'CI_WORKSPACE=%s\n' "${RUNNER_TEMP%/}/research-platform-tests-source-${suffix}"
+            printf 'RP_DEV_VENV=%s\n' "${RUNNER_TEMP%/}/research-platform-tests-venv-${suffix}"
+            printf 'CI_SOURCE_BASELINE=%s\n' "${RUNNER_TEMP%/}/research-platform-tests-baseline-${suffix}.json"
+          } >> "${GITHUB_ENV}"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Record the runner and interpreter
+        shell: bash
+        run: |
+          set -euo pipefail
+          uname -srmo
+          python -c 'import platform; print(f"architecture={platform.machine()} python={platform.python_version()}")'
+
+      - name: Copy the complete source checkout outside the checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "${CI_WORKSPACE}"
+          cp -R "${GITHUB_WORKSPACE}" "${CI_WORKSPACE}"
+
+      - name: Install the development source-checkout profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          RP_DEV_VENV="${RP_DEV_VENV}" \
+            PYTHON_BIN="$(command -v python)" \
+            bash ops/envs/dev/bootstrap.sh --profile dev
+          PIP_NO_INDEX=1 "${RP_DEV_VENV}/bin/python" -m pip install \
+            --no-deps \
+            --no-build-isolation \
+            -e packages/research-viz
+
+      - name: Disable package-index access
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' 'PIP_NO_INDEX=1' >> "${GITHUB_ENV}"
+
+      - name: Capture the tested source-copy baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python ops/ci/source-tree-integrity.py capture \
+            --root "${CI_WORKSPACE}" \
+            --output "${CI_SOURCE_BASELINE}"
+
+      - name: Run each package test directory separately
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          export PATH="${RP_DEV_VENV}/bin:${PATH}"
+          bash ops/ci/run-package-tests.sh
+
+      - name: Prove the tested source copy stayed unchanged
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${CI_SOURCE_BASELINE:-}" || ! -f "${CI_SOURCE_BASELINE}" ]]; then
+            echo "Source-integrity baseline was not created; an earlier setup or installation step failed." >&2
+            exit 1
+          fi
+          python ops/ci/source-tree-integrity.py verify \
+            --root "${CI_WORKSPACE}" \
+            --baseline "${CI_SOURCE_BASELINE}"
+
+      - name: Prove the checkout stayed clean
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${GITHUB_WORKSPACE}"
+          bash ops/ci/check-clean-checkout.sh
+
+  macos-arm-smoke:
+    name: macOS ARM minimal smoke (Python 3.12)
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Initialize runner-local paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "${RUNNER_TEMP}"
+          case "${RUNNER_TEMP}" in
+            /*) ;;
+            *) echo "RUNNER_TEMP must be an absolute path" >&2; exit 1 ;;
+          esac
+          suffix="3.12-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          {
+            printf 'CI_WORKSPACE=%s\n' "${RUNNER_TEMP%/}/research-platform-macos-source-${suffix}"
+            printf 'RP_DEV_VENV=%s\n' "${RUNNER_TEMP%/}/research-platform-macos-venv-${suffix}"
+            printf 'CI_SOURCE_BASELINE=%s\n' "${RUNNER_TEMP%/}/research-platform-macos-baseline-${suffix}.json"
+          } >> "${GITHUB_ENV}"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+
+      - name: Record and require the macOS ARM runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          sw_vers
+          python - <<'PY'
+          import platform
+          import sys
+
+          machine = platform.machine()
+          print(f"architecture={machine}")
+          print(f"python={platform.python_version()}")
+          print(f"executable={sys.executable}")
+          if machine != "arm64":
+              raise SystemExit(f"macos-15 support check requires arm64, observed {machine}")
+          PY
+
+      - name: Copy the complete source checkout outside the checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "${CI_WORKSPACE}"
+          cp -R "${GITHUB_WORKSPACE}" "${CI_WORKSPACE}"
+
+      - name: Install the minimal source-checkout profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          RP_DEV_VENV="${RP_DEV_VENV}" \
+            PYTHON_BIN="$(command -v python)" \
+            bash ops/envs/dev/bootstrap.sh --profile minimal
+
+      - name: Disable package-index access
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' 'PIP_NO_INDEX=1' >> "${GITHUB_ENV}"
+
+      - name: Capture the tested source-copy baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python ops/ci/source-tree-integrity.py capture \
+            --root "${CI_WORKSPACE}" \
+            --output "${CI_SOURCE_BASELINE}"
+
+      - name: Run standard-library HPC safety contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          TMPDIR="${RUNNER_TEMP}" \
+            "${RP_DEV_VENV}/bin/python" -m unittest discover \
+              -s packages/research-hpc/tests/unit \
+              -p 'test_safety_*.py'
+
+      - name: Verify isolation and installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          "${RP_DEV_VENV}/bin/python" - <<'PY'
+          import os
+          from pathlib import Path
+          import platform
+          import site
+          import sys
+
+          expected = Path(os.environ["RP_DEV_VENV"]).resolve()
+          runner_temp = Path(os.environ["RUNNER_TEMP"]).resolve()
+          prefix = Path(sys.prefix).resolve()
+          if platform.machine() != "arm64":
+              raise SystemExit(f"macos-15 support check requires arm64, observed {platform.machine()}")
+          if prefix != expected or sys.prefix == sys.base_prefix:
+              raise SystemExit(f"not the expected isolated environment: {prefix}")
+          if not prefix.is_relative_to(runner_temp):
+              raise SystemExit(f"environment is outside RUNNER_TEMP: {prefix}")
+          if site.ENABLE_USER_SITE is not False:
+              raise SystemExit("user-site packages are enabled")
+          print(f"virtual_environment={prefix}")
+          PY
+          test ! -e "${GITHUB_WORKSPACE}/.venv"
+          test ! -e "${CI_WORKSPACE}/.venv"
+          "${RP_DEV_VENV}/bin/python" -m pip check
+          bash ops/envs/dev/smoke-check.sh --venv "${RP_DEV_VENV}"
+          version_output="$("${RP_DEV_VENV}/bin/rp" --version)"
+          test "${version_output}" = "research-platform 0.1.0a1"
+          printf '%s\n' "${version_output}"
+
+      - name: Prove the tested source copy stayed unchanged
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${CI_SOURCE_BASELINE:-}" || ! -f "${CI_SOURCE_BASELINE}" ]]; then
+            echo "Source-integrity baseline was not created; an earlier setup or installation step failed." >&2
+            exit 1
+          fi
+          python ops/ci/source-tree-integrity.py verify \
+            --root "${CI_WORKSPACE}" \
+            --baseline "${CI_SOURCE_BASELINE}"
+
+      - name: Prove the checkout stayed clean
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${GITHUB_WORKSPACE}"
+          bash ops/ci/check-clean-checkout.sh
+
+  public-contracts:
+    name: Public contracts (Python 3.12)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Initialize runner-local paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "${RUNNER_TEMP}"
+          case "${RUNNER_TEMP}" in
+            /*) ;;
+            *) echo "RUNNER_TEMP must be an absolute path" >&2; exit 1 ;;
+          esac
+          suffix="3.12-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          {
+            printf 'CI_WORKSPACE=%s\n' "${RUNNER_TEMP%/}/research-platform-contracts-source-${suffix}"
+            printf 'RP_DEV_VENV=%s\n' "${RUNNER_TEMP%/}/research-platform-contracts-venv-${suffix}"
+            printf 'CI_SOURCE_BASELINE=%s\n' "${RUNNER_TEMP%/}/research-platform-contracts-baseline-${suffix}.json"
+          } >> "${GITHUB_ENV}"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+
+      - name: Copy the complete source checkout outside the checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "${CI_WORKSPACE}"
+          cp -R "${GITHUB_WORKSPACE}" "${CI_WORKSPACE}"
+
+      - name: Install the development source-checkout profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          RP_DEV_VENV="${RP_DEV_VENV}" \
+            PYTHON_BIN="$(command -v python)" \
+            bash ops/envs/dev/bootstrap.sh --profile dev
+
+      - name: Disable package-index access
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' 'PIP_NO_INDEX=1' >> "${GITHUB_ENV}"
+
+      - name: Capture the tested source-copy baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python ops/ci/source-tree-integrity.py capture \
+            --root "${CI_WORKSPACE}" \
+            --output "${CI_SOURCE_BASELINE}"
+
+      - name: Run public contracts, fixtures, and overlay validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${CI_WORKSPACE}"
+          export PATH="${RP_DEV_VENV}/bin:${PATH}"
+          bash ops/ci/run-public-contracts.sh
+
+      - name: Prove the tested source copy stayed unchanged
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${CI_SOURCE_BASELINE:-}" || ! -f "${CI_SOURCE_BASELINE}" ]]; then
+            echo "Source-integrity baseline was not created; an earlier setup or installation step failed." >&2
+            exit 1
+          fi
+          python ops/ci/source-tree-integrity.py verify \
+            --root "${CI_WORKSPACE}" \
+            --baseline "${CI_SOURCE_BASELINE}"
+
+      - name: Prove the checkout stayed clean
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${GITHUB_WORKSPACE}"
+          bash ops/ci/check-clean-checkout.sh
+
+  release-archives:
+    name: Wheels and sdists (Python 3.12)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out the source
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Initialize runner-local paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d "${RUNNER_TEMP}"
+          case "${RUNNER_TEMP}" in
+            /*) ;;
+            *) echo "RUNNER_TEMP must be an absolute path" >&2; exit 1 ;;
+          esac
+          suffix="3.12-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          printf 'RP_RELEASE_DIST_DIR=%s\n' \
+            "${RUNNER_TEMP%/}/research-platform-release-dist-${suffix}" >> "${GITHUB_ENV}"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: "3.12"
+
+      - name: Install the CI-only build-tool closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install \
+            "build==1.5.0" \
+            "setuptools>=69" \
+            wheel \
+            "pytest>=8"
+
+      - name: Disable package-index access
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s\n' 'PIP_NO_INDEX=1' >> "${GITHUB_ENV}"
+
+      - name: Build eight wheels and eight sdists outside the checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          CI_TEMP_ROOT="${RUNNER_TEMP}" \
+            RP_RELEASE_DIST_DIR="${RP_RELEASE_DIST_DIR}" \
+            PYTHON_BIN="$(command -v python)" \
+            bash ops/ci/build-release-archives.sh
+
+      - name: Run all release archive contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          RP_RELEASE_WHEEL_DIR="${RP_RELEASE_DIST_DIR}" \
+            RP_RELEASE_SDIST_DIR="${RP_RELEASE_DIST_DIR}" \
+            python -m pytest -p no:cacheprovider ops/tests/test_release_metadata.py
+
+      - name: Inspect all release archives and print SHA-256 digests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python ops/ci/inspect-release-archives.py \
+            --archive-dir "${RP_RELEASE_DIST_DIR}"
+
+      - name: Prove the checkout stayed clean
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "${GITHUB_WORKSPACE}"
+          bash ops/ci/check-clean-checkout.sh

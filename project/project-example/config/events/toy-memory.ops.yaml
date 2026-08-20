@@ -1,0 +1,78 @@
+{
+  "conditions": {
+    "shape": {
+      "encoding": {
+        "response_column": "response_shape_match",
+        "error_rule": {
+          "kind": "equals_literal",
+          "left": "enc_later_outcome",
+          "value": "miss"
+        }
+      },
+      "recognition": {
+        "response_column": "response_seen_new",
+        "error_rule": {
+          "kind": "not_equals_literal",
+          "left": "response_seen_new",
+          "value": "seen"
+        }
+      }
+    },
+    "color": {
+      "encoding": {
+        "response_column": "response_color_tone",
+        "error_rule": {
+          "kind": "equals_literal",
+          "left": "enc_later_outcome",
+          "value": "miss"
+        }
+      },
+      "recognition": {
+        "response_column": "response_seen_new",
+        "error_rule": {
+          "kind": "not_equals_literal",
+          "left": "response_seen_new",
+          "value": "seen"
+        }
+      }
+    },
+    "word": {
+      "encoding": {
+        "response_column": "response_word_kind",
+        "error_rule": {
+          "kind": "equals_literal",
+          "left": "enc_later_outcome",
+          "value": "miss"
+        }
+      },
+      "recognition": {
+        "response_column": "response_seen_new",
+        "error_rule": {
+          "kind": "not_equals_literal",
+          "left": "response_seen_new",
+          "value": "seen"
+        }
+      }
+    }
+  },
+  "recognition": {
+    "probe_type_map": {
+      "studied": "target",
+      "novel": "lure"
+    },
+    "acc_label_map": {
+      "target": {
+        "seen": "hit",
+        "new": "miss"
+      },
+      "lure": {
+        "seen": "false_alarm",
+        "new": "correct_rejection"
+      }
+    },
+    "analysis_include_labels": [
+      "hit",
+      "correct_rejection"
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+
+cluster_name: example-cluster
+account: your-account
+partition: compute
+qos: normal

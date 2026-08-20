@@ -1,0 +1,15 @@
+analysis_bundle:
+  name: toy-crossnobis
+  selection:
+    cohort: toy-crossnobis
+  units:
+    key_columns:
+      - subject_id
+      - task_id
+      - run_id
+    subject_column: subject_id
+    incomplete: allow
+  components:
+    mvpa_set: toy-crossnobis
+  stages:
+    - mvpa

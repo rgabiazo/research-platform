@@ -1,0 +1,3 @@
+# Minimal remote runtime extras for SLURM-submitted workflow drivers.
+snakemake
+snakemake-executor-plugin-slurm

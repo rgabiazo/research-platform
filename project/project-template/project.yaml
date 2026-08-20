@@ -1,0 +1,6 @@
+name: project-template
+version: 0.1.0
+datasets:
+  - ds-tabular-example
+  - derivatives_example
+notes: Public template overlay backed only by deterministic toy tabular data.

@@ -1,0 +1,5 @@
+subject_id	task_id	run_id	cohort_id	eligible	qc_status
+sub-toy01	exampletask	run-01	toy-crossnobis	true	pass
+sub-toy01	exampletask	run-02	toy-crossnobis	true	pass
+sub-toy02	exampletask	run-01	toy-crossnobis	true	pass
+sub-toy02	exampletask	run-02	toy-crossnobis	true	pass

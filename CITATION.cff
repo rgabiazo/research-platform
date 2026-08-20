@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: >-
+  If you use Research Platform, please cite the software using this metadata.
+title: Research Platform
+type: software
+authors:
+  - given-names: Raphael
+    family-names: Gabiazon
+    affiliation: Western University
+    orcid: https://orcid.org/0009-0008-6575-4993
+    email: rgabiazo@uwo.ca
+version: 0.1.0a1
+repository-code: https://github.com/rgabiazo/research-platform
+license: MIT
+abstract: >-
+  Research Platform is a modular, configuration-driven workspace for
+  reproducible research workflows. Its planned public alpha is scoped to
+  deterministic synthetic local examples and explicit boundaries for
+  plan-only, external-runtime, and scaffold functionality.

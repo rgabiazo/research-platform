@@ -1,0 +1,48 @@
+
+workspace:
+  name: research-platform
+  version: 0.1.0a1
+
+paths:
+  root: ${RESEARCH_PLATFORM_ROOT:-.}
+  datasets_root: ${DATASETS_ROOT:-./datasets}
+  artifacts_root: ${ARTIFACTS_ROOT:-./artifacts}
+  scratch_root: ${SCRATCH_ROOT:-./scratch}
+  secrets_root: ${SECRETS_ROOT:-./secrets}
+  ops_root: ${OPS_ROOT:-./ops}
+
+profiles:
+  default_compute: local
+  default_storage: local
+  default_workflow_engine: snakemake
+  default_dataframe_engine: polars
+
+repos:
+  packages_root: ./packages
+  pipelines_root: ./pipelines
+  project_root: ./project
+  apps_root: ./apps
+
+projects:
+  default: project-pilot-bids
+
+datasets:
+  bids_example: ./datasets/ds-bids-example
+  derivatives_example: ./datasets/ds-derivatives-example
+  mvpa_example: ./datasets/ds-mvpa-example
+  roi_example: ./datasets/ds-roi-example
+
+compute:
+  local:
+    profile: local
+  slurm:
+    profile: ./ops/slurm/profiles/slurm-example
+
+hpc:
+  runtime_defaults:
+    default: generic-slurm
+    catalog:
+      generic-slurm:
+        slurm:
+          remote_workspace_root: ${RP_REMOTE_WORKSPACE_ROOT:-}
+          remote_artifacts_root: ${RP_REMOTE_ARTIFACTS_ROOT:-}

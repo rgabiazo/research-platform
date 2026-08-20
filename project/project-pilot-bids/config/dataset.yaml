@@ -1,0 +1,4 @@
+dataset:
+  primary: ds-bids-example
+  input_derivative: deepprep-bold
+  input_derivative_label: DeepPrep BOLD

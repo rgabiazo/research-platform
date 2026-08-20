@@ -1,0 +1,5 @@
+docs/
+examples/
+build/
+dist/
+tests/

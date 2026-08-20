@@ -1,0 +1,9 @@
+{
+  "writes_sidecar": true,
+  "columns": {
+    "onset": {
+      "LongName": "Event onset",
+      "Units": "s"
+    }
+  }
+}

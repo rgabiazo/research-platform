@@ -1,0 +1,8 @@
+name: project-example
+version: 0.1.0
+datasets:
+  - ds-tabular-example
+  - ds-mvpa-example
+  - ds-roi-example
+  - derivatives_example
+notes: Public example overlay backed only by deterministic toy data.

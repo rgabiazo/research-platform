@@ -1,0 +1,17 @@
+preprocessing:
+  slice: bids
+  pipeline: preprocess-bids
+  tool: fmripost_aroma
+  tool_adapter: research_platform.neuro.fmripost_aroma.adapter:FmripostAromaAdapter
+  input_derivative: deepprep-bold
+  default_batch: fmripost_aroma_subject_sessions
+  local_profile: local
+  slurm_profile: slurm
+  tool_options:
+    denoising_method: nonaggr
+    melodic_dimensionality: ""
+    melodic_seed: ""
+    dummy_scans: 0
+    low_mem: false
+  publish_back:
+    default_policy: never

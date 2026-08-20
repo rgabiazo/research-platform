@@ -1,0 +1,16 @@
+version: 1
+default: target-name
+# Provider-neutral starter. Replace every placeholder with private values
+# reviewed for the target site before running `rp hpc validate`. The generic
+# default assumes no provider, module stack, scratch convention, container
+# runtime, account, partition, or software version.
+targets:
+  target-name:
+    ssh_profile: target-name
+    role: login
+    ssh_config: secrets/hpc/ssh-profiles.yaml
+    env:
+      RP_REMOTE_WORKSPACE_ROOT: /remote/<replace-with-workspace-owner>/research-platform
+      RP_REMOTE_ARTIFACTS_ROOT: /remote/<replace-with-workspace-owner>/research-platform/artifacts
+    promotion:
+      mode: atomic_no_replace

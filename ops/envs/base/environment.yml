@@ -1,0 +1,6 @@
+
+name: research-platform-base
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11

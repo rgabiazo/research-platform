@@ -1,0 +1,22 @@
+compute:
+  default_profile: local
+  local:
+    jobs: 1
+  policy:
+    default_preset: neuro-bids
+    presets:
+      neuro-bids:
+        cpus: 4
+        ram_gb: 16
+        threads: 4
+        n_jobs: 1
+    workloads:
+      bids_preprocess:
+        preset: neuro-bids
+  slurm:
+    cpus: 4
+    mem: 16G
+    time: 02:00:00
+    ssh_host: ${RP_HPC_HOST:-}
+    remote_workspace_root: ${RP_REMOTE_WORKSPACE_ROOT:-}
+    remote_artifacts_root: ${RP_REMOTE_ARTIFACTS_ROOT:-}

@@ -1,0 +1,3 @@
+participant,run,image_file,encode_onset,encode_rt,encode_response,recog_onset,recog_rt,recog_response,image_old_new
+001,1,block1_Run1_Pair_Encoding/stimuli/stim_a.bmp,20.5,1.1111111111111111,fits,,,,
+001,1,block1_Run1_Pair_Recog/stimuli/stim_b.bmp,,,,60.25,1.2222222222222223,OLD,OLD

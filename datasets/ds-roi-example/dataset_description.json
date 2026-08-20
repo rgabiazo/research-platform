@@ -1,0 +1,12 @@
+{
+  "Name": "Deterministic Toy ROI Mechanics",
+  "Description": "Algorithmically invented generic-NIfTI inputs for local ROI mechanics.",
+  "DatasetType": "synthetic-fixture",
+  "SyntheticData": true,
+  "GeneratedBy": [
+    {
+      "Name": "generate_toy_roi_fixtures.py",
+      "Description": "Deterministic in-repository fixture generator"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+name: analysis-bids
+version: 0.1.0
+purpose: Run generic BIDS-oriented analysis workflows and emit ephemeral runtime outputs.
+owners: []
+inputs: []
+canonical_outputs: []
+ephemeral_outputs: []

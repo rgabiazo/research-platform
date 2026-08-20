@@ -1,0 +1,17 @@
+analysis_bundle:
+  name: toy-roi
+  selection:
+    cohort: toy-roi
+  units:
+    key_columns:
+      - subject_id
+      - session_id
+    subject_column: subject_id
+    occasion_column: session_id
+    incomplete: allow
+  components:
+    roi_set: toy-spheres
+    extraction_set: toy-values
+  stages:
+    - roi_build
+    - roi_extraction

@@ -1,0 +1,7 @@
+preprocessing:
+  slice: tabular
+  default_batch: default
+  local_profile: local
+  slurm_profile: slurm
+  split_seed: 23
+  test_fraction: 0.25

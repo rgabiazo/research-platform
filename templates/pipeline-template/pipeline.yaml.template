@@ -1,0 +1,8 @@
+
+name: pipeline-name
+version: 0.1.0
+purpose: Describe what this pipeline orchestrates.
+owners: []
+inputs: []
+canonical_outputs: []
+ephemeral_outputs: []

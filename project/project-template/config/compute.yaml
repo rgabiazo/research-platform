@@ -1,0 +1,30 @@
+compute:
+  default_profile: local
+  local:
+    jobs: 1
+  policy:
+    presets:
+      tabular-preprocess:
+        cpus: 1
+        ram_gb: 4
+        threads: 1
+        n_jobs: 1
+      tabular-model:
+        cpus: 2
+        ram_gb: 4
+        threads: 1
+        n_jobs: 1
+    workloads:
+      tabular_preprocess:
+        preset: tabular-preprocess
+      tabular_train_model:
+        preset: tabular-model
+      tabular_evaluate_model:
+        preset: tabular-model
+  slurm:
+    cpus: 2
+    mem: 4G
+    time: 00:30:00
+    ssh_host: ${RP_HPC_HOST:-}
+    remote_workspace_root: ${RP_REMOTE_WORKSPACE_ROOT:-}
+    remote_artifacts_root: ${RP_REMOTE_ARTIFACTS_ROOT:-}

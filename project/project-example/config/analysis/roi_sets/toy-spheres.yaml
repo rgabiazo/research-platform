@@ -1,0 +1,44 @@
+roi_set:
+  name: toy-spheres
+  subject: sub-toy01
+  session: ses-01
+  task: exampletask
+  space: ToyGrid
+  resolution: "2"
+  outputs:
+    root_ref: artifacts_root
+    path: project-example/toy-roi/build
+  runtime:
+    existing_output: fail
+  rois:
+    -
+      label: SeedA
+      family: coordinate_sphere
+      backend: generic_nifti
+      desc: SeedA
+      reference_image:
+        root_ref: roi_example
+        path: images/toy_reference.nii
+      coordinate:
+        - -4
+        - 0
+        - 0
+      sphere_radius_mm: 2.1
+      radius_mm: 2.1
+    -
+      label: SeedB
+      family: coordinate_sphere
+      backend: generic_nifti
+      desc: SeedB
+      reference_image:
+        root_ref: roi_example
+        path: images/toy_reference.nii
+      coordinate:
+        - 4
+        - 0
+        - 0
+      sphere_radius_mm: 2.1
+      radius_mm: 2.1
+  provenance:
+    schema_version: "1"
+    example: deterministic-toy-roi

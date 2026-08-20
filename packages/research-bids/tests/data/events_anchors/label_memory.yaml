@@ -1,0 +1,74 @@
+{
+  "name": "label-memory",
+  "source": {
+    "encoding": "utf-8",
+    "subject_column": "participant",
+    "subject_regex": "^(\\d+)$",
+    "subject_width": 3,
+    "session_column": "session",
+    "session_regex": "^(.+)$",
+    "session_width": 2,
+    "run_column": "run",
+    "stim_column": "image_file"
+  },
+  "entities": {
+    "task": "memory",
+    "datatype": "func",
+    "suffix": "events"
+  },
+  "output": {
+    "missing_value": "n/a",
+    "columns": [
+      "onset",
+      "duration",
+      "trial_type",
+      "stim_file",
+      "response_time",
+      "response",
+      "phase",
+      "condition",
+      "stim_id",
+      "acc_label",
+      "probe_type",
+      "enc_is_tested",
+      "enc_later_outcome",
+      "is_instruction",
+      "is_error",
+      "block_n",
+      "trial_n",
+      "analysis_include"
+    ]
+  },
+  "runs": [1],
+  "conditions": {
+    "pair": { "title": "pair" }
+  },
+  "phase_templates": [
+    {
+      "phase": "encoding",
+      "image_prefix_template": "block{run}_Run{run}_{condition_title}_Encoding",
+      "onset_column_template": "encode_onset",
+      "response_time_column_template": "encode_rt",
+      "trial_type_template": "encoding_{condition}",
+      "instruction_trial_type_template": "instruction_{condition}_encoding",
+      "duration": "3.0",
+      "instruction_duration": "10.0",
+      "instruction_offset": "10.0",
+      "block_n": "1",
+      "instruction_probe_type": "n/a"
+    },
+    {
+      "phase": "recognition",
+      "image_prefix_template": "block{run}_Run{run}_{condition_title}_Recog",
+      "onset_column_template": "recog_onset",
+      "response_time_column_template": "recog_rt",
+      "trial_type_template": "recog_{condition}",
+      "instruction_trial_type_template": "instruction_{condition}_recognition",
+      "duration": "3.0",
+      "instruction_duration": "10.0",
+      "instruction_offset": "10.0",
+      "block_n": "2",
+      "instruction_probe_type": "lure"
+    }
+  ]
+}

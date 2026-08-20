@@ -1,0 +1,24 @@
+model:
+  name: task_glm
+  ev_order:
+    - condition_a
+    - condition_b
+    - button_press
+  derivative_on:
+    - condition_a
+    - condition_b
+  nonconvolved:
+    - button_press
+  contrasts:
+    -
+      name: condition_a_gt_baseline
+      weights:
+        - 1
+        - 0
+        - 0
+    -
+      name: condition_a_gt_condition_b
+      weights:
+        - 1
+        - -1
+        - 0

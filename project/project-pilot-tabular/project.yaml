@@ -1,0 +1,6 @@
+name: project-pilot-tabular
+version: 0.1.0
+datasets:
+  - ds-tabular-example
+  - derivatives_example
+notes: Minimal pilot overlay for the smallest safe non-BIDS/tabular execution slice.
