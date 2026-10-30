@@ -14,7 +14,6 @@ BLUEPRINT = REPO_ROOT / "BLUEPRINT.md"
 ADD_PROJECT_GUIDE = REPO_ROOT / "docs" / "onboarding" / "add-a-project.md"
 ONBOARDING = REPO_ROOT / "docs" / "onboarding"
 ONBOARDING_INDEX = ONBOARDING / "README.md"
-CODING_AGENT_GUIDE = ONBOARDING / "coding-agent-workflow.md"
 MVPA_TRANSACTION_ADR = (
     REPO_ROOT / "docs" / "decisions" / "ADR-0018-mvpa-exact-unit-runtime-transactions.md"
 )
@@ -212,10 +211,13 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
         for app in ("apps/api", "apps/dashboard", "apps/streamlit-app"):
             self.assertEqual(rows[app]["Status"], "Scaffold only")
 
-    def test_onboarding_uses_the_tooling_neutral_coding_agent_guide(self) -> None:
-        self.assertTrue(CODING_AGENT_GUIDE.is_file())
+    def test_onboarding_index_links_only_existing_guides(self) -> None:
         index = ONBOARDING_INDEX.read_text(encoding="utf-8")
-        self.assertIn("coding-agent-workflow.md", index)
+        for target in LINK_PATTERN.findall(index):
+            path_text = target.split("#", 1)[0]
+            if not path_text or "://" in path_text:
+                continue
+            self.assertTrue((ONBOARDING / path_text).resolve().is_file(), target)
         self.assertFalse(any(path.name.startswith("codex") for path in ONBOARDING.glob("*.md")))
 
     def test_matrix_rows_use_allowed_statuses_and_valid_local_guides(self) -> None:

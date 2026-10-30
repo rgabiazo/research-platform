@@ -210,8 +210,7 @@ storage, schedulers, or live neuroimaging workflows.
 Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change. Keep reusable
 logic in the owning package, update focused tests and documentation together,
 and keep private, participant-derived, credential, and machine-local material
-out of tracked files. [AGENTS.md](AGENTS.md) contains additional instructions
-for contributors and automated coding tools.
+out of tracked files.
 
 ## Development and releases
 

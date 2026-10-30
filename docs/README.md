@@ -87,13 +87,8 @@ validation.
 ## Contributing and testing
 
 - [Contributing guide](../CONTRIBUTING.md) — contributors can review
-  repository boundaries, privacy expectations, change requirements, and the
-  pull-request checklist.
-- [Instructions for contributors and automated coding tools](../AGENTS.md) —
-  contributors can review the repository's placement and implementation rules.
-- [Coding-tool contribution workflow](onboarding/coding-agent-workflow.md) —
-  contributors using automated coding tools can follow the same focused review
-  and validation process.
+  repository boundaries, conventions, privacy expectations, change
+  requirements, and the pull-request checklist.
 - [Continuous integration](../ops/ci/README.md) — contributors and maintainers
   can inspect package-test separation, public contracts, archive checks, and
   clean-checkout verification.

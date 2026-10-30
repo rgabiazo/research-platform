@@ -46,11 +46,12 @@ Supported table formats are:
 - Parquet;
 - Feather.
 
-Callers choose the backend explicitly when behaviour depends on it. The
-package's [contribution rules](AGENTS.md) confine backend coupling to
-`dataframe/polars_ops.py` and `dataframe/pandas_ops.py`. The current preview
-formatter also lazy-imports Polars; that known implementation discrepancy is
-not a public compatibility contract.
+Callers choose the backend explicitly when behaviour depends on it. Only
+`dataframe/polars_ops.py` and `dataframe/pandas_ops.py` import `polars` or
+`pandas` directly; the reader and writer modules re-export and orchestrate
+rather than implement backend details. The current preview formatter also
+lazy-imports Polars; that known implementation discrepancy is not a public
+compatibility contract.
 
 Two-input merges accept a shared key or explicit left and right keys. Merges of
 three or more tables require one shared key and join mode. Non-key name
