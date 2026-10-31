@@ -265,7 +265,7 @@ def test_no_hard_coded_study_specific_constants_or_subject_style_ids() -> None:
         for path in (
             MODULE_PATH,
             PACKAGE_ROOT / "README.md",
-            REPO_ROOT / "docs" / "decisions" / "ADR-0014-generic-tabular-association-workflow-roadmap.md",
+            REPO_ROOT / "docs" / "decisions" / "ADR-0014-generic-tabular-association-workflow.md",
         )
     )
     forbidden = [

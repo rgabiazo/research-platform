@@ -4709,7 +4709,7 @@ def _handle_hpc_setup(args: argparse.Namespace) -> int:
                 f"- research-hpc ssh check --profile {profile} --role {role} "
                 f"--config {to_workspace_relative(ssh_config_path, root)} --mode auto  # SSH-active"
             ),
-            "- Later runtime-readiness and remote-operation gates remain separate.",
+            "- Runtime-readiness and remote-operation checks remain separate.",
         ]
     )
     print("\n".join(lines))

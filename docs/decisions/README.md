@@ -15,7 +15,7 @@ Keep short ADRs here whenever you change workspace-wide conventions or boundarie
 - `ADR-0010-local-hpc-targets.md`
 - `ADR-0011-reusable-roi-workflow-foundations.md`
 - `ADR-0012-mvpa-crossnobis-foundation.md`
-- `ADR-0014-generic-tabular-association-workflow-roadmap.md`
+- `ADR-0014-generic-tabular-association-workflow.md`
 - `ADR-0015-analysis-batches-cohorts-bundles.md`
 - `ADR-0016-mvpa-pattern-source-adapters.md`
 - `ADR-0017-materialized-mvpa-pattern-tables.md`

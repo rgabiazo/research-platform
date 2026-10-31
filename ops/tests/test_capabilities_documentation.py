@@ -10,7 +10,6 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 CAPABILITIES = REPO_ROOT / "docs" / "capabilities.md"
 ARCHITECTURE = REPO_ROOT / "ARCHITECTURE.md"
 ROADMAP = REPO_ROOT / "ROADMAP.md"
-BLUEPRINT = REPO_ROOT / "BLUEPRINT.md"
 ADD_PROJECT_GUIDE = REPO_ROOT / "docs" / "onboarding" / "add-a-project.md"
 ONBOARDING = REPO_ROOT / "docs" / "onboarding"
 ONBOARDING_INDEX = ONBOARDING / "README.md"
@@ -89,28 +88,8 @@ EXPECTED_SURFACES_BY_STATUS = {
         {
             "Atlas-label and data-driven ROI families",
             "Checked-in local notebook content",
-            "pipelines/ingest",
-            "pipelines/feature-engineering",
-            "pipelines/train-model",
-            "pipelines/evaluate-model",
-            "pipelines/qc-reporting",
-            "pipelines/publish-results",
-            "apps/api",
-            "apps/dashboard",
-            "apps/streamlit-app",
         }
     ),
-}
-SCAFFOLD_BOUNDARIES = {
-    "apps/api": ("future optional API surface", "app"),
-    "apps/dashboard": ("future dashboard surface", "app"),
-    "apps/streamlit-app": ("future Streamlit-style exploratory application", "app"),
-    "pipelines/evaluate-model": ("future workflow that evaluates models", "pipeline"),
-    "pipelines/feature-engineering": ("future workflow that produces feature", "pipeline"),
-    "pipelines/ingest": ("future workflow that brings external", "pipeline"),
-    "pipelines/publish-results": ("future workflow that packages or publishes", "pipeline"),
-    "pipelines/qc-reporting": ("future workflow that generates", "pipeline"),
-    "pipelines/train-model": ("future workflow that trains models", "pipeline"),
 }
 
 
@@ -196,9 +175,6 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
             "`project-template`",
             "independent scaffold metadata",
             "not part of that coordinated source-package version",
-            "three app roots remain **Scaffold only** README-level ownership and extension boundaries",
-            "private or development checkout may contain placeholder app metadata or files",
-            "curated public export may retain only each root README",
             "Neither directory presence nor placeholder content establishes implementation",
             "implemented runtime product",
         ):
@@ -206,10 +182,6 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
 
         self.assertIn("guided command interface", text)
         self.assertNotIn("beginner-facing command surface", text)
-
-        rows = {_surface_key(row["Surface"]): row for row in _matrix_rows()}
-        for app in ("apps/api", "apps/dashboard", "apps/streamlit-app"):
-            self.assertEqual(rows[app]["Status"], "Scaffold only")
 
     def test_onboarding_index_links_only_existing_guides(self) -> None:
         index = ONBOARDING_INDEX.read_text(encoding="utf-8")
@@ -223,7 +195,7 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
     def test_matrix_rows_use_allowed_statuses_and_valid_local_guides(self) -> None:
         rows = _matrix_rows()
 
-        self.assertEqual(len(rows), 46)
+        self.assertEqual(len(rows), 37)
         surfaces = [_surface_key(row["Surface"]) for row in rows]
         self.assertEqual(len(surfaces), len(set(surfaces)), "Capability surfaces must be unique")
         for row in rows:
@@ -249,141 +221,17 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
             self.assertTrue(path_text, target)
             self.assertTrue((CAPABILITIES.parent / path_text).resolve().is_file(), target)
 
-    def test_scaffold_readmes_and_matrix_rows_define_readme_only_boundaries(self) -> None:
-        rows = {_surface_key(row["Surface"]): row for row in _matrix_rows()}
-        common_verification = (
-            "Static documentation contract verifies the README-only public boundary; "
-            "development placeholders are not implementation evidence"
-        )
-        forbidden_positive_evidence = (
-            "pipeline.yaml",
-            "snakefile",
-            "ruleset",
-            "results/.keep",
-            "source module",
-            "implementation module",
-            "app package metadata",
-            "pyproject.toml",
-            "placeholder function",
-            "placeholder package",
-            "placeholder source",
-            "application runtime",
-        )
-
-        for surface, (role_fragment, boundary_kind) in SCAFFOLD_BOUNDARIES.items():
-            readme = REPO_ROOT / surface / "README.md"
-            text = _normalize_whitespace(readme.read_text(encoding="utf-8"))
-            for required in (
-                "Alpha status: Scaffold only",
-                "retained to document the intended ownership and extension boundary",
-                role_fragment,
-                "private or development checkout may contain placeholder metadata or files",
-                "their presence does not establish implementation or support",
-                "curated public export may retain only this README",
-                "docs/capabilities.md",
-                "owning implementation",
-                "tests",
-                "documentation",
-                "capability review",
-                "release review",
-            ):
-                self.assertIn(required, text, surface)
-
-            if boundary_kind == "pipeline":
-                for absent_claim in (
-                    "does not establish a runnable workflow",
-                    "Snakefile",
-                    "ruleset",
-                    "implementation module",
-                    "deployment artifact",
-                    "supported execution path",
-                ):
-                    self.assertIn(absent_claim, text, surface)
-            elif surface == "apps/api":
-                for absent_claim in (
-                    "does not establish a runnable application runtime",
-                    "API service",
-                    "endpoint",
-                    "public API",
-                    "implementation module",
-                    "deployment artifact",
-                    "supported execution path",
-                ):
-                    self.assertIn(absent_claim, text, surface)
-            elif surface == "apps/dashboard":
-                self.assertIn(
-                    "does not establish a runnable application runtime, dashboard",
-                    text,
-                    surface,
-                )
-            else:
-                self.assertIn(
-                    "does not establish a runnable application runtime, Streamlit application",
-                    text,
-                    surface,
-                )
-
-            row = rows[surface]
-            self.assertEqual(row["Status"], "Scaffold only", surface)
-            self.assertIn(
-                "README-level ownership and extension boundary",
-                row["Public example or configuration"],
-                surface,
-            )
-            self.assertEqual(row["Verification evidence"], common_verification, surface)
-            for requirement in (
-                "owning",
-                "implementation",
-                "tests",
-                "documentation",
-                "capability review",
-                "release review",
-            ):
-                self.assertIn(requirement, row["External prerequisites"], surface)
-            self.assertIn(
-                "curated public export may contain only the README",
-                row["Known alpha limitation"],
-                surface,
-            )
-
-            positive_evidence = " ".join(
-                (
-                    row["Public example or configuration"],
-                    row["Verification evidence"],
-                )
-            ).casefold()
-            for forbidden in forbidden_positive_evidence:
-                self.assertNotIn(forbidden.casefold(), positive_evidence, surface)
-
-        capabilities_text = CAPABILITIES.read_text(encoding="utf-8")
-        for stale_claim in (
-            "Placeholder Snakefile and empty declared runtime contract",
-            "Repository inventory shows only a `results/.keep` placeholder rule",
-            "Placeholder function returning a placeholder string",
-            "Repository inventory and placeholder source",
-            "Placeholder package only",
-        ):
-            self.assertNotIn(stale_claim, capabilities_text)
-
-    def test_every_top_level_app_and_pipeline_has_exactly_one_row(self) -> None:
+    def test_every_top_level_pipeline_has_exactly_one_row(self) -> None:
         surfaces = [_surface_key(row["Surface"]) for row in _matrix_rows()]
 
         expected_statuses = {
-            "apps/api": "Scaffold only",
-            "apps/dashboard": "Scaffold only",
-            "apps/streamlit-app": "Scaffold only",
             "pipelines/analysis-bids": "Experimental or external-runtime",
-            "pipelines/evaluate-model": "Scaffold only",
-            "pipelines/feature-engineering": "Scaffold only",
-            "pipelines/ingest": "Scaffold only",
             "pipelines/preprocess-bids": "Experimental or external-runtime",
-            "pipelines/publish-results": "Scaffold only",
-            "pipelines/qc-reporting": "Scaffold only",
-            "pipelines/train-model": "Scaffold only",
         }
-        indexed = _indexed_top_level_directories("apps") | _indexed_top_level_directories("pipelines")
+        indexed = _indexed_top_level_directories("pipelines")
 
         self.assertEqual(indexed, set(expected_statuses))
+        self.assertFalse((REPO_ROOT / "apps").exists())
         rows_by_surface = {_surface_key(row["Surface"]): row for row in _matrix_rows()}
         for expected, status in expected_statuses.items():
             self.assertEqual(surfaces.count(expected), 1, expected)
@@ -541,30 +389,12 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
         self.assertIn("`distances.tsv` is an RDM-ready", combined)
         self.assertIn("not an exported RDM", combined)
 
-    def test_public_direction_model_is_consolidated(self) -> None:
+    def test_roadmap_is_direction_not_support_and_retired_docs_stay_retired(self) -> None:
         self.assertTrue(ROADMAP.is_file())
-        roadmap = ROADMAP.read_text(encoding="utf-8")
-        headings = [line for line in roadmap.splitlines() if line.startswith("#")]
-        self.assertEqual(
-            headings,
-            [
-                "# Roadmap",
-                "## Current status",
-                "## Completed foundations",
-                "## Now",
-                "## Next public-alpha milestones",
-                "## After the first public alpha",
-                "## Longer-term possibilities",
-                "## Explicitly deferred or unsupported scope",
-                "## How roadmap items become supported capabilities",
-            ],
-        )
-        normalized_roadmap = _normalize_whitespace(roadmap)
+        normalized_roadmap = _normalize_whitespace(ROADMAP.read_text(encoding="utf-8"))
         for boundary in (
             "describes project direction rather than current support",
             "makes no calendar commitment",
-            "documented local ROI examples",
-            "materialized-pattern crossnobis",
         ):
             self.assertIn(boundary, normalized_roadmap)
         normalized_architecture = _normalize_whitespace(
@@ -573,22 +403,8 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
         self.assertIn("complete transactional remote lifecycle", normalized_architecture)
         self.assertIn("not a supported or released public workflow", normalized_architecture)
 
-        blueprint = _normalize_whitespace(BLUEPRINT.read_text(encoding="utf-8"))
-        self.assertIn("remains only to preserve historical references", blueprint)
-        self.assertIn(
-            "not the authority for current architecture, present support, future commitments, or release requirements",
-            blueprint,
-        )
-        for link in (
-            "[ARCHITECTURE.md](ARCHITECTURE.md)",
-            "[ROADMAP.md](ROADMAP.md)",
-            "[docs/capabilities.md](docs/capabilities.md)",
-            "[accepted decision records](docs/decisions/README.md)",
-        ):
-            self.assertIn(link, BLUEPRINT.read_text(encoding="utf-8"))
-        self.assertNotIn("## Phase", BLUEPRINT.read_text(encoding="utf-8"))
-
         retired = (
+            REPO_ROOT / "BLUEPRINT.md",
             REPO_ROOT / "USES.md",
             REPO_ROOT / "PLANNED_USE_CASES.md",
             REPO_ROOT / "docs" / "architecture" / "overview.md",

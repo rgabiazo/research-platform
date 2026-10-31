@@ -72,8 +72,8 @@ work that is not a supported end-to-end local workflow:
   and validation. It is not an implemented or accepted end-to-end public
   workflow, has not been validated on a live cluster, and is not supported or
   released.
-- The checked-in apps, notebook directories, atlas/custom ROI families, and six
-  placeholder pipelines are **Scaffold only**.
+- The checked-in notebook directories and the atlas/custom ROI families are
+  **Scaffold only**.
 
 Research Platform does not currently claim arbitrary pipeline support,
 compatibility with arbitrary clusters, or a complete raw-BIDS preprocessing
@@ -161,7 +161,6 @@ matrix before choosing a workflow family.
 | `ops/` | Development environments, CI, containers, synchronization, and remote-execution support |
 | `secrets/` | Ignored local credentials and connection settings; never tracked |
 | `docs/` | User, contributor, architecture, capability, and decision documentation |
-| `apps/` | Scaffold-only extension points in this alpha |
 
 The checkout includes four public project overlays: `project-template`,
 `project-example`, `project-pilot-bids`, and `project-pilot-tabular`. They are

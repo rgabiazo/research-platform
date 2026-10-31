@@ -22,28 +22,11 @@ PACKAGE_NAMES = (
     "research-neuro",
     "research-viz",
 )
-SUBSTANTIVE_PIPELINE_MANIFESTS = frozenset(
+PIPELINE_MANIFESTS = frozenset(
     {
         "pipelines/analysis-bids/pipeline.yaml",
         "pipelines/preprocess-bids/pipeline.yaml",
     }
-)
-SCAFFOLD_PIPELINE_MANIFESTS = frozenset(
-    {
-        "pipelines/evaluate-model/pipeline.yaml",
-        "pipelines/feature-engineering/pipeline.yaml",
-        "pipelines/ingest/pipeline.yaml",
-        "pipelines/publish-results/pipeline.yaml",
-        "pipelines/qc-reporting/pipeline.yaml",
-        "pipelines/train-model/pipeline.yaml",
-    }
-)
-FULL_SOURCE_PIPELINE_MANIFESTS = (
-    SUBSTANTIVE_PIPELINE_MANIFESTS | SCAFFOLD_PIPELINE_MANIFESTS
-)
-SUPPORTED_PIPELINE_MANIFEST_SETS = (
-    SUBSTANTIVE_PIPELINE_MANIFESTS,
-    FULL_SOURCE_PIPELINE_MANIFESTS,
 )
 INTERNAL_REQUIREMENTS = {
     "research-analysis": ("research-ml>=0.1.0a1,<0.2",),
@@ -111,13 +94,7 @@ def test_independent_project_and_pipeline_versions_are_preserved() -> None:
         path.relative_to(REPO_ROOT).as_posix()
         for path in (REPO_ROOT / "pipelines").glob("*/pipeline.yaml")
     )
-    assert SUBSTANTIVE_PIPELINE_MANIFESTS <= pipeline_manifests
-    assert pipeline_manifests in SUPPORTED_PIPELINE_MANIFEST_SETS
-
-    if pipeline_manifests == SUBSTANTIVE_PIPELINE_MANIFESTS:
-        for manifest in sorted(SCAFFOLD_PIPELINE_MANIFESTS):
-            readme = REPO_ROOT / Path(manifest).parent / "README.md"
-            assert readme.is_file()
+    assert pipeline_manifests == PIPELINE_MANIFESTS
 
     for relative_path in sorted(pipeline_manifests):
         path = REPO_ROOT / relative_path

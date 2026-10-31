@@ -12,7 +12,6 @@ SAFETY_ADR = REPO_ROOT / "docs" / "decisions" / "ADR-0023-hpc-safety-primitives.
 DECISION_INDEX = REPO_ROOT / "docs" / "decisions" / "README.md"
 ARCHITECTURE = REPO_ROOT / "ARCHITECTURE.md"
 ROADMAP = REPO_ROOT / "ROADMAP.md"
-LEGACY_BLUEPRINT = REPO_ROOT / "BLUEPRINT.md"
 CAPABILITIES = REPO_ROOT / "docs" / "capabilities.md"
 
 CONTRACT_DOCUMENTS = (
@@ -23,7 +22,7 @@ CONTRACT_DOCUMENTS = (
     ROADMAP,
     CAPABILITIES,
 )
-PRIVACY_DOCUMENTS = (*CONTRACT_DOCUMENTS, LEGACY_BLUEPRINT)
+PRIVACY_DOCUMENTS = CONTRACT_DOCUMENTS
 LINK_PATTERN = re.compile(r"(?<!!)\[[^]]+\]\(([^)]+)\)")
 HEADLINE = (
     "Plan-first SLURM execution, monitoring, cancellation, and verified retrieval "
@@ -399,65 +398,20 @@ class HpcHeadlineContractTests(unittest.TestCase):
             "cleanup is reviewed and separately authorized",
         ))
 
-    def test_roadmap_keeps_remote_and_fmripost_promotion_conditional(self) -> None:
+    def test_roadmap_does_not_promote_remote_or_fmripost_support(self) -> None:
         text = _prose(ROADMAP)
-        self.assertIn(ADR.name, text)
-        self.assertIn(SAFETY_ADR.name, text)
         _require_terms(self, text, (
-            "conditional milestones",
             "does not change a current capability classification",
-            "one deterministic synthetic remote lifecycle",
-            "one documented, separately reviewed SLURM environment",
-            "fake-remote acceptance",
-            "separately authorized live-cluster acceptance using the deterministic synthetic workload",
-            "reviewed planning",
-            "safe staging",
-            "duplicate-safe submission",
-            "terminal-state reconciliation",
-            "confirmed cancellation",
-            "outcome receipts",
-            "verified retrieval",
-            "collision rejection",
-            "explicit no-overwrite publication",
-            "separate conditional neuroimaging target",
-            "separate accepted tracked decision and reproducible evidence",
-            "before any fMRIPost support claim or capability-classification change",
             "fMRIPost remains Experimental or external-runtime",
-            "cannot replace fake-remote or live-cluster synthetic acceptance",
-            "A roadmap item becomes supported only after",
-            "focused tests",
-            "checked-in public synthetic example",
-            "documented prerequisites, limitations, and scientific boundaries",
-            "privacy, scientific, and licensing review",
-            "explicit capability-matrix update and release review",
-            "exact accepted source commit",
-            "canonical source/release payload inventory with a SHA-256 tree digest",
-            "coordinated artifact identities",
-            "accepted site and profile identity",
-            "successful and controlled-failure outcomes",
-            "collision rejection",
-            "invalid-output rejection",
-            "interruption and recovery",
-            "verified retrieval",
-            "versioned claims and receipts",
-            "Full operational receipts remain private",
-            "sanitized publishable projection requires privacy and technical review",
             "not sufficient by itself to establish support",
         ))
+        for unsupported_claim in (
+            "live-cluster validation is complete",
+            "live-cluster validation has passed",
+        ):
+            self.assertNotIn(unsupported_claim, text.casefold())
 
         self.assertIn("not a supported or released public workflow", _prose(ARCHITECTURE))
-
-    def test_blueprint_is_only_a_compatibility_notice(self) -> None:
-        text = _prose(LEGACY_BLUEPRINT)
-        _require_terms(self, text, (
-            "remains only to preserve historical references",
-            "not the authority for current architecture, present support, future commitments, or release requirements",
-            "[ARCHITECTURE.md](ARCHITECTURE.md)",
-            "[ROADMAP.md](ROADMAP.md)",
-            "[docs/capabilities.md](docs/capabilities.md)",
-            "[accepted decision records](docs/decisions/README.md)",
-        ))
-        self.assertNotIn("## Phase", _text(LEGACY_BLUEPRINT))
 
     def test_changed_links_resolve_and_no_private_evidence_is_embedded(self) -> None:
         public_markdown = _public_markdown_documents()

@@ -33,7 +33,6 @@ repository rather than separate repositories.
 | `ops/` | Development environments, CI, containers, synchronization, scheduler support, and operational guidance |
 | `secrets/` | Ignored local credentials and connection settings that must never be tracked |
 | `scratch/` | Disposable local working space that is not part of a reproducible result |
-| `apps/` | **Scaffold only** extension points, not supported application runtimes |
 | `docs/` | User guidance, capability status, architecture, decisions, and contributor documentation |
 
 Package code provides reusable behaviour. Pipelines orchestrate that behaviour.
@@ -157,7 +156,8 @@ DeepPrep, fMRIPost-AROMA, FEAT, advanced ROI paths, image-backed MVPA, live
 scheduler operations, and other remote actions remain **Experimental or
 external-runtime** where classified. They require separate user data, external
 software, credentials, containers, infrastructure, and acceptance evidence.
-Apps and placeholder pipelines remain **Scaffold only**.
+Checked-in notebook content and the atlas-label and data-driven ROI families
+remain **Scaffold only**.
 
 The complete transactional remote lifecycle is under development. It is not a
 supported or released public workflow, and no accepted end-to-end live-cluster
@@ -199,9 +199,8 @@ extraction backends, and HPC target and profile entries. A new tool is added by
 implementing an adapter contract, and a new cluster by adding a target entry,
 not by editing orchestration code.
 
-The current app directories are **Scaffold only**. No cloud execution backend,
-arbitrary backend interchangeability, or arbitrary third-party plugin system is
-currently supported.
+No cloud execution backend, arbitrary backend interchangeability, or arbitrary
+third-party plugin system is currently supported.
 
 ## Current limitations
 
