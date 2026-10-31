@@ -69,7 +69,7 @@ work that is not a supported end-to-end local workflow:
   external-runtime**. They require user data, external software, credentials,
   and reviewed infrastructure.
 - The complete transactional HPC/fMRIPost lifecycle is under active development
-  and validation. It is not yet an implemented or accepted end-to-end public
+  and validation. It is not an implemented or accepted end-to-end public
   workflow, has not been validated on a live cluster, and is not supported or
   released.
 - The checked-in apps, notebook directories, atlas/custom ROI families, and six

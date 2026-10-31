@@ -1,4 +1,4 @@
-# BIDS Analysis Slice
+# BIDS analysis and FEAT
 
 > **Alpha status — Experimental or external-runtime.** FEAT discovery, FSF
 > authoring, runtime planning, and orchestration have automated coverage. Actual
@@ -6,11 +6,11 @@
 > container. There is no checked-in public executable FEAT project and no live
 > cluster validation.
 
-This document describes the phase 1 `analysis bids` slice.
+This document describes the `analysis bids` action and its first-level FEAT workflow.
 
 ## Scope
 
-Phase 1 adds:
+The action provides:
 
 - `rp project init bids-analysis`
 - `rp batch discover analysis bids`
@@ -19,14 +19,14 @@ Phase 1 adds:
 - `rp run slurm analysis bids`
 - `rp run submit analysis bids`
 
-Phase 1 is intentionally limited to:
+It is limited to:
 
 - BIDS analysis only
 - first-level FSL FEAT only
 - local planning/execution and SLURM planning/submission
 - the existing run-manifest, runtime-plan, Snakemake, stage, submit, and pull flow
 
-Phase 1 does not include:
+It does not include:
 
 - subject-level FFX
 - group FEAT
@@ -46,13 +46,13 @@ Phase 1 does not include:
 Reusable ROI workflows are documented separately in `docs/roi-workflows.md`.
 The independent deterministic generic-NIfTI example now provides a checked-in
 local coordinate-sphere build and extraction path, but it remains outside the
-first-level FEAT slice and does not provide BOLD or FEAT execution. External
+first-level FEAT workflow and does not provide BOLD or FEAT execution. External
 FSL/ANTs, real-data, and HPC-backed ROI paths remain experimental without
 changing this FEAT boundary.
 
 ## Config shape
 
-Phase 1 scaffolds:
+`rp project init bids-analysis` scaffolds:
 
 - `config/analysis.yaml`
 - `config/analysis/models/task_glm.yaml`
@@ -63,7 +63,7 @@ The scaffold keeps runtime/tool setup reusable by referencing:
 - `analysis.tools.<tool>.runtime_profile`
 - `compute.tool_profiles.<profile>`
 
-For FEAT phase 1, the scaffold uses `runtime_profile: fsl`.
+For FEAT, the scaffold uses `runtime_profile: fsl`.
 
 For FEAT scaffolds, `rp project init bids-analysis --tool feat` writes a
 container-ready `compute.tool_profiles.fsl` by default:
@@ -179,7 +179,7 @@ rp analysis design configure first-level \
 ```
 
 The command writes the same `config/analysis.yaml` fields consumed by current FEAT first-level
-runtime planning. Future BIDS analysis adapters can reuse the same config shape when they support
+runtime planning. Other BIDS analysis adapters can reuse the same config shape when they support
 these first-level settings.
 
 ## Empty EV policy
@@ -311,7 +311,7 @@ was not staged correctly and the job should be resubmitted after fixing staging.
 
 ## External analysis input roots
 
-Phase 1.1 adds a generic analysis-scoped way to declare external input roots that live outside the
+External input roots are a generic analysis-scoped way to declare input roots that live outside the
 workspace and outside the main BIDS derivative root.
 
 Use `analysis.external_input_roots` for reusable named roots:
@@ -339,9 +339,9 @@ Rules:
 - external analysis roots participate in the generic HPC `data_roots` flow, so they can be verified, synced, and staged without FEAT-specific core logic.
 - run manifests render execution-ready analysis root paths for SLURM, so remote FEAT planning does not rely on the original local absolute paths.
 
-## Phase 2A FSL runtime backend
+## FSL runtime backend
 
-Phase 2A keeps `research-core` generic and adds a reusable FSL runtime backend in
+The FSL runtime backend keeps `research-core` generic and lives in
 `packages/research-neuro/src/research_platform/neuro/fsl/`.
 
 The FEAT first-level runtime now supports:
@@ -465,12 +465,12 @@ Non-interactive FEAT runs are headless by default:
 
 This suppresses watcher/browser launch behavior while still generating the normal FEAT report files.
 
-## Phase 2 model authoring
+## Model authoring
 
-Phase 2 adds a user-friendly model authoring CLI under `rp analysis model` while keeping model YAML
+`rp analysis model` is a model authoring CLI that keeps model YAML
 files as the source of truth.
 
-Phase 2 commands:
+Commands:
 
 - `rp analysis model init <name>`
 - `rp analysis model copy <source> <dest>`
@@ -478,14 +478,14 @@ Phase 2 commands:
 - `rp analysis model validate <name>`
 - `rp analysis model validate --all`
 
-Phase 2 is intentionally limited to FEAT first-level model authoring only. It authors:
+It is limited to FEAT first-level model authoring. It authors:
 
 - `model.ev_order`
 - `model.derivative_on`
 - `model.nonconvolved`
 - `model.contrasts`
 
-Phase 2 does not move higher-level FEAT settings like `mode`, `z_thresh`, or `p_thresh` into the
+It does not move higher-level FEAT settings like `mode`, `z_thresh`, or `p_thresh` into the
 model-authoring CLI.
 
 Canonical non-interactive FEAT init:
@@ -566,7 +566,7 @@ rp run slurm analysis bids \
 
 - canonical data stays in `datasets/`
 - ephemeral run outputs stay in `artifacts/runs/<run_id>/`
-- phase 1 FEAT outputs are written under the run output root and are not published back by default
+- FEAT outputs are written under the run output root and are not published back by default
 
 ## See also
 

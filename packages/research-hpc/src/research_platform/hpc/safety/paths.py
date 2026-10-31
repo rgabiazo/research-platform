@@ -2,7 +2,7 @@
 
 This module deliberately validates protocol paths without consulting the host
 filesystem. Descriptor-anchored traversal and file-type validation belong to
-the later H2b gate.
+a separate validation step.
 """
 
 from __future__ import annotations

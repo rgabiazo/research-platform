@@ -351,7 +351,7 @@ class PublicationConfig:
 
 @dataclass(frozen=True)
 class MissingInputPolicy:
-    """How future runtime phases should handle missing inputs."""
+    """How runtime steps handle missing inputs."""
 
     policy: str = "warn"
     fields: Mapping[str, Any] = field(default_factory=dict)

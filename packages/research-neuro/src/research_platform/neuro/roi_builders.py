@@ -1,4 +1,4 @@
-"""Generic NIfTI ROI builders for Phase 2 reusable ROI workflows."""
+"""Generic NIfTI ROI builders for reusable ROI workflows."""
 
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ def copy_manual_mask_roi(
     fail_on_qc: bool = True,
     provenance: Mapping[str, Any] | None = None,
 ) -> RoiBuildResult:
-    """Validate and copy a manual mask while writing Phase 1-compatible provenance."""
+    """Validate and copy a manual mask while writing its sidecar provenance."""
 
     source_image = load_nifti_image(source_mask_path)
     if reference_image is not None:

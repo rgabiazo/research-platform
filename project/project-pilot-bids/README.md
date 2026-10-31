@@ -13,7 +13,7 @@ This is the smallest checked-in BIDS/HPC planning overlay. It includes:
 - a placeholder `deepprep-bold` derivative reference; and
 - one tiny synthetic batch manifest with invented identifiers.
 
-Plans and local manifests from this slice may be written under `artifacts/runs/`,
+Plans and local manifests from this workflow may be written under `artifacts/runs/`,
 not under canonical derivatives. DeepPrep, fMRIPost-AROMA, FEAT, and remote
 execution require separate user data, tools or containers, credentials, and
 reviewed site configuration. The presence of adapters and plans does not make

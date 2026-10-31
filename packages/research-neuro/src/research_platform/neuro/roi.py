@@ -1,7 +1,7 @@
 """Reusable ROI workflow schemas and validation helpers.
 
-Phase 1 defines configuration and provenance contracts only. The helpers in
-this module do not import neuroimaging runtimes and do not create masks.
+This module defines configuration and provenance contracts only. The helpers
+in it do not import neuroimaging runtimes and do not create masks.
 """
 
 from __future__ import annotations

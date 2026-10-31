@@ -46,8 +46,8 @@ do not install packages. The profiles are:
   it for the supported local command surfaces and synthetic examples;
 - `dev`: `minimal` plus pytest for repository tests;
 - `full`: `dev`, `research-viz`, optional pandas, rsatoolbox, XGBoost,
-  notebook, workflow, and visualization dependencies. This profile has not yet
-  completed the separate full release-candidate gate;
+  notebook, workflow, and visualization dependencies. This profile has not had
+  its own full-profile release validation;
 - `hpc`: a staged scheduler-runtime profile, not the local BYOD default.
 
 Verify the environment without contacting a remote service:

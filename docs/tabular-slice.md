@@ -1,4 +1,4 @@
-# Minimal Tabular Slice
+# Tabular workflow
 
 > **Alpha status — Runnable locally.** `project-pilot-tabular` is the primary
 > public walkthrough. CI verifies the supported source-checkout contract on
@@ -6,7 +6,7 @@
 > Modeling and regression also have executable automated coverage; optional
 > XGBoost and polished reporting are outside the verified minimal path.
 
-This repository now includes a smallest safe non-BIDS/tabular execution slice for one concrete path:
+This repository includes a non-BIDS tabular execution path for one concrete configuration:
 
 - project overlay: `project/project-pilot-tabular`
 - canonical feature root: `datasets/ds-derivatives-example/derivatives/features/project-pilot-tabular/`
@@ -59,7 +59,7 @@ versioned SHA-256 plan identity that binds the run, project, workflow, selected
 batch and table, ordered predictors, scientific settings, upstream run where
 applicable, normalized resources, output contract, complete rendered commands,
 and the exact reviewed `execute.sh` bytes. SLURM and submission material are also
-bound when it belongs to that plan. Timestamps, authorization state, and future
+bound when it belongs to that plan. Timestamps, authorization state, and later
 scheduler observations do not change this scientific identity.
 
 An intact plan may transition once to local execution under the same ID. Both

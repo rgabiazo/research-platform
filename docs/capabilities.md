@@ -20,7 +20,7 @@ Directory presence alone is not evidence that a workflow is supported.
 ## Verified installation boundary
 
 The supported and CI-tested interpreter boundary is Python 3.11 and 3.12. The
-public-alpha CI gate verifies a clean `minimal` source installation on Ubuntu
+public-alpha CI job verifies a clean `minimal` source installation on Ubuntu
 24.04 x86_64 with both versions and on macOS 15 ARM64 with Python 3.12. The
 read-only installation checks include
 `bash ops/envs/dev/smoke-check.sh --venv "$VIRTUAL_ENV"`, `python -m pip check`,
@@ -44,8 +44,8 @@ future conditional acceptance contract for one narrow synthetic SLURM
 lifecycle. Its implementation is incomplete, no live cluster has been
 validated, and it does not change any status below. HPC remains plan-first and
 either **Plan/validation only** or **Experimental or external-runtime** until
-all implementation, fake-remote, live-cluster, and dedicated claim-promotion
-gates pass.
+all implementation, fake-remote, and live-cluster acceptance and a dedicated
+capability-matrix review pass.
 
 The coordinated source-package version is `0.1.0a1` across the eight
 `packages/research-*` distributions. Versions in the `project-example` and

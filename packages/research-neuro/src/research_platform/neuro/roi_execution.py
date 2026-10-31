@@ -1,7 +1,7 @@
 """Local ROI build and extraction runners.
 
 The module keeps core orchestration thin: generic NIfTI work delegates to the
-Phase 2 helpers, and Phase 4 LOSO FLAME1 work delegates to the FSL/LOSO neuro
+NIfTI builder helpers, and LOSO FLAME1 work delegates to the FSL/LOSO neuro
 layers.
 """
 
@@ -329,7 +329,7 @@ CommandFinder = Callable[[str], str | None]
 
 
 def load_roi_set_for_execution(document: Mapping[str, Any], *, validate_personal_paths: bool = True) -> RoiSet:
-    """Validate and parse an ROI set config document for Phase 3 execution."""
+    """Validate and parse an ROI set config document for local execution."""
 
     return parse_roi_set_document(document, validate_personal_paths=validate_personal_paths)
 
@@ -339,7 +339,7 @@ def load_extraction_set_for_execution(
     *,
     validate_personal_paths: bool = True,
 ) -> ExtractionSet:
-    """Validate and parse an extraction set config document for Phase 3 execution."""
+    """Validate and parse an extraction set config document for local execution."""
 
     return parse_extraction_set_document(document, validate_personal_paths=validate_personal_paths)
 
@@ -2724,7 +2724,7 @@ def _require_supported_build_runtime(roi: RoiDefinition, backend: str) -> None:
         raise UnsupportedRoiRuntimeError(f"Unsupported ROI family for local ROI execution: {roi.family!r}.")
     if roi.family == "loso_group_map":
         if backend != "fsl_flame1":
-            raise UnsupportedRoiRuntimeError("Phase 4 LOSO ROI execution supports only backend fsl_flame1.")
+            raise UnsupportedRoiRuntimeError("LOSO ROI execution supports only backend fsl_flame1.")
         return
     supported_backends = {"generic_nifti"} if roi.family != "manual_mask" else {"generic_nifti", "manual"}
     if backend not in supported_backends:

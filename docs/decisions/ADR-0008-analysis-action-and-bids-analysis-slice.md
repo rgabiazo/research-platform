@@ -27,7 +27,7 @@ We needed to add first-level FSL FEAT in a way that:
 We added:
 
 - `analysis` as a first-class action in `research-core`
-- a phase 1 `analysis bids` target
+- an `analysis bids` target
 - a generic `BidsAnalysisToolAdapter` seam in `research-core`
 - a generic `pipelines/analysis-bids` orchestration repo
 - a nested FSL namespace in `research-neuro`
@@ -40,7 +40,7 @@ We did not:
 
 - add FEAT-specific orchestration logic to `research-core`
 - overload `preprocess bids`
-- add higher-level FEAT or featquery in phase 1
+- add higher-level FEAT or featquery
 - enable published-derivative fallback by default
 
 ## Consequences
@@ -57,4 +57,4 @@ Tradeoffs:
 - projects now may carry both `config/preprocessing.yaml` and `config/analysis.yaml`
 - validation and bundle loading need to tolerate multiple action configs
 - local validation and SLURM planning now intentionally have different strictness around unresolved remote env vars for analysis external roots
-- phase 1 keeps the analysis slice intentionally narrow until higher-level contracts are proven
+- the analysis action stays intentionally narrow until higher-level contracts are proven

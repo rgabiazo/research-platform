@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-The beginner-friendly BIDS slice already let `research-core` scaffold projects from tool adapters and let `research-hpc` own stage, pull, submit, and explicit bootstrap execution. Two gaps remained for first-time HPC use:
+The beginner-friendly BIDS workflow already let `research-core` scaffold projects from tool adapters and let `research-hpc` own stage, pull, submit, and explicit bootstrap execution. Two gaps remained for first-time HPC use:
 
 - newly scaffolded projects had no reusable way to inherit site-specific `compute.slurm.modules` and `compute.slurm.pre_activate_commands`
 - fresh-remote submit could stage a planned run, but repo bootstrap still depended on files and package dependencies that were not guaranteed to be present unless the user had already run a broader workspace sync
@@ -22,7 +22,7 @@ We want a smoother first-run path without introducing a second runtime mechanism
 - Apply those presets only during project scaffold, materializing the selected values into project `config/compute.yaml`.
 - Keep adapter scaffold defaults as the base, with workspace presets contributing only scaffold-time defaults for the two list fields above.
 - Keep `project/*/config/compute.yaml` as the runtime source of truth after scaffold.
-- Keep `compute.slurm.modules` and `compute.slurm.pre_activate_commands` as the only runtime environment mechanism in this slice.
+- Keep `compute.slurm.modules` and `compute.slurm.pre_activate_commands` as the only runtime environment mechanism in this workflow.
 - Expand the staged common payload for fresh-remote submit to include `ops/` and `packages/research-hpc`, so repo bootstrap can run without a separate `rp hpc sync workspace`.
 - Make explicit bootstrap resolve manifest `hpc.connection` metadata first, falling back to legacy `hpc.ssh_host` only when no profile metadata is available.
 

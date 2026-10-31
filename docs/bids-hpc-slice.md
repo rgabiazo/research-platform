@@ -1,4 +1,4 @@
-# Minimal BIDS/HPC Slice
+# BIDS and HPC planning
 
 > **Alpha status — Plan/validation only for the public example.** Public
 > configuration, manifest rendering, SLURM bundles, and dry-run safety are
@@ -7,7 +7,7 @@
 > host, scheduler, remote runtime, or cluster execution was validated for this
 > release candidate.
 
-This repository includes a safe orchestration slice for adapter-driven BIDS preprocessing and analysis. The
+This repository includes safe orchestration for adapter-driven BIDS preprocessing and analysis. The
 original concrete path is fMRIPost-AROMA; DeepPrep now uses the same submit, sync, verify, status, and pull flow
 while consuming raw BIDS inputs directly.
 
@@ -17,7 +17,7 @@ while consuming raw BIDS inputs directly.
 - input derivative: required for derivative-backed tools such as `fmripost_aroma`; not required for raw-BIDS tools such as `deepprep`
 - batch manifests: `project/project-pilot-bids/manifests/batches/*.tsv`
 
-The slice uses a config-loaded adapter:
+The workflow uses a config-loaded adapter:
 
 - `research-core` loads `preprocessing.tool_adapter` and stays orchestration-only
 - `research-neuro` owns DeepPrep/fMRIPost-AROMA-specific validation, discovery, selectors, and runtime metadata
@@ -106,7 +106,7 @@ Operational notes:
 - `rp run slurm ...` writes the run manifest and renders `submit.sbatch` but does not submit.
 - `rp run submit preprocess bids` reuses the same manifest contract and renders local stage and submission plans without remote calls; `--execute` explicitly stages and submits them.
 - The `--execute` form of `rp run submit preprocess bids` stages the bootstrap payload needed for repo bootstrap on a fresh remote, including `ops/` and `packages/research-hpc`, so it no longer requires a separate `rp hpc sync workspace` just to make bootstrap assets available.
-- `compute.slurm.modules` and `compute.slurm.pre_activate_commands` remain the only runtime mechanism for remote environment setup in this slice.
+- `compute.slurm.modules` and `compute.slurm.pre_activate_commands` remain the only runtime mechanism for remote environment setup in this workflow.
 - Planned SLURM manifests can record generic `hpc.connection` metadata for a named SSH profile; stage/pull/submit resolve that profile inside `research-hpc` instead of depending on `hpc.ssh_host` alone.
 - `rp hpc bootstrap --run-id <run_id>` writes an opt-in remote bootstrap plan when the SLURM compute config declares `compute.slurm.bootstrap.enabled: true`.
 - `rp hpc bootstrap --run-id <run_id> --execute` explicitly runs that bootstrap plan over SSH; it is never run automatically.

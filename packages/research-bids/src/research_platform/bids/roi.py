@@ -22,7 +22,7 @@ def build_roi_mask_filename(
     direction: str | None = None,
     resolution: str | None = None,
 ) -> str:
-    """Return the default Phase 1 ROI mask filename.
+    """Return the default ROI mask filename.
 
     The default form is:
     sub-<id>[_ses-<id>]_task-<task>[_dir-<dir>]_space-<space>[_res-<res>]

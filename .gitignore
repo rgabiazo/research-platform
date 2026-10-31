@@ -18,7 +18,7 @@ env/
 .idea/
 .vscode/
 
-# Local coding-agent state and private instruction overrides
+# Local tool state and private instruction overrides
 /.codex/
 /.agents/
 /.cursor/

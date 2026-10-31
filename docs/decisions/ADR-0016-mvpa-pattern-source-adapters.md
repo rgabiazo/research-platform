@@ -110,7 +110,7 @@ execution-ready implementations:
 - `nilearn_glm`;
 - `surface_cifti`.
 
-`materialized_pattern_table` is the next planned implementation. A future SPM
+`materialized_pattern_table` is implemented separately (ADR-0017). A future SPM
 beta-image adapter could map SPM metadata and image references into the same
 canonical row contract. This decision does not register, implement, or claim
 SPM support.

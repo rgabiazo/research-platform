@@ -1,8 +1,7 @@
 # Quickstart
 
 This alpha workflow installs the platform from a source checkout. Its PEP 440
-distribution version is `0.1.0a1`; its future Git tag will be `v0.1.0a1`, and
-its future GitHub release title will be `Research Platform 0.1.0 Alpha 1`.
+distribution version is `0.1.0a1`.
 The workspace packages come from this checkout and are not currently available
 from PyPI.
 
@@ -29,8 +28,8 @@ Choose the smallest profile that fits the work:
   the supported local command surfaces and synthetic examples;
 - `dev` adds pytest for repository tests;
 - `full` adds `research-viz` and optional pandas, rsatoolbox, XGBoost,
-  notebook, workflow, and visualization dependencies, but remains subject to
-  the later full release-candidate gate;
+  notebook, workflow, and visualization dependencies, but has not had its own
+  full-profile release validation;
 - `hpc` is the staged scheduler-runtime profile, not the local quickstart.
 
 ## Install the source checkout
@@ -191,6 +190,6 @@ the root allowlist to admit a private overlay. Keep confidential datasets out of
 Git, local credentials under ignored `secrets/`, and generated run outputs under
 `artifacts/`.
 
-Next, read `ARCHITECTURE.md`, `ROADMAP.md`, and the slice guide relevant to your
+Next, read `ARCHITECTURE.md`, `ROADMAP.md`, and the workflow guide relevant to your
 work. For private overlays and user-owned inputs, continue with the
 [bring-your-own-data guide](../byod.md).

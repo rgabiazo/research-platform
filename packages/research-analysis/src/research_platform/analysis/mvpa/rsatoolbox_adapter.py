@@ -63,7 +63,7 @@ class RsatoolboxDistanceEngine:
             supported = ", ".join(sorted(self.supported_metrics))
             raise ValueError(f"Unsupported distance metric {request.metric!r}. Use one of: {supported}.")
         if not request.cross_validation.require_balanced_units:
-            raise ValueError("RsatoolboxDistanceEngine requires balanced CV units in Phase 1D.")
+            raise ValueError("RsatoolboxDistanceEngine requires balanced CV units.")
 
         resolved_condition_order = validate_cross_validation(
             dataset,
@@ -175,7 +175,7 @@ def _require_rsatoolbox() -> _OptionalDependencies:
         ) from exc
 
     if not hasattr(data, "Dataset") or not hasattr(rdm, "calc_rdm"):
-        raise RuntimeError("Installed rsatoolbox does not provide the API expected by Phase 1D.")
+        raise RuntimeError("Installed rsatoolbox does not provide the expected API.")
 
     return _OptionalDependencies(np=np, data=data, rdm=rdm)
 

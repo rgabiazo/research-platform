@@ -134,8 +134,8 @@ replacing an existing scaffold file. It does not authorize analysis execution.
 
 Plans report exact included and excluded rows, incomplete cases, entity counts,
 component references, ordered stages, and deterministic source/configuration/
-plan digests with `executed: false`. BIDS `run_id` remains an imaging entity; a
-future bundle execution will use a separate execution or analysis-run ID.
+plan digests with `executed: false`. BIDS `run_id` remains an imaging entity,
+not an execution or analysis-run ID.
 
 ## ROI lifecycle configuration
 

@@ -67,7 +67,7 @@ The local commands have distinct contracts:
 Schema validity, bundle validity, plan validity, materialization readiness, and
 execution readiness are reported separately. Planning errors are errors rather
 than schema-valid success. Execution cannot begin unless every required
-readiness gate passes.
+readiness check passes.
 
 ### Dispatch by representation
 

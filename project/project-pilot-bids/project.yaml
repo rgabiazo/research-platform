@@ -5,4 +5,4 @@ datasets:
 pipelines:
   - preprocess-bids
 compute_profile: local
-notes: Minimal pilot overlay for the smallest safe BIDS/HPC execution slice.
+notes: Minimal pilot overlay for BIDS preprocessing planning and SLURM submission.

@@ -143,7 +143,7 @@ def write_roi_nifti_mask(mask: Any, reference_image: Any, output_path: str | Pat
 
 
 def write_roi_sidecar(sidecar_path: str | Path, provenance: Mapping[str, Any]) -> Path:
-    """Write and validate a Phase 1-compatible ROI JSON sidecar."""
+    """Write and validate an ROI JSON sidecar."""
 
     payload = normalize_sidecar_provenance(provenance)
     errors = validate_roi_sidecar_document(payload)

@@ -6,9 +6,9 @@ Accepted
 
 ## Context
 
-The BIDS preprocessing slice needs a beginner-friendly discovery and submit flow for fMRIPost-AROMA without pushing tool-specific logic into `research-core`.
+The BIDS preprocessing workflow needs a beginner-friendly discovery and submit flow for fMRIPost-AROMA without pushing tool-specific logic into `research-core`.
 
-The previous slice hard-coded:
+The previous implementation hard-coded:
 
 - the tool name
 - supported derivatives
@@ -35,7 +35,7 @@ That violated the intended repo boundaries and made `research-core` responsible 
 
 ## Consequences
 
-- `research-core` no longer hard-codes tool names, rule names, supported derivatives, or derivative filename predicates for the BIDS slice.
+- `research-core` no longer hard-codes tool names, rule names, supported derivatives, or derivative filename predicates for the BIDS workflow.
 - Beginner-facing commands such as `rp batch discover bids` and `rp run submit preprocess bids` can stay generic while still using tool-specific behavior.
 - New BIDS tools can be added by implementing the adapter contract rather than editing orchestration code.
 - The repo boundaries stay explicit:

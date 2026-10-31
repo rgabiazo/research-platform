@@ -128,5 +128,5 @@ authorize replacement of a scientific output directory.
 Rejected alternatives include sequential per-file promotion, `os.replace`,
 copy-and-delete publication, adopting pre-existing output trees, trusting only
 paths or timestamps, reopening inputs after digest validation, silently
-backfilling legacy receipts, and broadening this local gate into remote runtime
+backfilling legacy receipts, and broadening this local guarantee into remote runtime
 support.

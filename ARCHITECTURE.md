@@ -54,9 +54,6 @@ SDK is currently claimed.
 
 No HTTP API currently exists. The repository does not provide a supported
 dashboard, Streamlit application, desktop client, or other graphical product.
-Future interfaces would compose shared application services and package
-behaviour rather than replacing the CLI or duplicating scientific, BIDS, or HPC
-logic.
 
 ## Component ownership
 
@@ -196,15 +193,11 @@ publication.
 
 ## Extension points
 
-Possible future extensions include additional adapters, shared application
-services, a stable high-level Python API, HTTP services, dashboards or graphical
-clients, and additional execution backends. These are architectural directions,
-not current support claims.
-
-A future API or graphical client should call shared application services and
-package-owned behaviour. It should not reimplement scientific methods, BIDS
-rules, or remote-safety logic. The CLI should remain a supported automation
-interface rather than being replaced by a graphical client.
+The extension mechanisms are adapters and configuration: BIDS tool adapters for
+preprocessing and analysis tools, MVPA pattern-source adapters, ROI build and
+extraction backends, and HPC target and profile entries. A new tool is added by
+implementing an adapter contract, and a new cluster by adding a target entry,
+not by editing orchestration code.
 
 The current app directories are **Scaffold only**. No cloud execution backend,
 arbitrary backend interchangeability, or arbitrary third-party plugin system is

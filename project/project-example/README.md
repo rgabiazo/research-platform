@@ -175,7 +175,7 @@ The first seven commands are non-mutating. The final command writes one
 failure-safe 14-file runtime tree beneath the disposable artifacts root. Its
 `analysis/prepared-distances/distances.tsv` file is an RDM-ready pairwise-
 distance table; it is not an exported RDM. RDM tables, figures, derivative
-export, and publication remain separate advanced gates. A second execution
+export, and publication remain separate advanced steps. A second execution
 into the same configured destination fails before changing the first result.
 Do not check runtime products into the repository.
 

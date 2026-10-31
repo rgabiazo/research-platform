@@ -237,7 +237,7 @@ def load_loso_roi_set_config(document: Mapping[str, Any], *, validate_personal_p
     for roi in loso_rois:
         backend = roi.backend or roi_set.backend
         if backend != "fsl_flame1":
-            raise ValueError("Phase 4 LOSO ROI execution supports only backend fsl_flame1.")
+            raise ValueError("LOSO ROI execution supports only backend fsl_flame1.")
     return roi_set
 
 
@@ -414,7 +414,7 @@ def plan_loso_group_map_build_actions(
     *,
     context: Any,
 ) -> tuple[Any, ...]:
-    """Plan LOSO ROI mask build actions for the Phase 3/4 execution surface."""
+    """Plan LOSO ROI mask build actions for the local execution surface."""
 
     from research_platform.neuro.roi_execution import RoiBuildAction
 
@@ -550,7 +550,7 @@ def execute_loso_build_action(
             validate_compatible_geometry(zstat_image, coverage_image)
             coverage_masks[str(name)] = coverage_image.get_fdata()
     elif policy != "none":
-        raise ValueError("Phase 4 LOSO mask execution supports mask_intersection_policy none or intersection.")
+        raise ValueError("LOSO mask execution supports mask_intersection_policy none or intersection.")
 
     provenance = {
         "roi_set": job["roi_set"],
@@ -1644,7 +1644,7 @@ def _missing_policy(fields: Mapping[str, Any]) -> str:
 def _mask_intersection_policy(fields: Mapping[str, Any]) -> str:
     policy = _optional_text(fields.get("mask_intersection_policy") or _loso_block(fields).get("mask_intersection_policy")) or "intersection"
     if policy not in {"none", "intersection"}:
-        raise ValueError("Phase 4 LOSO mask execution supports mask_intersection_policy none or intersection.")
+        raise ValueError("LOSO mask execution supports mask_intersection_policy none or intersection.")
     return policy
 
 

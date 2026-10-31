@@ -62,7 +62,7 @@ class NativeReferenceDistanceEngine:
             return self._compute_crossnobis(dataset, request)
         if request.noise_normalization.method != NOISE_NORMALIZATION_IDENTITY:
             raise ValueError(
-                "Diagonal variance normalization is only supported for crossnobis distances in Phase 1B."
+                "Diagonal variance normalization is only supported for crossnobis distances."
             )
         if request.metric == METRIC_EUCLIDEAN:
             return self._compute_euclidean(dataset, request)

@@ -103,9 +103,9 @@ surface. ADR-0009's run-local BIDS selector flags remain useful for operational
 subsets of an already defined batch; they do not replace the configuration-owned
 scientific design described here.
 
-## Future Adapter Boundary
+## Adapter boundary
 
-Future local and SLURM execution must consume the same resolved unit rows.
+Local and SLURM execution must consume the same resolved unit rows.
 Pattern-source adapters receive those rows without recreating Cartesian
 combinations. FSL-specific parameter-estimate and design metadata remains
 adapter-specific. A future SPM adapter could map SPM metadata and images into
