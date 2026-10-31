@@ -93,14 +93,14 @@ This decision protects run admission, reviewed-plan identity, state changes,
 and single-process ownership. It does not stage the complete scientific output
 set, validate a successful output inventory, promote outputs atomically, roll
 back partial scientific files, or validate upstream-run success and output
-digests. Those are separate lifecycle gates.
+digests. Those are separate lifecycle checks.
 
 ## Consequences
 
 - A run ID is a durable, one-shot scientific execution identity rather than an
   overwriteable directory name.
 - Users retain the review-then-execute workflow without allowing configuration
-  or script drift between those phases.
+  or script drift between those steps.
 - Concurrent local or remote execution authorization has one owner, while stale
   claims remain visible recovery evidence.
 - Failed and interrupted runs are preserved for diagnosis and deliberately
@@ -111,4 +111,4 @@ digests. Those are separate lifecycle gates.
 Rejected alternatives include namespacing or migrating existing roots, adding
 overwrite/resume/retry flags, treating timestamps as scientific identity,
 automatically deleting stale claims, and partially implementing output rollback
-inside this control-plane gate.
+inside this control-plane step.

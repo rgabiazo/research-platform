@@ -4709,7 +4709,7 @@ def _handle_hpc_setup(args: argparse.Namespace) -> int:
                 f"- research-hpc ssh check --profile {profile} --role {role} "
                 f"--config {to_workspace_relative(ssh_config_path, root)} --mode auto  # SSH-active"
             ),
-            "- Later runtime-readiness and remote-operation gates remain separate.",
+            "- Runtime-readiness and remote-operation checks remain separate.",
         ]
     )
     print("\n".join(lines))
@@ -11059,7 +11059,7 @@ def _build_analysis_context(
     if not isinstance(stage_config, dict):
         raise SystemExit(json.dumps({"error": f"Unknown analysis stage: {selected_stage_name}"}, indent=2))
     if selected_stage_name != "first_level":
-        raise SystemExit(json.dumps({"error": "Phase 1 supports only analysis stage first_level."}, indent=2))
+        raise SystemExit(json.dumps({"error": "The analysis action supports only analysis stage first_level."}, indent=2))
 
     selected_tool_name = str(stage_config.get("tool") or defaults["tool"])
     tool_entry = analysis.get("tools", {}).get(selected_tool_name)

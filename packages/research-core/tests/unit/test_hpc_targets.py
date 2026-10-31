@@ -976,7 +976,7 @@ class HpcTargetTests(unittest.TestCase):
             )
             self.assertLess(
                 setup_output.index("rp hpc doctor"),
-                setup_output.index("Later runtime-readiness"),
+                setup_output.index("Runtime-readiness and remote-operation checks"),
             )
 
     def test_cluster_setup_preserves_parser_safe_empty_role_mappings(self) -> None:

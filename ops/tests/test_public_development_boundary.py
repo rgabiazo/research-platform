@@ -11,7 +11,6 @@ SCOPED_MARKDOWN = (
     REPO_ROOT / "CONTRIBUTING.md",
     REPO_ROOT / "docs" / "README.md",
     REPO_ROOT / "docs" / "onboarding" / "README.md",
-    REPO_ROOT / "docs" / "onboarding" / "coding-agent-workflow.md",
     REPO_ROOT / "docs" / "mvpa-crossnobis.md",
     REPO_ROOT / "project" / "project-example" / "README.md",
 )
@@ -141,11 +140,7 @@ def test_workspace_sync_excludes_all_local_agent_state() -> None:
 def test_public_contributor_guidance_is_tracked_and_private_coordination_is_not() -> None:
     tracked = _tracked_paths()
 
-    assert {
-        "AGENTS.md",
-        "packages/research-io/AGENTS.md",
-        "CONTRIBUTING.md",
-    } <= tracked
+    assert "CONTRIBUTING.md" in tracked
     assert not any(path.startswith(".codex/") for path in tracked)
     assert not any(path.startswith("docs/plans/2026-03-23-") for path in tracked)
     assert not any(
@@ -157,7 +152,7 @@ def test_public_contributor_guidance_is_tracked_and_private_coordination_is_not(
     assert not any(".git/info/exclude" in path for path in tracked)
 
 
-def test_generalized_coding_agent_links_resolve_and_old_redirects_are_absent() -> None:
+def test_contributor_and_onboarding_links_resolve() -> None:
     for document in SCOPED_MARKDOWN:
         text = document.read_text(encoding="utf-8")
         for target in LINK_PATTERN.findall(text):
@@ -191,8 +186,8 @@ export ARTIFACTS_ROOT="$(
 def test_scoped_generic_hpc_examples_have_no_site_default_assumptions() -> None:
     scoped = (
         REPO_ROOT / "ops" / "sync" / "ssh" / "targets.example.yaml",
-        REPO_ROOT / "docs" / "bids-hpc-slice.md",
-        REPO_ROOT / "docs" / "bids-analysis-slice.md",
+        REPO_ROOT / "docs" / "how-to" / "hpc-setup.md",
+        REPO_ROOT / "docs" / "analysis-workflows.md",
     )
     forbidden = ("$SCRATCH", "/local/scratch", "StdEnv/2023", "arrow/23.0.1", "apptainer/1.4.5")
 

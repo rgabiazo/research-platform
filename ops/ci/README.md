@@ -67,8 +67,8 @@ packages/research-viz/tests
 ```
 
 This separation is required because some package trees contain duplicate test
-module basenames. Optional full-profile coverage remains a later
-release-candidate gate.
+module basenames. Optional full-profile coverage is not part of these CI
+jobs.
 
 ## Public contracts
 

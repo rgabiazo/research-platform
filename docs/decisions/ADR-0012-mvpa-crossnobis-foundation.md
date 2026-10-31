@@ -10,14 +10,14 @@ The platform needs a reusable MVPA foundation for crossnobis distance and RDM
 workflows that can support neuroimaging ROI analyses without becoming tied to
 one study, one file layout, or one third-party object model.
 
-Phase 0 is documentation-only. It should define the architecture, package
+This decision is documentation-only. It defines the architecture, package
 boundaries, configuration shape, output conventions, and dependency policy
 before any runtime code, CLI implementation, tests, project overlays, pipelines,
 or new dependencies are added.
 
 ## Decision
 
-MVPA/crossnobis workflows will be study-agnostic and config-driven.
+MVPA/crossnobis workflows are study-agnostic and config-driven.
 
 Generic matrix, distance, RDM, cross-validation, and statistics contracts belong
 in `research-analysis`. The stable public API should expose research-platform
@@ -26,7 +26,7 @@ Nilearn, scikit-learn, or any other third-party object model as the stable API.
 
 The preferred v1 external distance engine for crossnobis/RDM computation is
 `rsatoolbox` through an optional RSA adapter. `rsatoolbox` is not a hard
-required dependency for the platform in Phase 0. A lightweight
+required dependency for the platform. A lightweight
 `native_reference` implementation remains planned for tests, validation,
 numerical checks, and fallback.
 
@@ -71,7 +71,7 @@ extras later. They should not be hard-coded imports in core contracts.
 
 ## Non-Decisions
 
-Phase 0 does not implement:
+This decision does not implement:
 
 - MVPA runtime code
 - CLI commands
@@ -97,8 +97,8 @@ Positive:
 
 Tradeoffs:
 
-- Users cannot run MVPA from this phase alone.
+- Users cannot run MVPA from this decision alone.
 - Adapter behavior, defaults, and provenance must be specified before execution
-  phases can be considered stable.
+  can be considered stable.
 - Published derivative naming is BIDS-like and reusable, but not a guarantee of
   full BIDS-validator compliance.

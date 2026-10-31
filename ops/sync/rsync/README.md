@@ -1,6 +1,6 @@
 # rsync helper scripts and filters
 
-Phase 2A adds scope-oriented exclude files for first-time HPC provisioning:
+Scope-oriented exclude files for first-time HPC provisioning:
 
 - `exclude.txt`: global excludes that should never be uploaded
 - `exclude.workspace.txt`: tracked default excludes for whole-workspace bootstrap syncs

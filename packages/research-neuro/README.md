@@ -197,7 +197,7 @@ Further reading:
 - [Capability matrix](../../docs/capabilities.md)
 - [Architecture and package ownership](../../ARCHITECTURE.md)
 - [ADR-0005: BIDS tool adapter seam](../../docs/decisions/ADR-0005-bids-tool-adapters.md)
-- [ADR-0008: analysis action and BIDS analysis slice](../../docs/decisions/ADR-0008-analysis-action-and-bids-analysis-slice.md)
+- [ADR-0008: analysis action and first-level FEAT](../../docs/decisions/ADR-0008-analysis-action-and-first-level-feat.md)
 - [ADR-0011: reusable ROI foundations](../../docs/decisions/ADR-0011-reusable-roi-workflow-foundations.md)
 - [ADR-0012: MVPA crossnobis foundation](../../docs/decisions/ADR-0012-mvpa-crossnobis-foundation.md)
 - [ADR-0017: materialized MVPA pattern tables](../../docs/decisions/ADR-0017-materialized-mvpa-pattern-tables.md)

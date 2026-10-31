@@ -24,5 +24,5 @@ validation has been accepted. Adapter presence, a rendered plan, or mocked
 execution evidence does not change that support boundary.
 
 See the [capability matrix](../../docs/capabilities.md), the
-[BIDS and HPC guide](../../docs/bids-hpc-slice.md), and
+[HPC setup guide](../../docs/how-to/hpc-setup.md), and
 [ADR-0005](../../docs/decisions/ADR-0005-bids-tool-adapters.md).

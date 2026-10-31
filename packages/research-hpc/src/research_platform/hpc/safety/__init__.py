@@ -1,4 +1,4 @@
-"""Dependency-free local safety foundations for future HPC lifecycle gates."""
+"""Dependency-free local safety foundations for HPC lifecycle operations."""
 
 from .canonical import (
     CANONICAL_JSON_VERSION,

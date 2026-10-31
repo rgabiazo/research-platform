@@ -336,7 +336,7 @@ foundational library primitives. They do not make existing YAML, manifest,
 workflow, transfer, submission, or retrieval writers transactional, and no
 complete remote runtime consumes them end to end.
 
-The headline execution contract in
+The HPC execution contract in
 [ADR-0022](../../docs/decisions/ADR-0022-headline-hpc-execution-contract.md)
 remains incomplete. Provider-neutral configuration means the package avoids
 embedding one site's values; it does not claim compatibility with arbitrary
@@ -346,8 +346,8 @@ tools.
 Further reading:
 
 - [Capability matrix](../../docs/capabilities.md)
-- [BIDS and HPC planning](../../docs/bids-hpc-slice.md)
+- [HPC setup](../../docs/how-to/hpc-setup.md)
 - [HPC troubleshooting](../../docs/how-to/hpc-troubleshooting.md)
 - [Architecture and package ownership](../../ARCHITECTURE.md)
-- [ADR-0022: headline HPC execution contract](../../docs/decisions/ADR-0022-headline-hpc-execution-contract.md)
+- [ADR-0022: HPC execution contract](../../docs/decisions/ADR-0022-headline-hpc-execution-contract.md)
 - [ADR-0023: HPC safety primitives](../../docs/decisions/ADR-0023-hpc-safety-primitives.md)

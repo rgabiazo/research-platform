@@ -3,4 +3,4 @@ version: 0.1.0
 datasets:
   - ds-tabular-example
   - derivatives_example
-notes: Minimal pilot overlay for the smallest safe non-BIDS/tabular execution slice.
+notes: Minimal pilot overlay for the synthetic tabular workflow.

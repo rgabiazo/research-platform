@@ -208,12 +208,12 @@ def compute_mvpa_distances_from_prepared_groups(
     min_retained_features: int = DEFAULT_MANUAL_MIN_RETAINED_FEATURES,
     warn_dropped_feature_fraction: float = DEFAULT_MANUAL_WARN_DROPPED_FEATURE_FRACTION,
 ) -> PreparedMvpaDistanceResult:
-    """Compute MVPA distances from Phase 3B.1 prepared groups.
+    """Compute MVPA distances from prepared groups.
 
-    Phase 3B.4 supports crossnobis distances with the default
-    ``native_reference`` engine, or the optional ``rsatoolbox`` adapter when
-    explicitly requested. Identity normalization remains the default; diagonal
-    normalization uses Phase 3B.3 prepared-row ``noise_values`` aggregation.
+    Crossnobis distances use the default ``native_reference`` engine, or the
+    optional ``rsatoolbox`` adapter when explicitly requested. Identity
+    normalization remains the default; diagonal normalization uses the
+    prepared-row ``noise_values`` aggregation.
     """
 
     engine_name = _validated_engine_name(engine_name)

@@ -46,8 +46,8 @@ do not install packages. The profiles are:
   it for the supported local command surfaces and synthetic examples;
 - `dev`: `minimal` plus pytest for repository tests;
 - `full`: `dev`, `research-viz`, optional pandas, rsatoolbox, XGBoost,
-  notebook, workflow, and visualization dependencies. This profile has not yet
-  completed the separate full release-candidate gate;
+  notebook, workflow, and visualization dependencies. This profile has not had
+  its own full-profile release validation;
 - `hpc`: a staged scheduler-runtime profile, not the local BYOD default.
 
 Verify the environment without contacting a remote service:
@@ -342,7 +342,7 @@ or execution claim, treat it as recovery evidence: inspect and preserve it,
 and do not delete it merely to force a rerun. If `outputs/` exists while status
 is not durably `succeeded` or a claim remains, do not adopt it as a successful
 run; downstream evaluation rejects that source. See
-[Tabular slice](tabular-slice.md) for the complete integrity contract.
+[Analysis workflows](analysis-workflows.md#local-output-transactions) for the complete integrity contract.
 
 ## 5. One-entity 3D-NIfTI ROI route
 
@@ -442,7 +442,7 @@ validation.
 - Local tabular transactions and the local materialized-MVPA runtime have
   bounded publication guarantees. Do not project those guarantees onto remote
   execution.
-- The current [HPC guide](bids-hpc-slice.md) documents plan-first surfaces.
+- The [HPC setup guide](how-to/hpc-setup.md) documents plan-first surfaces.
   Remote operations require external credentials, site configuration, SSH,
   scheduler software, and later live-cluster validation.
 

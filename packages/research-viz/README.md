@@ -163,6 +163,6 @@ Further reading:
 
 - [Capability matrix](../../docs/capabilities.md)
 - [Architecture and package ownership](../../ARCHITECTURE.md)
-- [Tabular analysis slice](../../docs/tabular-slice.md)
+- [Analysis workflows](../../docs/analysis-workflows.md#tabular)
 - [ADR-0012: MVPA crossnobis foundation](../../docs/decisions/ADR-0012-mvpa-crossnobis-foundation.md)
-- [ADR-0014: generic tabular association workflow](../../docs/decisions/ADR-0014-generic-tabular-association-workflow-roadmap.md)
+- [ADR-0014: generic tabular association workflow](../../docs/decisions/ADR-0014-generic-tabular-association-workflow.md)

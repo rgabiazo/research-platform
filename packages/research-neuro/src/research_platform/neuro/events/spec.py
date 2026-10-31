@@ -123,7 +123,7 @@ def _read_json_yaml(path: Path) -> dict[str, Any]:
         payload = json.loads(text)
     except json.JSONDecodeError as exc:
         raise ValueError(
-            f"{path} is not valid Phase 1 config. Use JSON-compatible YAML for this phase."
+            f"{path} is not a valid events config. Use JSON-compatible YAML."
         ) from exc
     if not isinstance(payload, dict):
         raise TypeError(f"{path} must decode to an object.")
@@ -210,7 +210,7 @@ def _compile_error_transform(*, error_rule: ErrorRule) -> CompiledTransform:
                 "when_false": _literal("0"),
             },
         )
-    raise ValueError(f"Unsupported legacy error_rule.kind {error_rule.kind!r} for Phase A compiler.")
+    raise ValueError(f"Unsupported legacy error_rule.kind {error_rule.kind!r}.")
 
 
 def _compile_trial_transforms(

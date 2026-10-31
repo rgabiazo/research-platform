@@ -1,6 +1,6 @@
 # features derivatives
 
-Checked-in canonical examples live here when a slice needs reusable tabular features.
+Checked-in canonical examples live here when a workflow needs reusable tabular features.
 
 - `project-pilot-tabular/toy_features.tsv` is the validated merged feature table.
 - `project-pilot-tabular/sources/toy_core.tsv` and

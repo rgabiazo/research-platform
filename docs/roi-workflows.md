@@ -9,20 +9,20 @@
 
 This document describes the reusable ROI workflow foundation.
 
-Phase 1 added validation, provenance, BIDS-like derivative paths, and thin
-lifecycle CLI commands. Phase 2 added generic NIfTI ROI geometry, mask writing,
-peak selection from existing statistical maps, and non-FSL extraction helpers.
-Phase 3 wires those foundations into local, config-driven commands for generic
-ROI mask builds and generic extraction tables. Phase 4 adds local FSL-backed
-leave-one-subject-out (LOSO) group-map planning and ROI mask creation from
-existing subject-level fixed-effects COPE/VARCOPE inputs. Phase 5 adds local
-FSL `featquery` extraction from existing FEAT or fixed-effects COPE-style
-directories using configured ROI masks, including LOSO masks produced by Phase
-4.
+The foundation provides validation, provenance, BIDS-like derivative paths,
+and thin lifecycle CLI commands; generic NIfTI ROI geometry, mask writing, peak
+selection from existing statistical maps, and non-FSL extraction helpers;
+local, config-driven commands for generic ROI mask builds and generic
+extraction tables; local FSL-backed leave-one-subject-out (LOSO) group-map
+planning and ROI mask creation from existing subject-level fixed-effects
+COPE/VARCOPE inputs; and local FSL `featquery` extraction from existing FEAT or
+fixed-effects COPE-style directories using configured ROI masks, including
+LOSO masks.
 
-Phase 5 still does not estimate subject-level fixed effects, run general group
-FEAT orchestration, change LOSO FLAME1 generation beyond consuming existing
-masks, add analysis-bids runtime stages, or stage/submit any HPC ROI jobs.
+None of these commands estimates subject-level fixed effects, runs general
+group FEAT orchestration, changes LOSO FLAME1 generation beyond consuming
+existing masks, adds analysis-bids runtime stages, or stages/submits any HPC
+ROI jobs.
 
 Completed subject-level localizer FFX outputs can now be handed off in
 plan-only mode from `research-neuro` into this existing LOSO ROI planning
@@ -315,7 +315,7 @@ this local generic route.
 
 ## Advanced and External-Runtime Interfaces
 
-MNI-to-T1w transforms are an advanced phase-specific interface. They require
+MNI-to-T1w transforms are an advanced interface. They require
 user transform/reference inputs and ANTs for execution:
 
 ```bash
@@ -373,7 +373,7 @@ init command into a long invocation.
 
 ## ROI Families
 
-Phase 1 recognizes these ROI families:
+The schema recognizes these ROI families:
 
 - `manual_mask`
 - `coordinate_sphere`
@@ -383,23 +383,23 @@ Phase 1 recognizes these ROI families:
 - `data_driven_hook`
 
 Recognized backend names include `generic_nifti`, `fsl_featquery`,
-`fsl_flame1`, `nilearn`, `freesurfer`, and `ants`. Phase 5 executes the local
+`fsl_flame1`, `nilearn`, `freesurfer`, and `ants`. Local execution covers the
 `generic_nifti`, `fsl_flame1` LOSO build, and `fsl_featquery` extraction paths.
 Plan-only validation does not import or require FSL, Nilearn, FreeSurfer, ANTs,
 or surface/CIFTI tooling.
 
-Phase 3 can build locally:
+Config-driven local builds cover:
 
 - `coordinate_sphere` masks from xyz millimeter coordinates and a radius.
 - `manual_mask` outputs by validating and copying an existing binary NIfTI mask.
 - `functional_threshold_map` masks by selecting a peak from an already-existing
   statistical NIfTI map and building a sphere around that peak.
 
-Phase 4 can also build `loso_group_map` masks locally when the backend is
+`loso_group_map` masks can also be built locally when the backend is
 `fsl_flame1`. The FSL commands are planned as shell-safe argument vectors and
 can be mocked in tests; real execution requires a local FSL install.
 
-Phase 5 can run `fsl_featquery` extraction locally when the source FEAT
+`fsl_featquery` extraction runs locally when the source FEAT
 directories and ROI masks already exist. Plan-only mode builds the featquery
 argument vectors and reports expected `report.txt` paths without running FSL.
 Execution mode calls local `featquery`, parses the resulting reports, and writes
@@ -425,7 +425,7 @@ LOSO/group maps use BIDS-like ordering and may include the platform convention
 `heldout-<subject>` for leave-one-subject-out maps. Treat that as derivative
 metadata, not a guarantee of full BIDS-validator compliance.
 
-Phase 4 writes LOSO group maps under the configured output root:
+LOSO builds write group maps under the configured output root:
 
 ```text
 <output_root>/loso_groupmaps/<roi_set>/group/<session>/func/<group_entities>_desc-<modelContrast>_heldout-sub<id>_zstat.nii.gz
@@ -652,7 +652,7 @@ roi_set:
     schema_version: "1"
     generated_by:
       - name: research-platform
-        description: Phase 4 local LOSO ROI workflow
+        description: Local LOSO ROI workflow
   rois:
     - label: SeedA
       family: loso_group_map
@@ -699,7 +699,7 @@ Run locally after reviewing the plan:
 rp analysis roi build loso_demo --project project-demo --execute
 ```
 
-For each held-out subject and contrast, Phase 4 excludes that subject from the
+For each held-out subject and contrast, the LOSO build excludes that subject from the
 training COPE/VARCOPE list before running the one-sample FLAME1 group map. This
 keeps the ROI-defining map independent of the held-out subject and avoids the
 circularity that would come from defining a subject's ROI with that subject's
@@ -760,7 +760,7 @@ rp analysis roi build coordinate_examples --project project-demo-roi
 rp analysis roi build coordinate_examples --project project-demo-roi --execute
 ```
 
-Callable Phase 2 usage:
+Callable usage:
 
 ```python
 from research_platform.bids.roi import build_roi_mask_path, build_roi_sidecar_path
@@ -818,7 +818,7 @@ roi_set:
 
 Use project or environment root references instead of personal absolute paths.
 
-Phase 3 can run the same build from project config:
+The same build runs from project config:
 
 ```yaml
 roi_set:
@@ -867,7 +867,7 @@ copy_manual_mask_roi(
 
 ## Example: Functional Threshold Map From Existing NIfTI
 
-Phase 2 consumes an already-existing statistical map. It does not estimate a
+The functional threshold map builder consumes an already-existing statistical map. It does not estimate a
 group model or run FLAME1. Peak selection can be constrained by a search mask or
 by a spherical search region around a seed coordinate. If configured, the helper
 can fall back to the strongest below-threshold local maximum and records that
@@ -900,7 +900,7 @@ roi_set:
       allow_below_threshold_fallback: true
 ```
 
-Phase 3 can execute that local generic build from config:
+That local generic build runs from config:
 
 ```bash
 rp analysis roi build functional_examples --project project-demo-roi
@@ -945,7 +945,7 @@ extraction_set:
         table_desc: ModelATimeseries
 ```
 
-Phase 2 extraction is generic NIfTI summary extraction from a 3D value map and a
+Generic extraction is NIfTI summary extraction from a 3D value map and a
 3D ROI mask. It does not parse featquery output and does not run FSL.
 
 Supported metrics:
@@ -959,7 +959,7 @@ Supported metrics:
 - `voxel_count`
 - `valid_voxel_count`
 
-Phase 3 can run generic extraction from config. If `roi_masks` are not supplied
+Generic extraction runs from config. If `roi_masks` are not supplied
 on the target, mask paths are inferred from the referenced `roi_set` and the
 same BIDS-like mask naming helper used during build.
 
@@ -1166,7 +1166,7 @@ It prefers explicit labels such as `Mean % signal change`, `Mean cope`, and
 numeric values, the QC row records flags/warnings instead of inventing a value;
 unusable rows are omitted from the values TSV.
 
-Phase 5 consumes existing FEAT directories and existing ROI masks only. It does
+Featquery extraction consumes existing FEAT directories and existing ROI masks only. It does
 not create subject-level fixed effects, run group FEAT, change LOSO FLAME1 map
 generation, stage SLURM/HPC jobs, run remotely, or wire ROI extraction into the
 analysis-bids runtime pipeline.
@@ -1231,12 +1231,3 @@ qc_flags: [pass]
 - Project-relative and named-root paths such as `project_roi_root`,
   `artifacts_root`, `dataset_root`, `derivative_root`, and
   `analysis.external_input_roots` entries when configured.
-
-## Future Phases
-
-Future phases can add atlas fetching or label extraction, FreeSurfer,
-additional ANTs-backed ROI builders, Nilearn, surface and CIFTI support,
-subject-level FFX, group FEAT,
-analysis-bids runtime stages, and HPC staging/runtime changes. Those phases
-should keep execution backends optional and continue to separate schemas, path
-naming, IO, transforms, and orchestration.

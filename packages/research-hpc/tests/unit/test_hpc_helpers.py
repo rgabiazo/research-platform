@@ -28,7 +28,7 @@ from research_platform.hpc.sync import build_rsync_pull_command, build_rsync_pus
 from research_platform.core.config import write_yaml
 
 
-class HpcSliceHelperTests(unittest.TestCase):
+class HpcHelperTests(unittest.TestCase):
     def test_hpc_source_is_compatible_with_supported_python_grammar(self) -> None:
         for source_path in sorted((HPC_PACKAGE_ROOT / "src").rglob("*.py")):
             source = source_path.read_text(encoding="utf-8")

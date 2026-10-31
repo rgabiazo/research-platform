@@ -50,7 +50,7 @@ class FeatAnalysisAdapter:
         if str(defaults.get("tool", "")).strip() != self.tool_name():
             errors.append(f"This adapter supports only analysis.defaults.tool={self.tool_name()}.")
         if str(defaults.get("stage", "")).strip() != "first_level":
-            errors.append("Phase 1 FEAT analysis supports only analysis.defaults.stage=first_level.")
+            errors.append("FEAT analysis supports only analysis.defaults.stage=first_level.")
         if dataset.get("input_derivative") is None:
             errors.append("config/dataset.yaml must define dataset.input_derivative for FEAT analysis.")
 

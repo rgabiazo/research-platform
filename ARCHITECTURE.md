@@ -8,10 +8,17 @@ explicit ownership boundaries.
 
 ## Purpose
 
-The architecture separates reusable software from project-specific scientific
-choices, local infrastructure, and generated outputs. That separation makes it
-possible to reuse methods across projects without embedding one dataset,
-machine, or execution environment in shared code.
+Research Platform is for labs running neuroimaging/BIDS and statistics or ML
+workflows on their own computing, from research software engineers to
+researchers without a coding background. The `rp` command is a thin layer over
+the packages, which hold the behaviour, so a later interface can reuse them.
+Every environment-specific value (scheduler account and partition, host,
+remote roots, data root, study) comes from a project or site configuration file
+or an environment variable, each with a checked-in example
+(`project/project-template`, `ops/sync/ssh/targets.example.yaml`,
+`ops/slurm/cluster_configs/cluster.example.yaml`). SLURM and rsync over SSH,
+driven from a local workstation, are the only supported scheduler and transfer
+tool, and neither has live-cluster validation.
 
 This document explains the current structural boundaries and intended dependency
 direction. It does not expand support beyond the evidence recorded in the
@@ -33,7 +40,6 @@ repository rather than separate repositories.
 | `ops/` | Development environments, CI, containers, synchronization, scheduler support, and operational guidance |
 | `secrets/` | Ignored local credentials and connection settings that must never be tracked |
 | `scratch/` | Disposable local working space that is not part of a reproducible result |
-| `apps/` | **Scaffold only** extension points, not supported application runtimes |
 | `docs/` | User guidance, capability status, architecture, decisions, and contributor documentation |
 
 Package code provides reusable behaviour. Pipelines orchestrate that behaviour.
@@ -54,9 +60,6 @@ SDK is currently claimed.
 
 No HTTP API currently exists. The repository does not provide a supported
 dashboard, Streamlit application, desktop client, or other graphical product.
-Future interfaces would compose shared application services and package
-behaviour rather than replacing the CLI or duplicating scientific, BIDS, or HPC
-logic.
 
 ## Component ownership
 
@@ -103,6 +106,29 @@ These rules describe the intended direction. They do not claim that every
 current import already follows an ideal dependency graph. Discrepancies are
 handled through focused source changes and reviewed decision records, not hidden
 in this overview.
+
+## Package boundaries
+
+- BIDS and neuroimaging code belongs in `research-bids` or `research-neuro`,
+  not in `research-core`.
+- HPC and remote-execution code belongs in `research-hpc` and `ops/`.
+- Within `research-io`, only `dataframe/polars_ops.py` and
+  `dataframe/pandas_ops.py` import `polars` or `pandas` directly.
+- Reusable logic belongs in `packages/`, not in notebooks or project overlays.
+
+Where changes belong:
+
+- Package API or reusable helper: `packages/`
+- Workflow orchestration, job templates, profiles: `pipelines/` or `ops/`
+- Dataset metadata or reusable derivative metadata: `datasets/`
+- Run outputs: `artifacts/`
+- Local-only credentials: `secrets/`
+- Project-specific cohort, model, and report configuration: `project/`
+
+A structural change updates this file when stable boundaries change,
+`ROADMAP.md` when public future direction changes, and an ADR under
+`docs/decisions/` when a durable decision changes. It must keep both BIDS and
+non-BIDS use cases working.
 
 ## Projects and configuration
 
@@ -160,7 +186,8 @@ DeepPrep, fMRIPost-AROMA, FEAT, advanced ROI paths, image-backed MVPA, live
 scheduler operations, and other remote actions remain **Experimental or
 external-runtime** where classified. They require separate user data, external
 software, credentials, containers, infrastructure, and acceptance evidence.
-Apps and placeholder pipelines remain **Scaffold only**.
+Checked-in notebook content and the atlas-label and data-driven ROI families
+remain **Scaffold only**.
 
 The complete transactional remote lifecycle is under development. It is not a
 supported or released public workflow, and no accepted end-to-end live-cluster
@@ -196,19 +223,14 @@ publication.
 
 ## Extension points
 
-Possible future extensions include additional adapters, shared application
-services, a stable high-level Python API, HTTP services, dashboards or graphical
-clients, and additional execution backends. These are architectural directions,
-not current support claims.
+The extension mechanisms are adapters and configuration: BIDS tool adapters for
+preprocessing and analysis tools, MVPA pattern-source adapters, ROI build and
+extraction backends, and HPC target and profile entries. A new tool is added by
+implementing an adapter contract, and a new cluster by adding a target entry,
+not by editing orchestration code.
 
-A future API or graphical client should call shared application services and
-package-owned behaviour. It should not reimplement scientific methods, BIDS
-rules, or remote-safety logic. The CLI should remain a supported automation
-interface rather than being replaced by a graphical client.
-
-The current app directories are **Scaffold only**. No cloud execution backend,
-arbitrary backend interchangeability, or arbitrary third-party plugin system is
-currently supported.
+No cloud execution backend, arbitrary backend interchangeability, or arbitrary
+third-party plugin system is currently supported.
 
 ## Current limitations
 
@@ -231,6 +253,4 @@ contain detailed technical, scientific-boundary, and safety decisions. The
 [capability matrix](docs/capabilities.md) records present workflow status, and
 the [README](README.md) remains the public entry point.
 
-Future direction belongs in the [roadmap](ROADMAP.md) rather than in this
-architecture overview. This document therefore avoids implementation-progress
-ledgers and historical task checklists.
+Future direction belongs in the [roadmap](ROADMAP.md), not in this overview.

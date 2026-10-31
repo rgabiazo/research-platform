@@ -17,7 +17,7 @@ creation, or HPC execution changes.
 
 ## Decision
 
-We added Phase 1 ROI foundations:
+We added the ROI foundations:
 
 - ROI set, ROI definition, extraction set, extraction target, and sidecar
   provenance validation in `research-neuro`
@@ -32,7 +32,7 @@ The default ROI mask name uses `label-<roiLabel>` plus
 
 ## Non-Decisions
 
-Phase 1 does not implement:
+This decision does not implement:
 
 - LOSO execution
 - FSL FLAME1
@@ -63,9 +63,9 @@ Tradeoffs:
 - Project overlays can carry ROI YAML, but execution-ready ROI stages remain
   intentionally deferred.
 
-## Phase 2 Clarification
+## Generic NIfTI ROI foundations
 
-Phase 2 adds generic NIfTI ROI foundations while preserving the Phase 1 package
+Generic NIfTI ROI foundations preserve the package
 boundaries:
 
 - `research-neuro` owns nibabel-backed NIfTI IO, geometry conversion,
@@ -74,16 +74,16 @@ boundaries:
   extraction metrics.
 - `research-bids` remains the owner of BIDS-like ROI mask, sidecar, and
   extraction-table path naming.
-- `research-core` remains orchestration-only; Phase 2 does not add analysis-BIDS
+- `research-core` remains orchestration-only; this step does not add analysis-BIDS
   runtime stages or broad CLI execution wiring.
 
-Phase 2 deliberately remains non-FSL. It does not run FLAME1, call featquery,
+The generic NIfTI foundations deliberately remain non-FSL. They do not run FLAME1, call featquery,
 estimate subject-level FFX, run group FEAT, fetch atlases, add SLURM/HPC staging
 changes, or depend on Nilearn, ANTs, FreeSurfer, FSL, surface, or CIFTI tooling.
 
-## Phase 3 Clarification
+## Config-driven local execution
 
-Phase 3 adds local, user-facing execution wiring for the generic NIfTI subset
+Config-driven local execution wires the generic NIfTI subset into user-facing commands
 without changing the package boundaries:
 
 - `research-neuro` owns config-driven local builds for `coordinate_sphere`,
@@ -95,14 +95,14 @@ without changing the package boundaries:
   roots, prints plans by default, and delegates execution only when users pass
   `--execute`.
 
-Phase 3 remains non-FSL and local-only. It still does not run LOSO group maps,
+This execution wiring remains non-FSL and local-only. It does not run LOSO group maps,
 FLAME1, featquery, subject-level FFX, group FEAT, atlas fetching, analysis-bids
 runtime stages, SLURM/HPC staging, or remote execution.
 
-## Phase 4 Clarification
+## LOSO FLAME1 group maps
 
-Phase 4 adds local FSL-backed LOSO group-map and ROI mask execution while
-preserving the same package boundaries:
+Local FSL-backed LOSO group-map and ROI mask execution preserves the same
+package boundaries:
 
 - `research-neuro` owns subject fixed-effects input discovery, held-out subject
   exclusion, one-sample FLAME1 command planning/execution wrappers, LOSO group
@@ -113,15 +113,15 @@ preserving the same package boundaries:
   resolves project config and delegates plan or execute behavior to
   `research-neuro`.
 
-Phase 4 assumes subject-level fixed-effects COPE/VARCOPE/mask inputs already
+LOSO execution assumes subject-level fixed-effects COPE/VARCOPE/mask inputs already
 exist. It deliberately does not implement FSL featquery, percent signal change
 extraction, subject-level fixed-effects generation, general group FEAT
 orchestration, analysis-bids runtime stages, SLURM/HPC staging, or remote
 execution.
 
-## Phase 5 Clarification
+## FSL featquery extraction
 
-Phase 5 adds local FSL `featquery` extraction while preserving the same package
+Local FSL `featquery` extraction preserves the same package
 boundaries:
 
 - `research-neuro` owns featquery command planning, local execution wrappers,
@@ -132,15 +132,15 @@ boundaries:
   <extraction-set>` resolves project config and delegates plan or execute
   behavior to `research-neuro`.
 
-Phase 5 consumes existing FEAT or fixed-effects COPE-style directories and
-existing ROI masks, including LOSO masks from Phase 4. It deliberately does not
+Featquery extraction consumes existing FEAT or fixed-effects COPE-style directories and
+existing ROI masks, including LOSO masks. It deliberately does not
 implement subject-level fixed-effects generation, general group FEAT
 orchestration, LOSO FLAME1 changes beyond using existing masks,
 analysis-bids runtime stages, SLURM/HPC staging, or remote execution.
 
-## Phase 6 Clarification
+## Publication of LOSO ROI outputs
 
-Phase 6 adds automatic publication of LOSO FLAME1 ROI outputs into a polished
+Automatic publication places LOSO FLAME1 ROI outputs into a polished
 BIDS-like derivative layout while preserving the existing runtime/cache layout
 and command surface:
 

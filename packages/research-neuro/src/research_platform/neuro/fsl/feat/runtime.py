@@ -43,7 +43,7 @@ def build_runtime_plan(
     analysis_block = manifest.get("analysis", {})
     stage_name = str(analysis_block.get("stage", "")).strip()
     if stage_name != "first_level":
-        raise ValueError("Phase 1 FEAT runtime planning supports only analysis stage first_level.")
+        raise ValueError("FEAT runtime planning supports only analysis stage first_level.")
 
     model = load_model_spec(str(analysis_block.get("model_ref", "default")), dict(analysis_block.get("model", {})))
     stage_config = dict(analysis_block.get("stage_config", {}))

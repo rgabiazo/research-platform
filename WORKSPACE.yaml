@@ -21,7 +21,6 @@ repos:
   packages_root: ./packages
   pipelines_root: ./pipelines
   project_root: ./project
-  apps_root: ./apps
 
 projects:
   default: project-pilot-bids

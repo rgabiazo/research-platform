@@ -221,7 +221,7 @@ exact plan; it does not replan the table or accept a replacement digest.
 `fsl_feat_pe` remains an advanced external-runtime image source. Its discovery,
 EV-to-PE mapping, extraction values, compatibility fields, and representation
 dispatch remain scientifically unchanged. Local CLI execution is deliberately
-not ready in this alpha because the image path does not yet provide the
+not ready in this alpha because the image path does not provide the
 portable feature-space, ROI-definition, and noise-scope identities required by
 the successful-run manifest. Planning can therefore contain run-local host
 paths, while no unsafe image run is committed.
@@ -232,9 +232,8 @@ These source schemas can be structurally valid but remain deferred:
 - `nilearn_glm`;
 - `surface_cifti`.
 
-There is no SPM adapter. A future adapter could map SPM beta-image metadata into
-the same canonical pattern-row contract, but this release neither implements
-nor claims SPM support.
+There is no SPM adapter, and this release neither implements nor claims SPM
+support.
 
 ## Materialized pattern table v1
 

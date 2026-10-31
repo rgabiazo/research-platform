@@ -35,7 +35,7 @@ CHANGED_DOCUMENTS = (
     REPO_ROOT / "docs/onboarding/add-a-project.md",
     REPO_ROOT / "docs/onboarding/quickstart.md",
     ROI_GUIDE,
-    REPO_ROOT / "docs/tabular-slice.md",
+    REPO_ROOT / "docs/analysis-workflows.md",
 )
 
 # Public-contract tests run against the source checkout as well as editable
@@ -406,8 +406,8 @@ def test_documentation_links_shell_syntax_and_rp_commands_are_valid() -> None:
     roi_recipe = _section(_text(ROI_GUIDE), "## Bring your own 3D NIfTI pair")
     shell_blocks.extend(_fenced_blocks(roi_recipe, "bash"))
     tabular_recipe = _section(
-        _text(REPO_ROOT / "docs/tabular-slice.md"),
-        "## Bring your own table",
+        _text(REPO_ROOT / "docs/analysis-workflows.md"),
+        "### Bring your own table",
     )
     shell_blocks.extend(_fenced_blocks(tabular_recipe, "bash"))
     for document in (

@@ -26,5 +26,5 @@ adapter tests therefore do not establish supported local or remote FEAT
 execution.
 
 See the [capability matrix](../../docs/capabilities.md), the
-[BIDS analysis guide](../../docs/bids-analysis-slice.md), and
-[ADR-0008](../../docs/decisions/ADR-0008-analysis-action-and-bids-analysis-slice.md).
+[analysis workflows guide](../../docs/analysis-workflows.md#bids-first-level-feat), and
+[ADR-0008](../../docs/decisions/ADR-0008-analysis-action-and-first-level-feat.md).

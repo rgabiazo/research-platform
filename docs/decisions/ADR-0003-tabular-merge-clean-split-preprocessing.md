@@ -63,7 +63,7 @@ Therefore:
 
 ## Staged implementation plan
 
-1. Finalize this ADR and boundary text in `ARCHITECTURE.md` and `BLUEPRINT.md`.
+1. Finalize this ADR and boundary text in `ARCHITECTURE.md`.
 2. Add/expand `research-io` contracts for N-way merge plus inspection/clean command groups (no split or BIDS discovery dependencies).
 3. Finalize `research-bids` discovery APIs to return table descriptors/paths and let orchestration assemble tabular jobs.
 4. Add split manifest schema + leakage-safe fit/apply orchestration in `research-analysis`.

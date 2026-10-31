@@ -266,7 +266,7 @@ def _write_mock_tabular_scientific_outputs(execution_kwargs: object) -> Path:
     return run_root
 
 
-class CoreCliSliceTests(unittest.TestCase):
+class CoreCliTests(unittest.TestCase):
     def _run_cli(self, args: list[str], artifact_root: Path, extra_env: dict[str, str] | None = None) -> tuple[int, str]:
         env = {
             "RESEARCH_PLATFORM_ROOT": str(WORKSPACE_ROOT),

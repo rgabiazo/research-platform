@@ -100,7 +100,7 @@ The bounded contracts are exercised by:
 - [`test_tabular_transaction_cli.py`](tests/unit/test_tabular_transaction_cli.py);
 - [`test_tabular_output_transaction.py`](tests/unit/test_tabular_output_transaction.py);
 - [`test_tabular_transaction_review_regressions.py`](tests/unit/test_tabular_transaction_review_regressions.py);
-- [`test_cli_slice.py`](tests/unit/test_cli_slice.py);
+- [`test_cli.py`](tests/unit/test_cli.py);
 - [`test_runtime_plan.py`](tests/unit/test_runtime_plan.py).
 
 ## Limitations
@@ -116,4 +116,4 @@ The bounded contracts are exercised by:
 See the [repository overview](../../README.md),
 [architecture](../../ARCHITECTURE.md),
 [quickstart](../../docs/onboarding/quickstart.md), and
-[tabular guide](../../docs/tabular-slice.md).
+[tabular guide](../../docs/analysis-workflows.md#tabular).

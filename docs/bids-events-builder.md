@@ -33,7 +33,7 @@ The current row-semantics layer is narrower:
 - the current source-schema contract expects a recognition label column such as `image_old_new`
 - the emitted schema assumes fields such as `acc_label`, `probe_type`, `enc_is_tested`, and `enc_later_outcome`
 
-That is sufficient for the current encoding/recognition examples, but it is not yet a fully generic config-driven events engine for arbitrary task families. The public `toy-memory` example and its goldens are deterministically generated and contain no participant-derived data.
+That is sufficient for the current encoding/recognition examples, but it is not a fully generic config-driven events engine for arbitrary task families. The public `toy-memory` example and its goldens are deterministically generated and contain no participant-derived data.
 
 ## Commands
 

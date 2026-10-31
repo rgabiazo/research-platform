@@ -15,7 +15,7 @@ export PROJECT_ROOT=${PROJECT_ROOT:-project/project-pilot-bids}
 export HPC_PROFILE=${HPC_PROFILE:-target-a}
 ```
 
-For a possible future HPC run, use the canonical local starter to define an
+For an HPC run, use the canonical local starter to define an
 ignored SSH profile under `secrets/` while keeping public configuration
 generic:
 

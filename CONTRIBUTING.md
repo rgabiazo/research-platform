@@ -1,27 +1,26 @@
-
 # Contributing
 
-Research Platform accepts human-authored and coding-agent-assisted changes
-under the same review and safety requirements. Contributors remain responsible
-for understanding, validating, and reviewing everything they submit; generated
-changes are not accepted without appropriate tests, documentation, privacy
-checks, and safety checks.
+Every change goes through the same review and safety requirements, however it
+was produced. Contributors remain responsible for understanding, validating,
+and reviewing everything they submit; generated changes are not accepted
+without appropriate tests, documentation, privacy checks, and safety checks.
 
-## Repository boundaries
+## Package boundaries
 
-- `packages/` contains reusable package APIs and implementations.
-- `pipelines/` contains reusable workflow orchestration and pipeline profiles.
-- `project/` contains thin configuration, manifests, notebooks, reports, and
-  light project glue.
-- `datasets/` contains canonical public data and derivative metadata.
-- `artifacts/` contains ignored, ephemeral run outputs.
-- `ops/` contains environment, synchronization, scheduler, and operational
-  infrastructure.
+Where code, configuration, data and outputs belong is described in
+[ARCHITECTURE.md, Package boundaries](ARCHITECTURE.md#package-boundaries).
 
-Keep BIDS and neuroimaging behavior in `research-bids` or `research-neuro`, not
-in `research-core`. Keep HPC and remote-operation behavior in `research-hpc`
-and `ops/`. Within `research-io`, only the dedicated backend modules named in
-`packages/research-io/AGENTS.md` may import `polars` or `pandas` directly.
+## Public and local content
+
+- Never hard-code absolute or personal paths, usernames, cluster names,
+  sites, private study names, credentials, or infrastructure assumptions.
+- Never add participant-derived fixtures. Public fixtures must be explicitly
+  synthetic and document their provenance.
+- Keep secrets and private data outside tracked files. Use `secrets/` locally
+  and `*.example` files elsewhere.
+- Keep local tool configuration, editor state, logs, and scratch notes
+  untracked.
+- Keep reusable logic out of notebooks and project overlays.
 
 The four checked-in overlays—`project-template`, `project-example`,
 `project-pilot-bids`, and `project-pilot-tabular`—are public examples. Real
@@ -29,34 +28,22 @@ study overlays under `project/` are intentionally ignored and belong in a
 separate private repository or another explicit private boundary. Do not
 weaken the public overlay allowlist to store private work here.
 
-## Public and local content
-
-- Never hard-code personal paths, usernames, sites, private study names,
-  credentials, or infrastructure assumptions.
-- Never add participant-derived fixtures. Public fixtures must be explicitly
-  synthetic and document their provenance.
-- Keep secrets and private data outside tracked files.
-- Keep local instruction overrides, coding-agent state, editor state, logs,
-  and scratch notes untracked. Use ignored `AGENTS.local.md` for local-only
-  instructions; repository `AGENTS.md` files contain the public contribution
-  contract.
-- Keep reusable logic out of notebooks and project overlays.
-
 ## Change requirements
 
-- Add or update focused tests when behavior changes.
-- Update the directly affected documentation in the same change.
+- When adding code or changing behavior, add or update focused tests and the
+  directly affected documentation in the same change.
 - Confirm documented commands match implemented entry points.
-- For structural changes, update `ARCHITECTURE.md` when stable boundaries
-  change, update `ROADMAP.md` when public future direction changes, and add or
-  revise an ADR under `docs/decisions/` when a durable decision changes.
-- Prefer configuration and small reusable functions over duplicated or
-  project-coupled logic.
+- Prefer small, composable functions and configuration-driven behavior over
+  duplicated or project-coupled logic.
 
-See the
-[coding-agent contribution workflow](docs/onboarding/coding-agent-workflow.md)
-for a concise workflow that applies when coding agents assist with a
-contribution.
+## Implementation style
+
+- Use typed, well-named functions.
+- Separate IO, transforms, and orchestration.
+- Use environment variables and configuration files instead of hard-coded
+  literals.
+- Keep notebooks as consumers of package APIs.
+- Document assumptions in Markdown when structure changes.
 
 ## Source-checkout checks
 
