@@ -342,7 +342,7 @@ or execution claim, treat it as recovery evidence: inspect and preserve it,
 and do not delete it merely to force a rerun. If `outputs/` exists while status
 is not durably `succeeded` or a claim remains, do not adopt it as a successful
 run; downstream evaluation rejects that source. See
-[Tabular slice](tabular-slice.md) for the complete integrity contract.
+[Analysis workflows](analysis-workflows.md#local-output-transactions) for the complete integrity contract.
 
 ## 5. One-entity 3D-NIfTI ROI route
 
@@ -442,7 +442,7 @@ validation.
 - Local tabular transactions and the local materialized-MVPA runtime have
   bounded publication guarantees. Do not project those guarantees onto remote
   execution.
-- The current [HPC guide](bids-hpc-slice.md) documents plan-first surfaces.
+- The [HPC setup guide](how-to/hpc-setup.md) documents plan-first surfaces.
   Remote operations require external credentials, site configuration, SSH,
   scheduler software, and later live-cluster validation.
 

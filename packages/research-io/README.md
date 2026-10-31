@@ -136,4 +136,4 @@ The bounded public examples and backend rules are exercised by:
 See the [repository overview](../../README.md),
 [architecture](../../ARCHITECTURE.md),
 [capability matrix](../../docs/capabilities.md), and
-[tabular guide](../../docs/tabular-slice.md).
+[tabular guide](../../docs/analysis-workflows.md#tabular).

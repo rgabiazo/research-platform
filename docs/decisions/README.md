@@ -10,7 +10,7 @@ Keep short ADRs here whenever you change workspace-wide conventions or boundarie
 - `ADR-0005-bids-tool-adapters.md`
 - `ADR-0006-bids-beginner-onboarding.md`
 - `ADR-0007-hpc-runtime-presets-and-fresh-remote-bootstrap.md`
-- `ADR-0008-analysis-action-and-bids-analysis-slice.md`
+- `ADR-0008-analysis-action-and-first-level-feat.md`
 - `ADR-0009-run-local-filtered-batches.md`
 - `ADR-0010-local-hpc-targets.md`
 - `ADR-0011-reusable-roi-workflow-foundations.md`

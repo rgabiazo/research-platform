@@ -8,10 +8,17 @@ explicit ownership boundaries.
 
 ## Purpose
 
-The architecture separates reusable software from project-specific scientific
-choices, local infrastructure, and generated outputs. That separation makes it
-possible to reuse methods across projects without embedding one dataset,
-machine, or execution environment in shared code.
+Research Platform is for labs running neuroimaging/BIDS and statistics or ML
+workflows on their own computing, from research software engineers to
+researchers without a coding background. The `rp` command is a thin layer over
+the packages, which hold the behaviour, so a later interface can reuse them.
+Every environment-specific value (scheduler account and partition, host,
+remote roots, data root, study) comes from a project or site configuration file
+or an environment variable, each with a checked-in example
+(`project/project-template`, `ops/sync/ssh/targets.example.yaml`,
+`ops/slurm/cluster_configs/cluster.example.yaml`). SLURM and rsync over SSH,
+driven from a local workstation, are the only supported scheduler and transfer
+tool, and neither has live-cluster validation.
 
 This document explains the current structural boundaries and intended dependency
 direction. It does not expand support beyond the evidence recorded in the
@@ -99,6 +106,29 @@ These rules describe the intended direction. They do not claim that every
 current import already follows an ideal dependency graph. Discrepancies are
 handled through focused source changes and reviewed decision records, not hidden
 in this overview.
+
+## Package boundaries
+
+- BIDS and neuroimaging code belongs in `research-bids` or `research-neuro`,
+  not in `research-core`.
+- HPC and remote-execution code belongs in `research-hpc` and `ops/`.
+- Within `research-io`, only `dataframe/polars_ops.py` and
+  `dataframe/pandas_ops.py` import `polars` or `pandas` directly.
+- Reusable logic belongs in `packages/`, not in notebooks or project overlays.
+
+Where changes belong:
+
+- Package API or reusable helper: `packages/`
+- Workflow orchestration, job templates, profiles: `pipelines/` or `ops/`
+- Dataset metadata or reusable derivative metadata: `datasets/`
+- Run outputs: `artifacts/`
+- Local-only credentials: `secrets/`
+- Project-specific cohort, model, and report configuration: `project/`
+
+A structural change updates this file when stable boundaries change,
+`ROADMAP.md` when public future direction changes, and an ADR under
+`docs/decisions/` when a durable decision changes. It must keep both BIDS and
+non-BIDS use cases working.
 
 ## Projects and configuration
 
@@ -223,6 +253,4 @@ contain detailed technical, scientific-boundary, and safety decisions. The
 [capability matrix](docs/capabilities.md) records present workflow status, and
 the [README](README.md) remains the public entry point.
 
-Future direction belongs in the [roadmap](ROADMAP.md) rather than in this
-architecture overview. This document therefore avoids implementation-progress
-ledgers and historical task checklists.
+Future direction belongs in the [roadmap](ROADMAP.md), not in this overview.

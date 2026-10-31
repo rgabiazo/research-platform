@@ -130,7 +130,7 @@ reviewed plan uses its planned run ID. After a failed or completed execution,
 or if the reviewed request changes, preserve the existing run and choose a new
 ID. The [full quickstart](docs/onboarding/quickstart.md) explains
 installation profiles, plan identity, recovery, and evaluation; the
-[tabular guide](docs/tabular-slice.md) contains the complete integrity
+[tabular guide](docs/analysis-workflows.md) contains the complete integrity
 contract.
 
 `rp` offers guided setup for common tasks while keeping the lower-level
@@ -198,7 +198,7 @@ storage, schedulers, or live neuroimaging workflows.
   data without placing them in the public repository.
 - [Capability and support matrix](docs/capabilities.md) — check current status,
   prerequisites, evidence, and limitations.
-- [BIDS and HPC planning](docs/bids-hpc-slice.md) — configure and review
+- [BIDS and HPC planning](docs/how-to/hpc-setup.md) — configure and review
   plan-only or external-runtime paths.
 - [ROI workflows](docs/roi-workflows.md) and
   [MVPA and crossnobis](docs/mvpa-crossnobis.md) — use the checked-in local

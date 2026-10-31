@@ -1,4 +1,4 @@
-# ADR-0008: Analysis Action And BIDS Analysis Slice
+# ADR-0008: Analysis action and first-level FEAT
 
 ## Status
 

@@ -27,9 +27,8 @@ DOCUMENTS = (
     REPO_ROOT / "README.md",
     REPO_ROOT / "docs" / "byod.md",
     REPO_ROOT / "docs" / "capabilities.md",
-    REPO_ROOT / "docs" / "bids-hpc-slice.md",
-    REPO_ROOT / "docs" / "bids-analysis-slice.md",
-    REPO_ROOT / "docs" / "tabular-slice.md",
+    REPO_ROOT / "docs" / "how-to" / "hpc-setup.md",
+    REPO_ROOT / "docs" / "analysis-workflows.md",
     REPO_ROOT / "docs" / "mvpa-crossnobis-command-runbook.md",
     REPO_ROOT / "docs" / "how-to" / "hpc-troubleshooting.md",
     REPO_ROOT / "docs" / "how-to" / "run-deepprep-on-slurm.md",
@@ -41,7 +40,7 @@ DOCUMENTS = (
 )
 BEGINNER_HPC_GUIDES = (
     REPO_ROOT / "README.md",
-    REPO_ROOT / "docs" / "bids-hpc-slice.md",
+    REPO_ROOT / "docs" / "how-to" / "hpc-setup.md",
     REPO_ROOT / "docs" / "how-to" / "run-deepprep-on-slurm.md",
     REPO_ROOT / "docs" / "how-to" / "run-feat-first-level-on-slurm.md",
     REPO_ROOT / "docs" / "mvpa-crossnobis-command-runbook.md",

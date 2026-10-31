@@ -93,4 +93,4 @@ publication decision.
 See the [repository overview](../../README.md),
 [architecture](../../ARCHITECTURE.md),
 [capability matrix](../../docs/capabilities.md), and
-[tabular guide](../../docs/tabular-slice.md).
+[tabular guide](../../docs/analysis-workflows.md#tabular).

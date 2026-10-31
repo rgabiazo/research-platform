@@ -132,5 +132,5 @@ MVPA contracts are exercised by:
 See the [repository overview](../../README.md),
 [architecture](../../ARCHITECTURE.md),
 [capability matrix](../../docs/capabilities.md),
-[tabular guide](../../docs/tabular-slice.md), and
+[tabular guide](../../docs/analysis-workflows.md#tabular), and
 [MVPA guide](../../docs/mvpa-crossnobis.md).

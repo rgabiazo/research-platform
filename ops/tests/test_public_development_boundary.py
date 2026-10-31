@@ -186,8 +186,8 @@ export ARTIFACTS_ROOT="$(
 def test_scoped_generic_hpc_examples_have_no_site_default_assumptions() -> None:
     scoped = (
         REPO_ROOT / "ops" / "sync" / "ssh" / "targets.example.yaml",
-        REPO_ROOT / "docs" / "bids-hpc-slice.md",
-        REPO_ROOT / "docs" / "bids-analysis-slice.md",
+        REPO_ROOT / "docs" / "how-to" / "hpc-setup.md",
+        REPO_ROOT / "docs" / "analysis-workflows.md",
     )
     forbidden = ("$SCRATCH", "/local/scratch", "StdEnv/2023", "arrow/23.0.1", "apptainer/1.4.5")
 

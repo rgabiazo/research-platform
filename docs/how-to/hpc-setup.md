@@ -1,11 +1,10 @@
-# BIDS and HPC planning
+# HPC setup
 
-> **Alpha status — Plan/validation only for the public example.** Public
-> configuration, manifest rendering, SLURM bundles, and dry-run safety are
-> tested. The explicit execute paths are **Experimental or external-runtime**:
-> the checked-in BIDS dataset has no executable imaging payload, and no live SSH
-> host, scheduler, remote runtime, or cluster execution was validated for this
-> release candidate.
+Local setup, validation, manifest rendering, and SLURM plan rendering for the
+public example are **Plan/validation only**. The execute paths are
+**Experimental or external-runtime**: the checked-in BIDS dataset has no
+executable imaging payload, and no live SSH host, scheduler, or remote runtime
+has been validated.
 
 This repository includes safe orchestration for adapter-driven BIDS preprocessing and analysis. The
 original concrete path is fMRIPost-AROMA; DeepPrep now uses the same submit, sync, verify, status, and pull flow
@@ -54,7 +53,7 @@ The workspace CLI stays orchestration-only:
 - `rp hpc cancel --run-id <run_id>`
 
 Install the public `rp` command from the source checkout using the canonical
-[quickstart](onboarding/quickstart.md):
+[quickstart](../onboarding/quickstart.md):
 
 ```bash
 bash ops/envs/dev/bootstrap.sh --profile minimal
@@ -78,7 +77,7 @@ rp --help
 - Alliance/MFA behavior remains available only through explicit
   `--template alliance` selection as an optional provider integration
   requiring site review. No provider has been live validated.
-- `rp hpc init` remains only as a legacy, backward-compatible
+- `rp hpc init` is a legacy, backward-compatible
   Alliance-oriented local-default helper.
 - `rp hpc doctor` immediately loads the selected profile and checks SSH
   connectivity. Host-key acceptance, interactive authentication, or MFA may
@@ -206,7 +205,7 @@ Provider-neutral local starter:
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc setup \
       --target target-a \
       --user <ssh-user> \
@@ -228,17 +227,17 @@ env PATH="/tmp/research-platform-venv/bin:$PATH" \
 
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc sync workspace
 
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc sync project --project project-demo-bids
 
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc sync data --project project-demo-bids
 ```
 
@@ -259,17 +258,17 @@ explicit authorization:
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc sync workspace --execute
 
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc sync project --project project-demo-bids --execute
 
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc sync data --project project-demo-bids --execute
 ```
 
@@ -282,7 +281,7 @@ Minimal pull after setup:
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc pull --run-id demo-submit --execute
 ```
 
@@ -298,7 +297,7 @@ Clearly labeled fMRIPost-AROMA example:
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp run submit preprocess bids --project project-demo-bids --discover --run-id aroma-demo
 ```
 
@@ -308,12 +307,12 @@ submission explicitly:
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp run submit preprocess bids --project project-demo-bids --discover --run-id aroma-demo --execute
 
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc status --run-id aroma-demo
 ```
 
@@ -324,11 +323,11 @@ separately before retrieval; `rp hpc status --live` performs one immediate SSH
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     rp hpc pull \
       --run-id aroma-demo \
       --subpath outputs/fmripost_aroma \
-      --destination /tmp/rp-slice-downloads/fmripost_aroma \
+      --destination /tmp/rp-hpc-downloads/fmripost_aroma \
       --execute
 ```
 
@@ -405,8 +404,8 @@ Local example:
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
-    RP_TEMPLATEFLOW_HOME=/tmp/rp-slice-templateflow \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
+    RP_TEMPLATEFLOW_HOME=/tmp/rp-hpc-templateflow \
     rp run local preprocess bids --run-id demo-local --execute
 ```
 
@@ -415,7 +414,7 @@ HPC/script-generation example:
 ```bash
 env PATH="/tmp/research-platform-venv/bin:$PATH" \
     RESEARCH_PLATFORM_ROOT="$PWD" \
-    ARTIFACTS_ROOT=/tmp/rp-slice-artifacts \
+    ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts \
     RP_HPC_PROFILE=target-a \
     RESEARCH_HPC_SSH_CONFIG=secrets/hpc/ssh-profiles.yaml \
     RP_REMOTE_WORKSPACE_ROOT=/remote/workspace \
@@ -437,24 +436,24 @@ without `--execute`. Do not run this block end to end as a beginner checklist;
 use only reviewed commands appropriate to the configured site.
 
 ```bash
-python3 packages/research-core/tests/unit/test_cli_slice.py
-python3 packages/research-hpc/tests/unit/test_slice_helpers.py
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp config validate
+python3 packages/research-core/tests/unit/test_cli.py
+python3 packages/research-hpc/tests/unit/test_hpc_helpers.py
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp config validate
 env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" rp project init bids-preprocess --project project-demo-bids --study-root /data/studies/demo-bids --derivative-root /data/studies/demo-bids-derivatives/deepprep-bold --tool fmripost_aroma
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp batch discover bids --batch demo_discovered
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp run plan preprocess bids --run-id demo-plan
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp batch discover bids --batch demo_discovered
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp run plan preprocess bids --run-id demo-plan
 env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" rp hpc setup --target target-a --user <ssh-user> --host <login-host> --remote-workspace-root /remote/workspace --remote-artifacts-root /remote/workspace/artifacts --ssh-config secrets/hpc/ssh-profiles.yaml --targets-config secrets/hpc/targets.yaml --set-default
 env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" rp hpc validate --target target-a --project project-demo-bids
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc sync workspace
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc sync workspace --execute
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc sync project --project project-demo-bids
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc sync project --project project-demo-bids --execute
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts RP_REMOTE_WORKSPACE_ROOT=/remote/workspace RP_REMOTE_ARTIFACTS_ROOT=/remote/workspace/artifacts rp run submit preprocess bids --project project-demo-bids --discover --run-id demo-submit
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts RP_REMOTE_WORKSPACE_ROOT=/remote/workspace RP_REMOTE_ARTIFACTS_ROOT=/remote/workspace/artifacts rp run submit preprocess bids --project project-demo-bids --discover --run-id demo-submit --execute
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc sync data --project project-demo-bids
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc sync data --project project-demo-bids --execute
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc verify data --project project-demo-bids --profile target-a
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc status --run-id demo-submit
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc pull --run-id demo-submit --execute
-env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-slice-artifacts rp hpc pull --run-id demo-submit --subpath outputs/fmripost_aroma --destination /tmp/rp-slice-downloads/fmripost_aroma --execute
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc sync workspace
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc sync workspace --execute
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc sync project --project project-demo-bids
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc sync project --project project-demo-bids --execute
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts RP_REMOTE_WORKSPACE_ROOT=/remote/workspace RP_REMOTE_ARTIFACTS_ROOT=/remote/workspace/artifacts rp run submit preprocess bids --project project-demo-bids --discover --run-id demo-submit
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts RP_REMOTE_WORKSPACE_ROOT=/remote/workspace RP_REMOTE_ARTIFACTS_ROOT=/remote/workspace/artifacts rp run submit preprocess bids --project project-demo-bids --discover --run-id demo-submit --execute
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc sync data --project project-demo-bids
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc sync data --project project-demo-bids --execute
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc verify data --project project-demo-bids --profile target-a
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc status --run-id demo-submit
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc pull --run-id demo-submit --execute
+env PATH="/tmp/research-platform-venv/bin:$PATH" RESEARCH_PLATFORM_ROOT="$PWD" ARTIFACTS_ROOT=/tmp/rp-hpc-artifacts rp hpc pull --run-id demo-submit --subpath outputs/fmripost_aroma --destination /tmp/rp-hpc-downloads/fmripost_aroma --execute
 ```

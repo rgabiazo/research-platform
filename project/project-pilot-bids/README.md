@@ -19,7 +19,7 @@ execution require separate user data, tools or containers, credentials, and
 reviewed site configuration. The presence of adapters and plans does not make
 this an executed imaging workflow.
 
-See the [BIDS and HPC guide](../../docs/bids-hpc-slice.md), the
+See the [HPC setup guide](../../docs/how-to/hpc-setup.md), the
 [source-checkout quickstart](../../docs/onboarding/quickstart.md), and the
 [capability matrix](../../docs/capabilities.md).
 

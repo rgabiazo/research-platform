@@ -175,8 +175,6 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
             "`project-template`",
             "independent scaffold metadata",
             "not part of that coordinated source-package version",
-            "Neither directory presence nor placeholder content establishes implementation",
-            "implemented runtime product",
         ):
             self.assertIn(identity, text)
 

@@ -346,7 +346,7 @@ tools.
 Further reading:
 
 - [Capability matrix](../../docs/capabilities.md)
-- [BIDS and HPC planning](../../docs/bids-hpc-slice.md)
+- [HPC setup](../../docs/how-to/hpc-setup.md)
 - [HPC troubleshooting](../../docs/how-to/hpc-troubleshooting.md)
 - [Architecture and package ownership](../../ARCHITECTURE.md)
 - [ADR-0022: HPC execution contract](../../docs/decisions/ADR-0022-headline-hpc-execution-contract.md)

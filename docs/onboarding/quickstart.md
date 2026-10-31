@@ -164,7 +164,7 @@ unchanged recorded bytes. A planned, failed, remote-only, claimed, legacy, or
 modified training run cannot be used. If the training transaction changes
 after evaluation planning, preserve the rejected evaluation plan and choose a
 new run ID. These local guarantees do not cover SLURM or remote execution. See
-`docs/tabular-slice.md` for the complete contract.
+`docs/analysis-workflows.md` for the complete contract.
 
 Use the analysis package through its implemented module entry point, for
 example:
