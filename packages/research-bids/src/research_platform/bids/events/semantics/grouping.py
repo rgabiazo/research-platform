@@ -1,3 +1,5 @@
+"""Read source rows and group them into runs."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass

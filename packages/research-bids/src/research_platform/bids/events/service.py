@@ -8,10 +8,9 @@ from typing import Any
 from .anchors import resolve_bold_anchor
 from .manifest import write_build_manifest
 from .paths import build_staged_output_path
+from .semantics import EventsSemanticResult, events_semantic_api
 from .stimuli import stage_stimuli
 from .writers import write_events_tsv, write_sidecar_json
-
-from research_platform.neuro.events import EventsSemanticResult, events_semantic_api  # noqa: E402
 
 
 def _file_sha256(path: str | Path) -> str:

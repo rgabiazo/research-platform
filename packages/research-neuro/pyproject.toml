@@ -21,7 +21,14 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering",
 ]
-dependencies = ["nibabel>=5.0"]
+dependencies = [
+  "nibabel>=5.0",
+  "research-core>=0.1.0a1,<0.2",
+]
+
+[project.optional-dependencies]
+analysis = ["research-analysis>=0.1.0a1,<0.2"]
+bids = ["research-bids>=0.1.0a1,<0.2"]
 
 [project.urls]
 Homepage = "https://github.com/rgabiazo/research-platform"

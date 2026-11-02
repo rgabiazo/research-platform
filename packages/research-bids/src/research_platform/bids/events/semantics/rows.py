@@ -1,3 +1,5 @@
+"""Build and validate events rows for one run."""
+
 from __future__ import annotations
 
 from collections import defaultdict

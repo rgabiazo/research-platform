@@ -50,9 +50,8 @@ inspect image content or confer scientific validity.
 The top-level `rp` command is the integrated workspace interface.
 `research-bids` is the lower-level package command for the advanced events
 surface. The BIDS facade owns pathing, anchors, manifests, writers, stimuli,
-and publication. It currently imports configured row-building semantics from
-`research_platform.neuro.events`; this is transitional dependency debt, not
-the intended ownership direction.
+publication, and the configured row-building semantics in
+`research_platform.bids.events.semantics`.
 
 ## Install from a source checkout
 
@@ -110,12 +109,9 @@ needs a reviewed semantic extension, not only a new configuration file.
 
 ## Dependencies and evidence
 
-The declared runtime dependency currently points to the coordinated
-`research-neuro` package because of that shared event implementation. The
-intended direction allows Neuro to depend on BIDS-owned entities, portable
-paths, and naming contracts; BIDS must not depend on Neuro-specific types or
-scientific semantics. The present dependency is tracked implementation debt,
-not a claim that the source graph already satisfies that rule.
+`research-bids` declares no dependency on another Research Platform package
+and does not import `research-neuro`. `research-neuro` depends on BIDS-owned
+entities, portable paths, and naming contracts, not the other way round.
 The default `polars` event backend is part of the minimal environment and does
 not require the pandas extra. The optional `pandas` extra exists only for
 pandas-compatible numeric serialization and established golden bytes.

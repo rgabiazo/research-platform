@@ -22,7 +22,7 @@ This package owns:
   neuroimaging-specific exact-unit runtime handoff;
 - DeepPrep, fMRIPost-AROMA, FSL FEAT, Featquery, and related tool-specific
   adapters and command construction;
-- the current semantic implementation shared by the BIDS events facade.
+- the FSL FEAT numeric event-file inspection helper.
 
 It does not own:
 
@@ -159,8 +159,13 @@ validation, and runtime handoff around that mathematics.
 
 ## External dependencies and limitations
 
-The package declares `nibabel>=5.0`. The repository bootstrap installs the
-coordinated package closure for the bounded local examples.
+The package depends on `research-core` for environment value resolution in
+the DeepPrep and fMRIPost-AROMA adapters, and on `nibabel>=5.0`. The `bids`
+extra adds `research-bids` for BIDS entities, paths, naming, and the events
+semantics behind `research_platform.neuro.events`; the `analysis` extra adds
+`research-analysis` for the crossnobis smoke module. The repository
+bootstrap installs the coordinated package closure for the bounded local
+examples.
 
 FSL, ANTs, Nextflow, Apptainer or another container runtime, DeepPrep images,
 fMRIPost-AROMA images, scheduler access, and real imaging inputs are not

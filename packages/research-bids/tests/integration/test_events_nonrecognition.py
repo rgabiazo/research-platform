@@ -11,7 +11,7 @@ PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
 from research_platform.bids.cli import main
-from research_platform.neuro.events import load_build_spec
+from research_platform.bids.events.semantics import load_build_spec
 
 
 class GenericNonRecognitionEventsIntegrationTest(unittest.TestCase):

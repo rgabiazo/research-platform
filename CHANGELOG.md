@@ -31,6 +31,12 @@ is **Research Platform 0.1.0 Alpha 1**; it remains unpublished.
 - Established public/private overlay boundaries, repository sanitation checks,
   portable path safeguards, side-effect-free planning, and failure-safe
   transactional output handling for the documented local tabular workflow.
+- Moved the events build-spec semantics into `research-bids`
+  (`research_platform.bids.events.semantics`) and kept
+  `research_platform.neuro.events` as a compatibility facade; `research-neuro`
+  declares `research-core` and offers `research-bids` and `research-analysis`
+  as the `bids` and `analysis` extras, and `research-bids` declares no internal
+  package dependency.
 
 See the [capability and support matrix](docs/capabilities.md) for the exact
 runnable, plan-only, external-runtime, and scaffold boundaries.

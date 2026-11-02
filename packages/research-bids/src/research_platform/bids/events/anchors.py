@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 
-from research_platform.neuro.events import BuildSpec
+from research_platform.bids.events.semantics import BuildSpec
 from research_platform.bids.entities import parse_bids_name
 
 

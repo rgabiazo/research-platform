@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from research_platform.neuro.events import BuildSpec
+from research_platform.bids.events.semantics import BuildSpec
 
 
 def _resolve_stimulus_source(stim_file: str, source_roots: list[Path]) -> Path:

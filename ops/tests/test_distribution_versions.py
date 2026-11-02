@@ -30,8 +30,12 @@ PIPELINE_MANIFESTS = frozenset(
 )
 INTERNAL_REQUIREMENTS = {
     "research-analysis": ("research-ml>=0.1.0a1,<0.2",),
-    "research-bids": ("research-neuro>=0.1.0a1,<0.2",),
     "research-core": ("research-hpc>=0.1.0a1,<0.2",),
+    "research-neuro": (
+        "research-core>=0.1.0a1,<0.2",
+        "research-analysis>=0.1.0a1,<0.2",
+        "research-bids>=0.1.0a1,<0.2",
+    ),
 }
 
 
@@ -65,6 +69,25 @@ def test_every_internal_requirement_is_coordinated_and_accounted_for() -> None:
             observed[distribution] = internal
 
     assert observed == INTERNAL_REQUIREMENTS
+
+
+# The remote bootstrap installs only the declared dependencies of staged packages,
+# and remote hosts receive research-neuro without research-bids or research-analysis.
+# The change that syncs research-bids to remote hosts promotes these extras to
+# dependencies and updates this test.
+def test_research_neuro_sibling_packages_are_extras_not_dependencies() -> None:
+    metadata = _project_metadata("research-neuro")
+    internal_dependencies = tuple(
+        requirement
+        for requirement in metadata.get("dependencies", ())
+        if re.match(r"^research-[a-z]+(?:$|[<=>!~])", requirement)
+    )
+
+    assert internal_dependencies == ("research-core>=0.1.0a1,<0.2",)
+    assert metadata.get("optional-dependencies") == {
+        "analysis": ["research-analysis>=0.1.0a1,<0.2"],
+        "bids": ["research-bids>=0.1.0a1,<0.2"],
+    }
 
 
 def test_workspace_version_is_coordinated_platform_identity() -> None:

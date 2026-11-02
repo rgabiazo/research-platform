@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from research_platform.neuro.events import BuildSpec
+from research_platform.bids.events.semantics import BuildSpec
 from research_platform.bids.layout import build_bids_events_relpath
 
 
