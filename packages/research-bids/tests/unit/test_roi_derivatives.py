@@ -5,10 +5,7 @@ import sys
 import unittest
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[2]
-WORKSPACE_ROOT = Path(__file__).resolve().parents[4]
-NEURO_PACKAGE_ROOT = WORKSPACE_ROOT / "packages" / "research-neuro"
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
-sys.path.insert(0, str(NEURO_PACKAGE_ROOT / "src"))
 
 from research_platform.bids.roi import (
     build_loso_flame1_mask_path,

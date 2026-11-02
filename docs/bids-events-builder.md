@@ -45,8 +45,8 @@ python -m research_platform.bids.cli events publish --dataset-root ... --manifes
 
 ## Contract
 
-- canonical events semantics live at `research_platform.neuro.events`
-- `research-bids` consumes that root semantic surface as the stable BIDS facade for plan/build/publish
+- canonical events semantics live at `research_platform.bids.events.semantics`, owned by `research-bids`
+- the BIDS events facade for plan/build/publish consumes that semantic surface
 - `plan` resolves staged output paths and manifest entries
 - `build` writes staged `_events.tsv`, optional `_events.json`, optional `stimuli/`, and a deterministic build manifest under `artifacts/...`
 - `publish` copies only the staged files listed in that manifest into `datasets/...`

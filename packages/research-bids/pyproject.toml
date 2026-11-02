@@ -21,7 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering",
 ]
-dependencies = ["research-neuro>=0.1.0a1,<0.2"]
+dependencies = []
 
 [project.optional-dependencies]
 pandas = ["pandas>=2.0"]

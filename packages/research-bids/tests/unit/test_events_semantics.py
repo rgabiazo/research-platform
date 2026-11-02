@@ -6,13 +6,13 @@ from pathlib import Path
 import sys
 import unittest
 
-PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+PACKAGE_ROOT = Path(__file__).resolve().parents[2]
 FIXTURES_ROOT = PACKAGE_ROOT / "tests" / "fixtures"
 SPECS_ROOT = FIXTURES_ROOT / "specs" / "events"
 sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
-import research_platform.neuro.events as neuro_events
-from research_platform.neuro.events import (
+import research_platform.bids.events.semantics as events_semantics
+from research_platform.bids.events.semantics import (
     EventsSemanticAPI,
     EventsSemanticResult,
     EventsSemanticRun,
@@ -33,7 +33,7 @@ def _expected_rows(path: Path) -> list[dict[str, str]]:
         return [dict(row) for row in csv.DictReader(handle, delimiter="\t")]
 
 
-class NeuroEventsSemanticsTest(unittest.TestCase):
+class EventsSemanticsTest(unittest.TestCase):
     def _assert_toy_memory_rows_match_expected(
         self,
         actual_rows: list[dict[str, str]],
@@ -116,7 +116,7 @@ class NeuroEventsSemanticsTest(unittest.TestCase):
         self.assertIs(EventsSemanticRun, SemanticRunRows)
         self.assertIs(events_semantic_api.result_type, EventsSemanticResult)
         self.assertIs(events_semantic_api.run_type, EventsSemanticRun)
-        self.assertTrue(expected_exports.issubset(set(neuro_events.__all__)))
+        self.assertTrue(expected_exports.issubset(set(events_semantics.__all__)))
         self.assertTrue(callable(load_build_spec))
         self.assertTrue(callable(read_source_rows))
         self.assertTrue(callable(resolve_run_groups))

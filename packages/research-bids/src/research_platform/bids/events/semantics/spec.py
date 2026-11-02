@@ -1,3 +1,5 @@
+"""Load and compile events build specs."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
