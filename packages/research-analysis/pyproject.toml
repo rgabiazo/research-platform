@@ -21,7 +21,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering",
 ]
-dependencies = ["research-ml>=0.1.0a1,<0.2"]
+dependencies = ["research-ml>=0.1.0a1,<0.2", "research-utils>=0.1.0a1,<0.2"]
 
 [project.optional-dependencies]
 rsatoolbox = ["numpy", "rsatoolbox>=0.3,<0.4"]

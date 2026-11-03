@@ -13,6 +13,8 @@ import re
 import tempfile
 from typing import Any
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from ._path_safety import configured_path_is_unsafe, published_text_contains_local_path_reference
 
 
@@ -1975,13 +1977,6 @@ def _validate_relative_path_value(value: Any, label: str, errors: list[str]) -> 
 
 def _safe_label(value: str) -> bool:
     return bool(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", value))
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _mapping(value: Any) -> Mapping[str, Any]:

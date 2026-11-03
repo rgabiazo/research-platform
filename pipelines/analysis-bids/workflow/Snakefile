@@ -5,8 +5,11 @@ configfile: "config/defaults.yaml"
 
 WORKSPACE_ROOT = Path(workflow.basedir).resolve().parents[2]
 CORE_SRC = WORKSPACE_ROOT / "packages" / "research-core" / "src"
+UTILS_SRC = WORKSPACE_ROOT / "packages" / "research-utils" / "src"
 if str(CORE_SRC) not in sys.path:
     sys.path.insert(0, str(CORE_SRC))
+if str(UTILS_SRC) not in sys.path:
+    sys.path.insert(0, str(UTILS_SRC))
 
 from research_platform.core.runtime_plan import load_runtime_plan, runtime_plan_units
 

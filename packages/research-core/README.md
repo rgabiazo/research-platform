@@ -35,7 +35,8 @@ It does not own:
 - low-level SSH, transfer, scheduler, or remote-safety mechanics.
 
 The direct `research-hpc` dependency supports CLI composition. It does not make
-the complete remote lifecycle supported.
+the complete remote lifecycle supported. `research-core` also depends on
+`research-utils` for text helpers and YAML writing.
 
 ## Source-checkout use
 

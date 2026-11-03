@@ -6,10 +6,16 @@ import csv
 import io
 import json
 import math
-import os
 from pathlib import Path
-import tempfile
 from typing import Any
+
+from research_platform.utils.fileio import write_text_atomic as _write_text_atomic
+from research_platform.utils.output_targets import (
+    resolved_output_root as _resolved_output_root,
+    has_parent_traversal as _has_parent_traversal,
+    reject_duplicate_targets as _reject_duplicate_targets,
+    reject_existing_targets as _reject_existing_targets,
+)
 
 
 SCHEMA_VERSION = "research_platform.analysis.mvpa.runtime_outputs.v1"
@@ -792,13 +798,6 @@ def _resolved_output_targets(
     return root, targets
 
 
-def _resolved_output_root(output_root: str | Path) -> Path:
-    root = Path(output_root).expanduser()
-    if _has_parent_traversal(root):
-        raise ValueError("output_root must not contain parent traversal.")
-    return root.resolve(strict=False)
-
-
 def _resolved_output_path(root: Path, output_path: str | Path) -> _ResolvedOutputPath:
     raw_path = Path(output_path).expanduser()
     if _has_parent_traversal(raw_path):
@@ -814,27 +813,6 @@ def _resolved_output_path(root: Path, output_path: str | Path) -> _ResolvedOutpu
     return _ResolvedOutputPath(path=resolved, relative_path=relative.as_posix())
 
 
-def _has_parent_traversal(path: Path) -> bool:
-    return any(part == ".." for part in path.parts)
-
-
-def _reject_duplicate_targets(targets: Mapping[str, _ResolvedOutputPath]) -> None:
-    seen: dict[Path, str] = {}
-    for name, target in targets.items():
-        previous = seen.get(target.path)
-        if previous is not None:
-            raise ValueError(f"Output paths for {previous!r} and {name!r} must be distinct.")
-        seen[target.path] = name
-
-
-def _reject_existing_targets(targets: Mapping[str, _ResolvedOutputPath], *, overwrite: bool) -> None:
-    for name, target in targets.items():
-        if target.path.is_dir():
-            raise IsADirectoryError(f"Output path for {name!r} is an existing directory: {target.path}")
-        if target.path.exists() and not overwrite:
-            raise FileExistsError(f"Output path for {name!r} already exists: {target.path}")
-
-
 def _tsv_text(rows: Sequence[Mapping[str, Any]], columns: Sequence[str]) -> str:
     output = io.StringIO()
     writer = csv.writer(output, delimiter="\t", lineterminator="\n")
@@ -846,33 +824,6 @@ def _tsv_text(rows: Sequence[Mapping[str, Any]], columns: Sequence[str]) -> str:
 
 def _json_text(payload: Mapping[str, Any]) -> str:
     return json.dumps(_json_safe_value(payload), allow_nan=False, indent=2, sort_keys=True) + "\n"
-
-
-def _write_text_atomic(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temp_path: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            "w",
-            encoding="utf-8",
-            newline="",
-            dir=path.parent,
-            prefix=f".{path.name}.",
-            suffix=".tmp",
-            delete=False,
-        ) as handle:
-            temp_path = Path(handle.name)
-            handle.write(text)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temp_path, path)
-        temp_path = None
-    finally:
-        if temp_path is not None:
-            try:
-                temp_path.unlink()
-            except FileNotFoundError:
-                pass
 
 
 def _serialize_tsv_cell(value: Any) -> str:

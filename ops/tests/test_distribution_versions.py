@@ -30,13 +30,16 @@ PIPELINE_MANIFESTS = frozenset(
     }
 )
 INTERNAL_REQUIREMENTS = {
-    "research-analysis": ("research-ml>=0.1.0a1,<0.2",),
-    "research-core": ("research-hpc>=0.1.0a1,<0.2",),
+    "research-analysis": ("research-ml>=0.1.0a1,<0.2", "research-utils>=0.1.0a1,<0.2"),
+    "research-core": ("research-hpc>=0.1.0a1,<0.2", "research-utils>=0.1.0a1,<0.2"),
+    "research-hpc": ("research-utils>=0.1.0a1,<0.2",),
     "research-neuro": (
         "research-core>=0.1.0a1,<0.2",
+        "research-utils>=0.1.0a1,<0.2",
         "research-analysis>=0.1.0a1,<0.2",
         "research-bids>=0.1.0a1,<0.2",
     ),
+    "research-viz": ("research-utils>=0.1.0a1,<0.2",),
 }
 
 
@@ -84,7 +87,7 @@ def test_research_neuro_sibling_packages_are_extras_not_dependencies() -> None:
         if re.match(r"^research-[a-z]+(?:$|[<=>!~])", requirement)
     )
 
-    assert internal_dependencies == ("research-core>=0.1.0a1,<0.2",)
+    assert internal_dependencies == ("research-core>=0.1.0a1,<0.2", "research-utils>=0.1.0a1,<0.2")
     assert metadata.get("optional-dependencies") == {
         "analysis": ["research-analysis>=0.1.0a1,<0.2"],
         "bids": ["research-bids>=0.1.0a1,<0.2"],

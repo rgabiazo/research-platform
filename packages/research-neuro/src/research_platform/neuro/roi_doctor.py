@@ -24,6 +24,7 @@ from research_platform.neuro.roi_execution import (
     RoiExecutionContext,
     plan_roi_extraction,
 )
+from research_platform.utils.text import optional_text as _optional_text
 
 
 CommandFinder = Callable[[str], str | None]
@@ -775,13 +776,6 @@ def _payload_name(document: Mapping[str, Any], key: str) -> str:
 def _optional_path(value: Any) -> Path | None:
     text = _optional_text(value)
     return Path(text) if text is not None else None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _truthy(value: Any) -> bool:

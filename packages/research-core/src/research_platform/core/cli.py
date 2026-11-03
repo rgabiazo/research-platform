@@ -1271,6 +1271,7 @@ def _package_import_name(package: str) -> str:
         "research-io": "research_platform.io",
         "research-ml": "research_platform.ml",
         "research-neuro": "research_platform.neuro",
+        "research-utils": "research_platform.utils",
     }
     return mapping.get(package, package.replace("-", "_"))
 
@@ -13468,6 +13469,7 @@ def _render_run_shell_script(
     package_srcs = [
         "packages/research-analysis/src",
         "packages/research-ml/src",
+        "packages/research-utils/src",
     ]
     lines = [
         "#!/usr/bin/env bash",

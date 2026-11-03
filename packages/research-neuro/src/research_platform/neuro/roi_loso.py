@@ -19,6 +19,7 @@ from research_platform.neuro.roi import (
     provenance_path_reference,
     validate_portable_provenance_paths,
 )
+from research_platform.utils.text import optional_text as _optional_text
 
 
 FIXED_EFFECTS_LAYOUT_FSL_GFEAT_NESTED = "fsl_gfeat_nested"
@@ -1692,13 +1693,6 @@ def _optional_string_list(value: Any) -> tuple[str, ...]:
     if isinstance(value, Iterable):
         return tuple(str(item).strip() for item in value if str(item).strip())
     return ()
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _strip_entity_prefix(value: str | None, prefix: str) -> str:

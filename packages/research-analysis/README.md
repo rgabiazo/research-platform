@@ -53,9 +53,11 @@ entry point; its package CLI is invoked as:
 python -m research_platform.analysis.cli --help
 ```
 
-The base package depends on `research-ml`. The optional `rsatoolbox` extra adds
-NumPy and `rsatoolbox>=0.3,<0.4` for the guarded crossnobis adapter. The native
-reference distance implementation does not require that extra.
+The base package depends on `research-ml` and on `research-utils` for text
+helpers, atomic writes, hashing, and output-path checks. The optional
+`rsatoolbox` extra adds NumPy and `rsatoolbox>=0.3,<0.4` for the guarded
+crossnobis adapter. The native reference distance implementation does not
+require that extra.
 
 ## Tested tabular example
 

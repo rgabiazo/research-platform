@@ -17,6 +17,7 @@ import numpy as np
 
 from research_platform.neuro.nifti import GeometryMismatchError, load_nifti_image, validate_compatible_geometry
 from research_platform.neuro.roi_masks import validate_binary_mask
+from research_platform.utils.text import optional_text as _optional_text
 
 
 VOXEL_ORDER_C_FLAT_INDEX = "c_flat_index"
@@ -1363,13 +1364,6 @@ def _first_int(rows: Sequence[Mapping[str, Any]], *keys: str) -> int | None:
             except (TypeError, ValueError):
                 continue
     return None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _strip_entity_prefix(value: str | None, prefix: str) -> str | None:

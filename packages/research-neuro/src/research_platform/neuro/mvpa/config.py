@@ -13,6 +13,8 @@ from typing import Any
 import math
 import re
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from .pattern_sources import (
     ALLOWED_PATTERN_BACKENDS,
     ALLOWED_UNIT_SELECTION_MODES,
@@ -1828,13 +1830,6 @@ def _first_present(mapping: Mapping[str, Any], keys: Sequence[str]) -> Any:
         if key in mapping:
             return mapping.get(key)
     return None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _optional_int(value: Any) -> int | None:

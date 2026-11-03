@@ -2,13 +2,15 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 import csv
-import hashlib
 import json
 import re
 import shutil
 import tempfile
 from pathlib import Path
 from typing import Any
+
+from research_platform.utils.hashing import file_sha256 as _sha256
+from research_platform.utils.text import optional_text as _optional_text
 
 from .._version import DISTRIBUTION_NAME, package_version
 from ._path_safety import (
@@ -1346,14 +1348,6 @@ def _columns(rows: Sequence[Mapping[str, Any]]) -> list[str]:
     return columns or ["empty"]
 
 
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def _json_safe(value: Any) -> Any:
     if isinstance(value, Mapping):
         return {str(key): _json_safe(child) for key, child in value.items()}
@@ -1380,13 +1374,6 @@ def _safe_label(value: str) -> bool:
 
 def _filename_stem(value: str) -> bool:
     return bool(value) and "/" not in value and "\\" not in value and not value.startswith(".") and not Path(value).suffix
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _title_safe(value: str) -> str:

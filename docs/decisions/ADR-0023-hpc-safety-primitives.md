@@ -24,8 +24,9 @@ The future lifecycle in
 [`ADR-0022`](ADR-0022-headline-hpc-execution-contract.md) needs one
 dependency-safe authority for portable identity, descriptor-anchored
 inventories, immutable publication, exclusive ownership, and receipt
-canonicalization. `research-core` depends on the standard-library-only
-`research-hpc` package, so the authority belongs under
+canonicalization. `research-core` depends on `research-hpc`, whose only
+dependency is the standard-library-only `research-utils`, so the authority
+belongs under
 `research_platform.hpc.safety`; importing core or neuro transaction code would
 reverse that dependency.
 
@@ -1847,8 +1848,9 @@ creates repository-local state.
 
 - Canonical bytes, portable lexical names, versioned digest framing, and the
   later H2 contracts cannot drift independently.
-- The standard-library-only `research-hpc` package remains the dependency-safe
-  owner; `research-core` and `research-neuro` are not imported.
+- `research-hpc`, whose only dependency is the standard-library-only
+  `research-utils`, remains the dependency-safe owner; `research-core` and
+  `research-neuro` are not imported.
 - The ASCII path protocol intentionally trades general filename support for
   cross-platform alias safety in managed payloads.
 - H2a, H2b, and H2c1 create no remote or workflow capability and change no

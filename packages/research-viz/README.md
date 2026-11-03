@@ -127,8 +127,9 @@ which result is publishable.
 
 ## Formats and dependencies
 
-`research-viz` declares no third-party runtime dependency. Built-in rendering
-uses the Python standard library:
+`research-viz` declares no third-party runtime dependency; it depends on
+`research-utils` for text helpers, atomic writes, hashing, and output-path
+checks. Built-in rendering uses the Python standard library:
 
 - reports: Markdown, static HTML, and plain text;
 - figures: SVG point/interval output;

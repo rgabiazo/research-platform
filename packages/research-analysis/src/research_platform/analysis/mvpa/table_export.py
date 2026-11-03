@@ -10,6 +10,8 @@ from pathlib import Path
 import tempfile
 from typing import Any
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from ._path_safety import configured_path_is_unsafe, published_value_contains_local_path_reference
 
 
@@ -653,13 +655,6 @@ def _positive_or_zero_int(value: Any) -> int | None:
     if number < 0:
         return None
     return number
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _bids_participant_id(subject_id: str) -> str:

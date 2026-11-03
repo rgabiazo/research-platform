@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import Any
 import re
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from .config import (
     MISSING_INPUT_POLICY_FAIL,
     MISSING_INPUT_POLICY_SKIP,
@@ -1591,13 +1593,6 @@ def _first_text(mapping: Mapping[str, Any], *keys: str) -> str | None:
         if key in mapping:
             return _optional_text(mapping.get(key))
     return None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _string_sequence(value: Any) -> tuple[str, ...]:

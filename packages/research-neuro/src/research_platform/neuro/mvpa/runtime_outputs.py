@@ -10,8 +10,13 @@ import json
 import math
 import os
 from pathlib import Path
-import tempfile
 from typing import Any
+
+from research_platform.utils.fileio import write_text_atomic as _write_text_atomic
+from research_platform.utils.output_targets import (
+    has_parent_traversal as _has_parent_traversal,
+    reject_duplicate_targets as _reject_duplicate_targets,
+)
 
 from .._version import DISTRIBUTION_NAME as WRITER_PACKAGE
 from .._version import package_version
@@ -721,19 +726,6 @@ def _resolved_output_path(root: Path, output_path: str | Path, *, label: str) ->
     return _ResolvedOutputPath(path=resolved, relative_path=relative.as_posix())
 
 
-def _has_parent_traversal(path: Path) -> bool:
-    return any(part == ".." for part in path.parts)
-
-
-def _reject_duplicate_targets(targets: Mapping[str, _ResolvedOutputPath]) -> None:
-    seen: dict[Path, str] = {}
-    for name, target in targets.items():
-        previous = seen.get(target.path)
-        if previous is not None:
-            raise ValueError(f"Output paths for {previous!r} and {name!r} must be distinct.")
-        seen[target.path] = name
-
-
 def _reject_existing_targets(targets: Mapping[str, _ResolvedOutputPath], *, overwrite: bool) -> None:
     for name, target in targets.items():
         if target.path.is_dir():
@@ -764,33 +756,6 @@ def _json_text(payload: Mapping[str, Any], *, compact: bool = False) -> str:
     if compact:
         return json.dumps(safe_payload, allow_nan=False, separators=(",", ":"), sort_keys=True) + "\n"
     return json.dumps(safe_payload, allow_nan=False, indent=2, sort_keys=True) + "\n"
-
-
-def _write_text_atomic(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temp_path: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            "w",
-            encoding="utf-8",
-            newline="",
-            dir=path.parent,
-            prefix=f".{path.name}.",
-            suffix=".tmp",
-            delete=False,
-        ) as handle:
-            temp_path = Path(handle.name)
-            handle.write(text)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temp_path, path)
-        temp_path = None
-    finally:
-        if temp_path is not None:
-            try:
-                temp_path.unlink()
-            except FileNotFoundError:
-                pass
 
 
 def _serialize_tsv_cell(value: Any) -> str:

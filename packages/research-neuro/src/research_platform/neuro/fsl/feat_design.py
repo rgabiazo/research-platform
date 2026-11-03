@@ -14,6 +14,8 @@ from typing import Any
 import re
 import shlex
 
+from research_platform.utils.text import optional_text as _optional_text
+
 
 _EVTITLE_VARIABLE = re.compile(r"^fmri\(evtitle([0-9]+)\)$")
 _EVTITLE_HINT = re.compile(r"\bfmri\s*\(\s*evtitle", re.IGNORECASE)
@@ -1176,13 +1178,6 @@ def _condition_value(condition: Any, *names: str) -> Any:
             if name in fields_payload:
                 return fields_payload[name]
     return None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _forbidden_condition_field_paths(condition: Any) -> tuple[str, ...]:

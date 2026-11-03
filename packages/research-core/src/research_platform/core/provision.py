@@ -132,6 +132,12 @@ def build_common_sync_scope(*, context: dict[str, Any], manifest: dict[str, Any]
             exclude_files=common_excludes,
             label="research-hpc",
         ),
+        build_scope_entry(
+            workspace_root=workspace_root,
+            source=workspace_root / "packages" / "research-utils",
+            exclude_files=common_excludes,
+            label="research-utils",
+        ),
     ]
     return {
         "name": "common",

@@ -56,6 +56,7 @@ class ProvisionPlanTests(unittest.TestCase):
         self.assertIn("ops", scope_entries["common"])
         self.assertIn("packages/research-core", scope_entries["common"])
         self.assertIn("packages/research-hpc", scope_entries["common"])
+        self.assertIn("packages/research-utils", scope_entries["common"])
         self.assertIn("pipelines/preprocess-bids", scope_entries["neuro-bids"])
         self.assertIn("packages/research-neuro", scope_entries["neuro-bids"])
         self.assertIn("datasets/ds-bids-example", scope_entries["neuro-bids"])
@@ -102,6 +103,7 @@ class ProvisionPlanTests(unittest.TestCase):
         self.assertIn("WORKSPACE.yaml", scope_entries["common"])
         self.assertIn("ops", scope_entries["common"])
         self.assertIn("packages/research-hpc", scope_entries["common"])
+        self.assertIn("packages/research-utils", scope_entries["common"])
         self.assertIn("packages/research-analysis", scope_entries["tabular-ml"])
         self.assertIn("packages/research-ml", scope_entries["tabular-ml"])
         self.assertIn(
@@ -255,6 +257,7 @@ class ProvisionPlanTests(unittest.TestCase):
                 "packages/research-core",
                 "packages/research-hpc",
                 "packages/research-neuro",
+                "packages/research-utils",
             ):
                 (workspace_root / relative_path).mkdir(parents=True, exist_ok=True)
 

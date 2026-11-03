@@ -12,6 +12,8 @@ from dataclasses import dataclass, field, fields, is_dataclass
 from typing import Any
 import re
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from .config import ALLOWED_CV_UNITS, ALLOWED_NOISE_NORMALIZATION_METHODS
 
 
@@ -945,13 +947,6 @@ def _string_sequence(value: Any) -> tuple[str, ...]:
         return tuple(values)
     text = str(value).strip()
     return (text,) if text else ()
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _optional_int(value: Any) -> int | None:

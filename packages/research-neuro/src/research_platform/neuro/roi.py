@@ -18,6 +18,7 @@ from research_platform.neuro._roi_path_safety import (
     published_text_contains_local_path_reference,
     published_value_local_path_fields,
 )
+from research_platform.utils.text import optional_text as _optional_text
 
 
 ROI_FAMILIES = frozenset(
@@ -1095,13 +1096,6 @@ def _path_reference_under_root(path: Path, root: Path, prefix: str) -> str | Non
 
 def _contains_personal_path(value: str) -> bool:
     return published_text_contains_local_path_reference(value)
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _optional_number(value: Any) -> float | None:

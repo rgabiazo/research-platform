@@ -24,6 +24,7 @@ classifiers = [
 dependencies = [
   "nibabel>=5.0",
   "research-core>=0.1.0a1,<0.2",
+  "research-utils>=0.1.0a1,<0.2",
 ]
 
 [project.optional-dependencies]

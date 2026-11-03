@@ -34,6 +34,7 @@ from research_platform.neuro.roi import (
     runtime_existing_output_policy,
     validate_roi_sidecar_document,
 )
+from research_platform.utils.text import optional_text as _optional_text
 
 
 SUPPORTED_BUILD_FAMILIES = frozenset({"coordinate_sphere", "manual_mask", "functional_threshold_map", "loso_group_map"})
@@ -3214,13 +3215,6 @@ def _first_text(fields: Mapping[str, Any], *keys: str) -> str | None:
         if value is not None:
             return value
     return None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _number_sequence(value: Any, *, label: str) -> tuple[float, float, float]:

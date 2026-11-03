@@ -8,6 +8,7 @@ from typing import Any
 import shutil
 
 from research_platform.neuro.roi import parse_extraction_set_document, parse_roi_set_document
+from research_platform.utils.text import optional_text as _optional_text
 
 
 def cleanup_after_loso_roi_build(
@@ -238,10 +239,3 @@ def _target_payload(kind: str, path: Path, *, status: str, reason: str | None = 
     if reason is not None:
         payload["reason"] = reason
     return payload
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None

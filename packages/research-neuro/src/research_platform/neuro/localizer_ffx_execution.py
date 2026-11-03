@@ -15,6 +15,7 @@ import subprocess
 
 from research_platform.neuro.fsl.flame import write_fixed_effects_design
 from research_platform.neuro.localizer_ffx import LocalizerFixedEffectsPlan
+from research_platform.utils.text import optional_text as _optional_text
 
 
 CommandRunner = Callable[[Sequence[str]], Any]
@@ -832,13 +833,6 @@ def _text_sequence(raw: Any) -> tuple[str, ...]:
         return tuple(values)
     text = _optional_text(raw)
     return (text,) if text is not None else ()
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _json_safe(value: Any) -> Any:
