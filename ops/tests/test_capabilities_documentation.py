@@ -170,7 +170,7 @@ class CapabilityDocumentationContractTests(unittest.TestCase):
 
         for identity in (
             "coordinated source-package version is `0.1.0a1`",
-            "eight `packages/research-*` distributions",
+            "nine `packages/research-*` distributions",
             "`project-example`",
             "`project-template`",
             "independent scaffold metadata",

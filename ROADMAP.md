@@ -17,7 +17,7 @@ limitations in the capability matrix.
 
 ## Completed foundations
 
-- Eight Python packages share one workspace, with `rp` as the integrated CLI
+- Nine Python packages share one workspace, with `rp` as the integrated CLI
   and package-level interfaces for programmatic use.
 - Deterministic synthetic examples cover the tabular workflow, BIDS event
   construction, the documented local ROI examples, and materialized-pattern

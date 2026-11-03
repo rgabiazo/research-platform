@@ -37,6 +37,9 @@ is **Research Platform 0.1.0 Alpha 1**; it remains unpublished.
   declares `research-core` and offers `research-bids` and `research-analysis`
   as the `bids` and `analysis` extras, and `research-bids` declares no internal
   package dependency.
+- Added `research-utils`, a dependency-free package of stdlib-only helpers
+  (atomic text writes, hashing, output-path checks, and the YAML writer) that
+  the other packages may depend on.
 
 See the [capability and support matrix](docs/capabilities.md) for the exact
 runnable, plan-only, external-runtime, and scaffold boundaries.

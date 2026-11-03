@@ -73,6 +73,7 @@ dashboard, Streamlit application, desktop client, or other graphical product.
 | `research-neuro` | Neuroimaging adapters and semantics, including DeepPrep, fMRIPost-AROMA, FEAT, NIfTI utilities, ROI behaviour, image and pattern extraction, and neuroimaging-specific MVPA inputs | Ownership of an adapter does not mean its execution path is currently supported |
 | `research-hpc` | The provider-neutral implementation home for target configuration, SSH, rsync, SLURM, remote readiness, safety primitives, claims, receipts, staging, cancellation, retrieval, quarantine, recovery, no-overwrite publication mechanics, and remote lifecycle behaviour where implemented | Ownership does not mean that the complete remote lifecycle is implemented, accepted, or supported |
 | `research-viz` | Reusable visualization and reporting specifications, rendering primitives, figures, tables, and report outputs | A checked-in dashboard product or a general project-level reporting workflow |
+| `research-utils` | Stdlib-only helpers for writing files safely: atomic text writes, file hashing, output-path checks, and the YAML writer | Domain semantics, numerical code, or anything that imports another research package or a third-party library |
 
 Package ownership identifies where behaviour belongs. It does not by itself make
 that behaviour a supported public workflow.
@@ -96,6 +97,7 @@ as one unrestricted import graph:
   provider-neutral remote mechanics and safety contracts.
 - Generic Analysis contracts remain separate from image and pattern extraction
   owned by Neuro.
+- Utils depends on nothing; every package may depend on it.
 - Application or product assembly may compose packages without making every
   package depend on every other package.
 - Third-party library objects should not become the platform's public

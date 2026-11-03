@@ -537,7 +537,7 @@ jobs:
           set -euo pipefail
           printf '%s\n' 'PIP_NO_INDEX=1' >> "${GITHUB_ENV}"
 
-      - name: Build eight wheels and eight sdists outside the checkout
+      - name: Build nine wheels and nine sdists outside the checkout
         shell: bash
         run: |
           set -euo pipefail

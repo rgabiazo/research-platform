@@ -13,6 +13,7 @@ test_directories=(
   packages/research-io/tests
   packages/research-ml/tests
   packages/research-neuro/tests
+  packages/research-utils/tests
   packages/research-viz/tests
 )
 

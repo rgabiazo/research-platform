@@ -26,3 +26,4 @@ Keep short ADRs here whenever you change workspace-wide conventions or boundarie
 - `ADR-0022-headline-hpc-execution-contract.md`
 - `ADR-0023-hpc-safety-primitives.md`
 - `ADR-0024-bids-below-neuro.md`
+- `ADR-0025-research-utils-leaf-package.md`

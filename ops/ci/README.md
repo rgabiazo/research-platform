@@ -29,9 +29,9 @@ copy. An always-run comparison rejects any validation- or test-phase change.
 
 ## Package-by-package tests
 
-The development profile installs the seven packages in the normal development
+The development profile installs the eight packages in the normal development
 contract. CI then installs only the local `research-viz` source, without
-resolving dependencies, so it can test all eight package trees without using
+resolving dependencies, so it can test all nine package trees without using
 the heavyweight `full` profile:
 
 ```bash
@@ -52,7 +52,7 @@ PYTHON_BIN="${RP_DEV_VENV}/bin/python" \
   bash ops/ci/run-package-tests.sh
 ```
 
-The runner invokes these paths as eight separate pytest processes, in package
+The runner invokes these paths as nine separate pytest processes, in package
 order, each with `-p no:cacheprovider`:
 
 ```text
@@ -63,6 +63,7 @@ packages/research-hpc/tests
 packages/research-io/tests
 packages/research-ml/tests
 packages/research-neuro/tests
+packages/research-utils/tests
 packages/research-viz/tests
 ```
 
@@ -132,11 +133,11 @@ RP_RELEASE_SDIST_DIR="${RP_RELEASE_DIST_DIR}" \
 
 The builder uses `git checkout-index --all` to materialize the complete staged
 Git index in a fresh temporary directory, then runs `python -m build
---no-isolation` against each of its eight tracked package directories. It never
+--no-isolation` against each of its nine tracked package directories. It never
 copies live package directories, so ignored or untracked build residue cannot
 enter the source boundary. For a local pre-commit check, stage the intended
-snapshot before invoking the builder. The expected result is exactly eight
-wheels and eight source distributions as the only sixteen regular output
+snapshot before invoking the builder. The expected result is exactly nine
+wheels and nine source distributions as the only eighteen regular output
 entries. The metadata tests and inspector verify identity, licenses, paths,
 contents, and SHA-256 digests. CI does not upload or retain these archives as
 workflow artifacts.
