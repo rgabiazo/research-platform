@@ -7,6 +7,8 @@ import math
 import re
 from typing import Any
 
+from research_platform.utils.text import optional_text as _optional_text
+
 _MEMORY_PATTERN = re.compile(r"^\s*(\d+(?:\.\d+)?)\s*([KMGT]?B?)?\s*$", re.IGNORECASE)
 _RESOURCE_KEYS = ("cpus", "ram_gb", "threads", "n_jobs")
 
@@ -198,13 +200,6 @@ def _resource_fields(value: Mapping[str, Any]) -> dict[str, Any]:
         if value.get(key) is not None:
             normalized[key] = value[key]
     return normalized
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _coerce_int(value: Any, *, default: int) -> int:

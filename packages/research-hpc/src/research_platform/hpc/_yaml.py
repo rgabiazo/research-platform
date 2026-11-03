@@ -8,19 +8,13 @@ from typing import Any
 import os
 import re
 
-_SAFE_SCALAR = re.compile(r"^[A-Za-z0-9_./${}-]+$")
+from research_platform.utils.yaml_writer import dump_yaml, write_yaml
+
 _ENV_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 
 def load_yaml(path: str | Path) -> Any:
     return parse_yaml(Path(path).read_text(encoding="utf-8"))
-
-
-def write_yaml(path: str | Path, data: Any) -> Path:
-    file_path = Path(path)
-    file_path.parent.mkdir(parents=True, exist_ok=True)
-    file_path.write_text(dump_yaml(data), encoding="utf-8")
-    return file_path
 
 
 def parse_yaml(text: str) -> Any:
@@ -30,10 +24,6 @@ def parse_yaml(text: str) -> Any:
     if index != len(lines):
         raise ValueError(f"Unexpected trailing YAML content at line {index + 1}.")
     return value if value is not None else {}
-
-
-def dump_yaml(data: Any) -> str:
-    return "\n".join(_dump_yaml_lines(_normalize_data(data), indent=0)) + "\n"
 
 
 def expand_env_placeholders(data: Any, env: Mapping[str, str] | None = None) -> Any:
@@ -152,82 +142,6 @@ def _parse_scalar(value: str) -> Any:
     if re.fullmatch(r"-?\d+\.\d+", value):
         return float(value)
     return value
-
-
-def _normalize_data(value: Any) -> Any:
-    if isinstance(value, Path):
-        return str(value)
-    if isinstance(value, dict):
-        return {str(key): _normalize_data(item) for key, item in value.items()}
-    if isinstance(value, list):
-        return [_normalize_data(item) for item in value]
-    return value
-
-
-def _dump_yaml_lines(value: Any, *, indent: int) -> list[str]:
-    prefix = " " * indent
-    if isinstance(value, dict):
-        if not value:
-            return [f"{prefix}{{}}"]
-        lines: list[str] = []
-        for key, item in value.items():
-            if isinstance(item, dict):
-                if not item:
-                    lines.append(f"{prefix}{key}: {{}}")
-                    continue
-                lines.append(f"{prefix}{key}:")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-                continue
-            if isinstance(item, list):
-                if not item:
-                    lines.append(f"{prefix}{key}: []")
-                    continue
-                lines.append(f"{prefix}{key}:")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-            else:
-                lines.append(f"{prefix}{key}: {_format_scalar(item)}")
-        return lines
-    if isinstance(value, list):
-        if not value:
-            return [f"{prefix}[]"]
-        lines = []
-        for item in value:
-            if isinstance(item, dict):
-                if not item:
-                    lines.append(f"{prefix}- {{}}")
-                    continue
-                lines.append(f"{prefix}-")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-                continue
-            if isinstance(item, list):
-                if not item:
-                    lines.append(f"{prefix}- []")
-                    continue
-                lines.append(f"{prefix}-")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-            else:
-                lines.append(f"{prefix}- {_format_scalar(item)}")
-        return lines
-    return [f"{prefix}{_format_scalar(value)}"]
-
-
-def _format_scalar(value: Any) -> str:
-    if value is None:
-        return "null"
-    if isinstance(value, bool):
-        return "true" if value else "false"
-    if isinstance(value, (int, float)):
-        return str(value)
-    text = str(value)
-    if not text:
-        return '""'
-    if text.lower() in {"true", "false", "null", "~"}:
-        return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
-    if re.fullmatch(r"-?\d+", text) or re.fullmatch(r"-?\d+\.\d+", text):
-        return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
-    if _SAFE_SCALAR.fullmatch(text):
-        return text
-    return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
 def _expand_env_value(value: Any, env: Mapping[str, str]) -> Any:

@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Mapping
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from .authoring import (
     init_model_document,
     interactive_init_model_document,
@@ -572,13 +574,6 @@ def _looks_like_fmripost_aroma_root(value: str) -> bool:
 def _looks_like_deepprep_bold_root(value: str) -> bool:
     parts = [part.lower().replace("_", "-") for part in Path(value).parts]
     return "deepprep" in parts and ("bold" in parts or str(Path(value).name).lower() == "bold")
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _required_text(value: Any, label: str) -> str:

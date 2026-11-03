@@ -9,6 +9,8 @@ import re
 import shlex
 from typing import Any, Mapping
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from ....core.runtime_plan import execute_runtime_plan_steps
 from ...events.files import inspect_numeric_event_file
 from .models import (
@@ -453,10 +455,3 @@ def _inspect_ev_inputs(
         detail = f": {inspection.message}" if inspection.message else ""
         problems.append(f"EV file is not a valid numeric 3-column file: {path}{detail}")
     return empty_evs, problems
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None

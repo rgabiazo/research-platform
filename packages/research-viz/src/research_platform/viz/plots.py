@@ -17,6 +17,8 @@ from pathlib import Path
 from string import Formatter
 from typing import Any
 
+from research_platform.utils.text import non_empty_text as _non_empty_text
+
 
 DEFAULT_COLOR_PALETTE = (
     "#2f6f9f",
@@ -1105,13 +1107,6 @@ def _json_safe(value: Any) -> Any:
     if isinstance(value, int | str | bool) or value is None:
         return value
     return str(value)
-
-
-def _non_empty_text(value: Any, *, field_name: str) -> str:
-    text = str(value).strip()
-    if not text:
-        raise ValueError(f"{field_name} must be a non-empty string.")
-    return text
 
 
 __all__ = [

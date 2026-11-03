@@ -17,6 +17,7 @@ import copy
 from research_platform.neuro.localizer_ffx import LocalizerFixedEffectsPlan
 from research_platform.neuro import roi_execution, roi_loso
 from research_platform.neuro.roi_execution import RoiExecutionContext
+from research_platform.utils.text import optional_text as _optional_text
 
 
 _REQUIRED_FFX_OUTPUT_KINDS = ("output_cope", "output_varcope", "output_mask")
@@ -1207,13 +1208,6 @@ def _normalized_subject(value: Any) -> str | None:
     if text is None:
         return None
     return text[4:] if text.startswith("sub-") else text
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _optional_int(value: Any) -> int | None:

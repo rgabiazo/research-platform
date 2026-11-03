@@ -18,6 +18,7 @@ from research_platform.neuro.fsl.feat_design import (
     parse_fsl_design_ev_titles,
     parse_fsl_design_file,
 )
+from research_platform.utils.text import optional_text as _optional_text
 
 from .config import (
     MISSING_INPUT_POLICY_FAIL,
@@ -1584,13 +1585,6 @@ def _first_text(mapping: Mapping[str, Any], *keys: str) -> str | None:
         if key in mapping:
             return _optional_text(mapping.get(key))
     return None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _unique_text(values: Sequence[str]) -> list[str]:

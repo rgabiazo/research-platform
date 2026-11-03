@@ -24,6 +24,7 @@ import shutil
 import subprocess
 
 from research_platform.neuro._roi_path_safety import configured_path_is_unsafe
+from research_platform.utils.text import optional_text as _optional_text
 
 
 ANTS_APPLY_TRANSFORMS = "antsApplyTransforms"
@@ -3339,13 +3340,6 @@ def _normalize_missing_policy(value: str | None) -> str:
 
 def _looks_like_path(value: str) -> bool:
     return os.sep in value or (os.altsep is not None and os.altsep in value) or value.startswith(".") or value.startswith("~")
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _string_sequence(value: Any) -> tuple[str, ...]:

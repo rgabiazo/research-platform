@@ -48,9 +48,10 @@ source .venv/bin/activate
 research-hpc --help
 ```
 
-`research-hpc` declares no third-party runtime dependency. External commands
-such as SSH, rsync, and scheduler tools are user- and site-supplied and are
-used only by the surfaces that explicitly cross those boundaries.
+`research-hpc` declares no third-party runtime dependency; it depends on
+`research-utils` for YAML writing. External commands such as SSH, rsync, and
+scheduler tools are user- and site-supplied and are used only by the surfaces
+that explicitly cross those boundaries.
 
 ## Provider-neutral first-time flow
 

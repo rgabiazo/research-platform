@@ -12,7 +12,8 @@ from typing import Any, Mapping
 WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
 CORE_SRC = WORKSPACE_ROOT / "packages" / "research-core" / "src"
 NEURO_SRC = WORKSPACE_ROOT / "packages" / "research-neuro" / "src"
-for package_src in (CORE_SRC, NEURO_SRC):
+UTILS_SRC = WORKSPACE_ROOT / "packages" / "research-utils" / "src"
+for package_src in (CORE_SRC, NEURO_SRC, UTILS_SRC):
     if str(package_src) not in sys.path:
         sys.path.insert(0, str(package_src))
 

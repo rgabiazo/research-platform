@@ -18,6 +18,8 @@ from typing import Any
 import json
 import re
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from .manifests import (
     ManifestTable,
     manifest_row_matches,
@@ -1953,13 +1955,6 @@ def _duplicates(values: Sequence[str]) -> tuple[str, ...]:
             duplicates.append(value)
         seen.add(value)
     return tuple(duplicates)
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _json_safe_dataclass(value: Any) -> dict[str, Any]:

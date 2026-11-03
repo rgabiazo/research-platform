@@ -26,6 +26,10 @@ from research_platform.viz.plots import (
     build_visual_layout_qc_rows,
 )
 from research_platform.viz.reports import FigureSectionSpec, ReportSpec, TableSectionSpec
+from research_platform.utils.text import (
+    optional_text as _optional_text,
+    non_empty_text as _non_empty_text,
+)
 
 
 TABULAR_ASSOCIATION_SCHEMA_VERSION = ".".join(("research_platform", "analysis", "tabular_associations", "v1"))
@@ -2001,20 +2005,6 @@ def _has_value(value: Any) -> bool:
 
 def _has_text(value: Any) -> bool:
     return _optional_text(value) is not None
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
-
-
-def _non_empty_text(value: Any, *, field_name: str) -> str:
-    text = str(value).strip()
-    if not text:
-        raise ValueError(f"{field_name} must be a non-empty string.")
-    return text
 
 
 def _display_scalar(value: Any) -> str:

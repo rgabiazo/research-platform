@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections import OrderedDict
 from collections.abc import Mapping, Sequence
 import csv
-import hashlib
 import itertools
 import json
 import math
@@ -11,6 +10,9 @@ import os
 from pathlib import Path
 import tempfile
 from typing import Any
+
+from research_platform.utils.hashing import file_sha256 as _sha256
+from research_platform.utils.text import optional_text as _optional_text
 
 from ._path_safety import configured_path_is_unsafe, published_value_contains_local_path_reference
 
@@ -1284,13 +1286,6 @@ def _number_or_default(value: Any, default: float) -> float:
     return number if math.isfinite(number) else default
 
 
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
-
-
 def _text_sequence(value: Any) -> tuple[str, ...]:
     if value is None:
         return ()
@@ -1332,14 +1327,6 @@ def _format_cell(value: Any) -> str:
             return f"{value:.1f}"
         return format(value, ".17g")
     return str(value)
-
-
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def _json_safe(value: Any) -> Any:

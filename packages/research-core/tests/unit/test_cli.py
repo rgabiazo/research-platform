@@ -3857,7 +3857,7 @@ class CoreCliTests(unittest.TestCase):
         )
         self.assertIn("bash /remote/project/shared-artifacts/runs/unit-tabular-remote-artifacts/execute.sh", submit_script)
         self.assertIn("cd /remote/workspace", execute_script)
-        self.assertIn("packages/research-analysis/src:packages/research-ml/src", execute_script)
+        self.assertIn("packages/research-analysis/src:packages/research-ml/src:packages/research-utils/src", execute_script)
         self.assertIn("/remote/project/shared-artifacts/runs/unit-tabular-remote-artifacts/outputs/model.json", execute_script)
         self.assertIn("datasets/ds-tabular/derivatives/features/test-tabular/toy_features.tsv", execute_script)
         staged_files = stage_plan["staged_files"]

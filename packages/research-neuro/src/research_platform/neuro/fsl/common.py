@@ -14,6 +14,8 @@ import struct
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
+from research_platform.utils.text import optional_text as _optional_text
+
 _PLACEHOLDER_PATTERN = re.compile(r"{([A-Za-z0-9_]+)}")
 _ENTITY_PATTERNS = (
     ("subject_id", "sub"),
@@ -602,13 +604,6 @@ def _normalize_environment(value: Any) -> dict[str, str]:
         for name, raw_value in value.items()
         if str(name).strip() and str(raw_value).strip()
     }
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _normalize_image_name(value: str | None) -> str | None:

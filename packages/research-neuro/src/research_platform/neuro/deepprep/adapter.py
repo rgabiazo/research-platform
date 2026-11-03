@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Mapping
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from .command import build_runtime_plan
 from .selection import discover_batch_rows, expected_remote_input_files
 
@@ -343,13 +345,6 @@ def _validate_tool_options(tool_options: Mapping[str, Any]) -> list[str]:
     if _coerce_bool(tool_options.get("anat_only")) and _coerce_bool(tool_options.get("bold_only")):
         errors.append("preprocessing.tool_options.anat_only and bold_only cannot both be true.")
     return errors
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _resolve_env_text(value: Any) -> str | None:

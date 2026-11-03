@@ -9,6 +9,9 @@ import json
 import os
 import re
 
+from research_platform.utils.text import optional_text as _optional_text
+from research_platform.utils.yaml_writer import dump_yaml, write_yaml
+
 from .paths import dataset_path, pipeline_path, project_path, resolve_path, workspace_paths
 from .tool_adapters import (
     load_bids_analysis_tool_adapter,
@@ -18,7 +21,6 @@ from .tool_adapters import (
 
 _ENV_PATTERN = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)(:-([^}]*))?\}")
 _ENVIRONMENT_NAME_PATTERN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
-_SAFE_SCALAR = re.compile(r"^[A-Za-z0-9_./${}-]+$")
 _LOCAL_HPC_DEFAULT_KEYS = (
     "ALLIANCE_USER",
     "RESEARCH_HPC_TARGET",
@@ -464,13 +466,6 @@ def load_yaml(path: str | Path, *, resolve_env: bool = True) -> Any:
     return parse_yaml(file_path.read_text(encoding="utf-8"), resolve_env=resolve_env)
 
 
-def write_yaml(path: str | Path, data: Any) -> Path:
-    file_path = Path(path)
-    file_path.parent.mkdir(parents=True, exist_ok=True)
-    file_path.write_text(dump_yaml(data), encoding="utf-8")
-    return file_path
-
-
 def parse_yaml(text: str, *, resolve_env: bool = True) -> Any:
     stripped = text.strip()
     if stripped.startswith(("{", "[")):
@@ -482,10 +477,6 @@ def parse_yaml(text: str, *, resolve_env: bool = True) -> Any:
     if index != len(lines):
         raise ValueError(f"Unexpected trailing YAML content at line {index + 1}.")
     return value if value is not None else {}
-
-
-def dump_yaml(data: Any) -> str:
-    return "\n".join(_dump_yaml_lines(_normalize_data(data), indent=0)) + "\n"
 
 
 def load_workspace_config(root: str | Path | None = None) -> dict[str, Any]:
@@ -1719,16 +1710,6 @@ def _has_slurm_field_value(value: Any) -> bool:
     return _optional_text(value) is not None
 
 
-def _normalize_data(value: Any) -> Any:
-    if isinstance(value, Path):
-        return str(value)
-    if isinstance(value, dict):
-        return {str(key): _normalize_data(item) for key, item in value.items()}
-    if isinstance(value, list):
-        return [_normalize_data(item) for item in value]
-    return value
-
-
 def _resolve_project_declared_path(value: str | Path, *, workspace_root: str | Path, project_root: str | Path) -> Path:
     candidate = Path(value).expanduser()
     if candidate.is_absolute():
@@ -1753,13 +1734,6 @@ def _resolve_project_declared_path(value: str | Path, *, workspace_root: str | P
             return workspace_candidate
 
     return project_candidate
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _normalize_bool_field(value: Any, *, label: str) -> bool:
@@ -1945,69 +1919,3 @@ def _normalize_mergeable_prepare_directories(value: Any) -> list[str]:
                 normalized_values.append(normalized)
         return normalized_values
     return []
-
-
-def _dump_yaml_lines(value: Any, *, indent: int) -> list[str]:
-    prefix = " " * indent
-    if isinstance(value, dict):
-        if not value:
-            return [f"{prefix}{{}}"]
-        lines: list[str] = []
-        for key, item in value.items():
-            if isinstance(item, dict):
-                if not item:
-                    lines.append(f"{prefix}{key}: {{}}")
-                    continue
-                lines.append(f"{prefix}{key}:")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-                continue
-            if isinstance(item, list):
-                if not item:
-                    lines.append(f"{prefix}{key}: []")
-                    continue
-                lines.append(f"{prefix}{key}:")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-            else:
-                lines.append(f"{prefix}{key}: {_format_scalar(item)}")
-        return lines
-    if isinstance(value, list):
-        if not value:
-            return [f"{prefix}[]"]
-        lines = []
-        for item in value:
-            if isinstance(item, dict):
-                if not item:
-                    lines.append(f"{prefix}- {{}}")
-                    continue
-                lines.append(f"{prefix}-")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-                continue
-            if isinstance(item, list):
-                if not item:
-                    lines.append(f"{prefix}- []")
-                    continue
-                lines.append(f"{prefix}-")
-                lines.extend(_dump_yaml_lines(item, indent=indent + 2))
-            else:
-                lines.append(f"{prefix}- {_format_scalar(item)}")
-        return lines
-    return [f"{prefix}{_format_scalar(value)}"]
-
-
-def _format_scalar(value: Any) -> str:
-    if value is None:
-        return "null"
-    if isinstance(value, bool):
-        return "true" if value else "false"
-    if isinstance(value, (int, float)):
-        return str(value)
-    text = str(value)
-    if not text:
-        return '""'
-    if text.lower() in {"true", "false", "null", "~"}:
-        return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
-    if re.fullmatch(r"-?\d+", text) or re.fullmatch(r"-?\d+\.\d+", text):
-        return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'
-    if _SAFE_SCALAR.fullmatch(text):
-        return text
-    return '"' + text.replace("\\", "\\\\").replace('"', '\\"') + '"'

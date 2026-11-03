@@ -5,6 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from research_platform.utils.text import optional_text as _optional_text
+
 from .command import (
     DEFAULT_APPTAINER_IMAGE_ROOT,
     DEFAULT_APPTAINER_PULL_MODE,
@@ -361,13 +363,6 @@ class FmripostAromaAdapter:
             "publish_back": {"default_policy": "never"},
             "task_id": _optional_text(task_id),
         }
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _required_text(value: Any, label: str) -> str:

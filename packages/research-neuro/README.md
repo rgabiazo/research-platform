@@ -160,8 +160,9 @@ validation, and runtime handoff around that mathematics.
 ## External dependencies and limitations
 
 The package depends on `research-core` for environment value resolution in
-the DeepPrep and fMRIPost-AROMA adapters, and on `nibabel>=5.0`. The `bids`
-extra adds `research-bids` for BIDS entities, paths, naming, and the events
+the DeepPrep and fMRIPost-AROMA adapters, on `research-utils` for text
+helpers, atomic writes, and output-path checks, and on `nibabel>=5.0`. The
+`bids` extra adds `research-bids` for BIDS entities, paths, naming, and the events
 semantics behind `research_platform.neuro.events`; the `analysis` extra adds
 `research-analysis` for the crossnobis smoke module. The repository
 bootstrap installs the coordinated package closure for the bounded local

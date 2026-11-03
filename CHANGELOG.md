@@ -40,6 +40,12 @@ is **Research Platform 0.1.0 Alpha 1**; it remains unpublished.
 - Added `research-utils`, a dependency-free package of stdlib-only helpers
   (atomic text writes, hashing, output-path checks, and the YAML writer) that
   the other packages may depend on.
+- Replaced the identical copies of the text, atomic-write, hashing,
+  output-path and YAML-writer helpers in `research-analysis`, `research-core`,
+  `research-hpc`, `research-neuro` and `research-viz` with imports from
+  `research-utils`, which those packages declare as a dependency; the remote
+  sync scope, the remote run `PYTHONPATH` and the BIDS pipeline runners include
+  `packages/research-utils`.
 
 See the [capability and support matrix](docs/capabilities.md) for the exact
 runnable, plan-only, external-runtime, and scaffold boundaries.

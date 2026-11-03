@@ -37,13 +37,16 @@ PROJECT_URLS = {
     "Changelog": f"{REPOSITORY_URL}/blob/main/CHANGELOG.md",
 }
 INTERNAL_REQUIREMENTS = {
-    "research-analysis": {"research-ml>=0.1.0a1,<0.2"},
-    "research-core": {"research-hpc>=0.1.0a1,<0.2"},
+    "research-analysis": {"research-ml>=0.1.0a1,<0.2", "research-utils>=0.1.0a1,<0.2"},
+    "research-core": {"research-hpc>=0.1.0a1,<0.2", "research-utils>=0.1.0a1,<0.2"},
+    "research-hpc": {"research-utils>=0.1.0a1,<0.2"},
     "research-neuro": {
         "research-core>=0.1.0a1,<0.2",
+        "research-utils>=0.1.0a1,<0.2",
         "research-analysis>=0.1.0a1,<0.2",
         "research-bids>=0.1.0a1,<0.2",
     },
+    "research-viz": {"research-utils>=0.1.0a1,<0.2"},
 }
 CONSOLE_SCRIPTS = {
     "research-analysis": {},

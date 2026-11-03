@@ -26,8 +26,8 @@ otherwise need one.
 ## Consequences
 
 - New shared stdlib helpers go into `research-utils`.
-- Call sites of the AST-identical copies switch to `research-utils` in a
-  separate change; until then the existing copies stay in place. Same-named
-  variants are not switched by that change.
+- The packages that carried the AST-identical copies import them from
+  `research-utils` and declare it as a dependency. Same-named variants stay in
+  their own packages.
 - The package graph stays acyclic: `research-utils` sits below every other
   package and depends on none of them.

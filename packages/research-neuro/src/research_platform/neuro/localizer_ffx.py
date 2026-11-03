@@ -20,6 +20,7 @@ from research_platform.neuro.fsl.feat_design import (
     resolve_contrast_aliases_to_cope_numbers,
 )
 from research_platform.neuro.fsl.flame import build_fixed_effects_command_plan
+from research_platform.utils.text import optional_text as _optional_text
 
 
 @dataclass(frozen=True)
@@ -1278,13 +1279,6 @@ def _string_sequence(raw: Any) -> tuple[str, ...]:
         return tuple(values)
     text = _optional_text(raw)
     return (text,) if text is not None else ()
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _optional_int(value: Any) -> int | None:

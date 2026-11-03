@@ -21,6 +21,11 @@ import math
 from pathlib import Path
 from typing import Any, ClassVar
 
+from research_platform.utils.text import (
+    optional_text as _optional_text,
+    non_empty_text as _non_empty_text,
+)
+
 from .publication_tables import (
     NumericFormatSpec,
     PValueFormatSpec,
@@ -15423,20 +15428,6 @@ def _normalized_choice(value: Any, *, field_name: str, supported: frozenset[str]
         supported_values = ", ".join(sorted(supported))
         raise ValueError(f"Unsupported {field_name} {text!r}. Use one of: {supported_values}.")
     return text
-
-
-def _non_empty_text(value: Any, *, field_name: str) -> str:
-    text = str(value).strip()
-    if not text:
-        raise ValueError(f"{field_name} must be a non-empty string.")
-    return text
-
-
-def _optional_text(value: Any) -> str | None:
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _finite_number(value: float | int, *, field_name: str) -> float | int:
