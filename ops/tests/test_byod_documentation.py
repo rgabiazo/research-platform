@@ -437,8 +437,8 @@ def test_installation_claims_match_bootstrap_profiles_and_ci_matrix() -> None:
     assert package_block is not None
     minimal_packages = tuple(re.findall(r"(?m)^\s+(research-[a-z-]+)\s*$", package_block.group(1)))
 
-    assert len(minimal_packages) == 7
-    assert "the seven runtime packages" in guide
+    assert len(minimal_packages) == 8
+    assert "the eight runtime packages" in guide
     assert "minimal|dev|full|hpc" in bootstrap
     assert 'dev_requirements=("pytest>=8")' in bootstrap
     assert 'full_package_names=("${minimal_package_names[@]}" research-viz)' in bootstrap

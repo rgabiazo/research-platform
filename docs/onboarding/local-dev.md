@@ -29,10 +29,10 @@ The available profiles are:
 
 - `minimal` (the local default): editable installs of `research-core`,
   `research-hpc`, `research-io`, `research-bids`, `research-neuro`,
-  `research-analysis`, and `research-ml`, plus their declared dependencies. It
-  supports the public command surfaces and toy tabular workflow. In a newly
-  created environment it does not add `research-viz`, test tools, notebooks,
-  workflow-engine extras, or advanced optional model packages.
+  `research-analysis`, `research-ml`, and `research-utils`, plus their declared
+  dependencies. It supports the public command surfaces and toy tabular
+  workflow. In a newly created environment it does not add `research-viz`, test
+  tools, notebooks, workflow-engine extras, or advanced optional model packages.
 - `dev`: `minimal` plus `pytest>=8` for focused development tests.
 - `full`: `dev` plus `research-viz`; the declared analysis RDM, BIDS/IO pandas,
   and ML XGBoost extras; and the repository's notebook, workflow,

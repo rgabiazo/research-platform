@@ -41,7 +41,7 @@ the guided command interface. Package CLIs such as `research-io`,
 `research-bids`, and `python -m research_platform.analysis.cli` are advanced,
 package-specific interfaces.
 
-The coordinated source-package version is `0.1.0a1` across the eight
+The coordinated source-package version is `0.1.0a1` across the nine
 `packages/research-*` distributions. Versions in the `project-example` and
 `project-template` scaffold `pyproject.toml` files are independent scaffold
 metadata, not part of that coordinated source-package version.

@@ -42,7 +42,7 @@ installed editably from the checkout. `--print-plan` is non-mutating; the
 validation, path-inspection, doctor, and planning commands later in this guide
 do not install packages. The profiles are:
 
-- `minimal`: the seven runtime packages and their declared dependencies; use
+- `minimal`: the eight runtime packages and their declared dependencies; use
   it for the supported local command surfaces and synthetic examples;
 - `dev`: `minimal` plus pytest for repository tests;
 - `full`: `dev`, `research-viz`, optional pandas, rsatoolbox, XGBoost,

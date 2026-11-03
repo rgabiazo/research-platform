@@ -148,6 +148,7 @@ minimal_package_names=(
   research-io
   research-ml
   research-neuro
+  research-utils
 )
 full_package_names=("${minimal_package_names[@]}" research-viz)
 if [ "${profile}" = "hpc" ]; then

@@ -14,6 +14,7 @@ packages=(
   research-io
   research-ml
   research-neuro
+  research-utils
   research-viz
 )
 
@@ -140,9 +141,9 @@ entries = sorted(root.iterdir(), key=lambda path: path.name)
 regular_files = [path for path in entries if path.is_file() and not path.is_symlink()]
 wheels = [path for path in regular_files if path.suffix == ".whl"]
 sdists = [path for path in regular_files if path.name.endswith(".tar.gz")]
-if len(entries) != 16 or len(regular_files) != 16 or len(wheels) != 8 or len(sdists) != 8:
+if len(entries) != 18 or len(regular_files) != 18 or len(wheels) != 9 or len(sdists) != 9:
     raise SystemExit(
-        "Expected exactly eight wheels and eight sdists as the only sixteen "
+        "Expected exactly nine wheels and nine sdists as the only eighteen "
         f"regular archive entries; found {len(wheels)} wheels, {len(sdists)} "
         f"sdists, {len(regular_files)} regular files, and {len(entries)} total entries."
     )

@@ -20,6 +20,7 @@ PACKAGE_NAMES = (
     "research-io",
     "research-ml",
     "research-neuro",
+    "research-utils",
     "research-viz",
 )
 PIPELINE_MANIFESTS = frozenset(

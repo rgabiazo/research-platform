@@ -23,6 +23,7 @@ PACKAGE_NAMES = (
     "research-io",
     "research-ml",
     "research-neuro",
+    "research-utils",
     "research-viz",
 )
 VERSION = "0.1.0a1"
@@ -52,6 +53,7 @@ CONSOLE_SCRIPTS = {
     "research-io": {"research-io": "research_platform.io.cli:main"},
     "research-ml": {},
     "research-neuro": {},
+    "research-utils": {},
     "research-viz": {},
 }
 FORBIDDEN_PARTS = {

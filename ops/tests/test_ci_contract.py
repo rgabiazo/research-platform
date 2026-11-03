@@ -43,6 +43,7 @@ PACKAGE_TEST_PATHS = (
     "packages/research-io/tests",
     "packages/research-ml/tests",
     "packages/research-neuro/tests",
+    "packages/research-utils/tests",
     "packages/research-viz/tests",
 )
 FIXTURE_CHECKS = (
@@ -313,7 +314,7 @@ def test_ci_environment_and_network_boundary_are_explicit() -> None:
         "linux-package-tests": "Run each package test directory separately",
         "macos-arm-smoke": "Verify isolation and installation",
         "public-contracts": "Run public contracts, fixtures, and overlay validation",
-        "release-archives": "Build eight wheels and eight sdists outside the checkout",
+        "release-archives": "Build nine wheels and nine sdists outside the checkout",
     }
     for name, validation_marker in post_install_markers.items():
         block = blocks[name]
@@ -396,7 +397,7 @@ def test_reusable_ci_scripts_are_strict_non_network_and_non_destructive() -> Non
         assert not re.search(r"(?m)^\s*(?:curl|wget|ssh|rsync)(?:\s|$)", text), path
 
 
-def test_package_test_runner_uses_eight_separate_ordered_pytest_processes() -> None:
+def test_package_test_runner_uses_nine_separate_ordered_pytest_processes() -> None:
     text = (REPO_ROOT / "ops" / "ci" / "run-package-tests.sh").read_text(
         encoding="utf-8"
     )
@@ -441,9 +442,9 @@ def test_archive_builder_uses_the_complete_staged_index_and_builds_both_formats(
     assert "--sdist" not in text and "--wheel" not in text
     assert "RUNNER_TEMP" in text and "RP_RELEASE_DIST_DIR" in text
     assert "-mindepth" not in text and "-maxdepth" not in text
-    assert "len(entries) != 16" in text
-    assert "len(regular_files) != 16" in text
-    assert "len(wheels) != 8" in text and "len(sdists) != 8" in text
+    assert "len(entries) != 18" in text
+    assert "len(regular_files) != 18" in text
+    assert "len(wheels) != 9" in text and "len(sdists) != 9" in text
 
     manifest = REPO_ROOT / "packages" / "research-neuro" / "MANIFEST.in"
     assert manifest.read_bytes() == b"prune tests\n"
@@ -463,6 +464,7 @@ def test_archive_inspector_requires_exact_wheel_and_sdist_sets() -> None:
         "research-io",
         "research-ml",
         "research-neuro",
+        "research-utils",
         "research-viz",
     ):
         assert f'"{package}"' in text

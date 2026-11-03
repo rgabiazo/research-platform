@@ -24,7 +24,7 @@ environment is populated.
 
 Choose the smallest profile that fits the work:
 
-- `minimal` installs the seven runtime packages and declared dependencies for
+- `minimal` installs the eight runtime packages and declared dependencies for
   the supported local command surfaces and synthetic examples;
 - `dev` adds pytest for repository tests;
 - `full` adds `research-viz` and optional pandas, rsatoolbox, XGBoost,
